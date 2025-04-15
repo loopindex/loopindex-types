@@ -1,25 +1,7 @@
-import type { IFLITEConfiguration, IFLITEGlobals } from "./flite";
-import type { ILanceConfiguration, ILanceGlobals } from "./lance";
-import { FroalaOptions } from "froala-editor";
+import type { IFLITEGlobals } from "./flite";
+import type { ILanceGlobals } from "./lance";
 
-export * from "./common";
-export * from "./flite";
-export * from "./lance";
-
-export interface IExtendedFroalaOptions extends FroalaOptions {
-	readonly flite?: Partial<IFLITEConfiguration>;
-	readonly lance?: Partial<ILanceConfiguration>;
-	toolbarButtons?: Record<string, {
-		buttons: string[];
-	}>
-}
-
-export interface IEditorLoopIndexPlugins {
-	flite?: IFLITEPlugin;
-	lance?: ILancePlugin;
-}
-
-
+export type * from "./common";
 declare global {
   interface Window {  
 	LOOPINDEX: {

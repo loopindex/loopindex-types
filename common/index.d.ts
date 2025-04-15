@@ -1,11 +1,10 @@
 /**
- * The module/global object passed to the plugin init functions
+ * The module/global object passed to the Froala specific plugin init functions
  */
 export type FroalaModule = unknown;
 
 export type Nullable<T extends {}> = T | null;
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
-
 
 export type LocalizeFunction = (key: string, defaultValue?: string) => string;
 
@@ -171,5 +170,8 @@ export interface IPluginUserConfig<
 	commands: Partial<TCommands>[];
 }
 
-
-
+export interface IFroalaCommandRecord {
+	readonly command: string;
+	readonly icon?: string;
+	readonly tooltip?: string;
+}

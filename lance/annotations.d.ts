@@ -1,8 +1,6 @@
 
 import type { 
-	IFroalaCommandRecord, ILoopIndexUser, FroalaModule,
-	IPluginUserConfig, IEvents, Nullable,
-	IUserManager
+	ILoopIndexUser, IEvents, Nullable, IUserManager
 } from "../common/";
 
 export interface ICommentStatus {

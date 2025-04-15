@@ -1,11 +1,12 @@
 
 import type { 
 	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
-	UserTooltipsConfig,
-	IPluginTooltipOptions,
-	LocalizeFunction, 
+	IPluginTooltipOptions, LocalizeFunction, 
 } from "../common/";
-import type { AnnotationStatusCallback, IAnnotation, IAnnotationOptions, IAnnotationsManager } from "./annotations";
+import type { 
+	AnnotationStatusCallback, IAnnotation,
+	IAnnotationOptions, IAnnotationsManager 
+} from "./annotations";
 import type { ICreateAnnotationsUIOptions, ILanceUI } from "./ui";
 
 export interface ILanceGlobals {

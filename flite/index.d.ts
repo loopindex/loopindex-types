@@ -1,5 +1,7 @@
-import type { IPluginUserConfig, ILoopIndexUser, IUserManager, Nullable, FroalaModule } from "../common";
-
+import type { 
+	IPluginUserConfig, ILoopIndexUser, IUserManager,
+	Nullable, FroalaModule, IFroalaCommandRecord 
+} from "../common";
 
 export interface IFLITEUser extends ILoopIndexUser {
     readonly style?: {
@@ -74,11 +76,6 @@ export interface IFLITEInitEvent {
 }
 
 
-interface IFroalaCommandRecord {
-	readonly command: string;
-	readonly icon?: string;
-	readonly tooltip?: string;
-}
 
 
 export interface IFLITEGlobals {
