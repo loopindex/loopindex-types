@@ -1,7 +1,7 @@
 
 import type { 
 	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
-	IPluginTooltipOptions, LocalizeFunction, 
+	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
@@ -9,6 +9,7 @@ import type {
 } from "./annotations";
 import type { ICreateAnnotationsUIOptions, ILanceUI } from "./ui";
 
+export type * from "./annotations";
 export interface ILanceGlobals {
 	initFroalaLancePlugin(Froala: FroalaModule, options: {
 		path: string,
@@ -55,6 +56,10 @@ export type TooltipCallback = (options: ITooltipTitleOptions) => string;
 
 export interface ILanceTooltipOptions extends IPluginTooltipOptions{
 	formatter?: TooltipCallback;
+}
+
+export interface ILanceUser extends ILoopIndexUser {
+	readonly picture?: string;
 }
 
 export interface ILanceUserConfiguration extends IPluginUserConfig<ILanceTooltipOptions> {

@@ -1,6 +1,7 @@
 
+import type { ILanceUser } from ".";
 import type { 
-	ILoopIndexUser, IEvents, Nullable, IUserManager
+	IEvents, Nullable, IUserManager
 } from "../common/";
 
 export interface ICommentStatus {
@@ -120,10 +121,6 @@ export interface ISerializedAnnotation {
 	readonly comments: ISerializedComment[]
 }
 export type AnnotationOrId = IAnnotation | string;
-
-export interface ILanceUser extends ILoopIndexUser {
-    readonly picture?: string;
-}
 
 
 export declare interface ICommentAndStatus {
