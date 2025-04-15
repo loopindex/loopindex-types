@@ -80,7 +80,7 @@ export interface ILanceUI {
 	readonly events: IEvents;
 	// getCommentId(node: Element | JQuery): ICommentID;
 	setSearchTerm(term: string): void;
-	init(options: IAnnotationUIOptions): Promise<boolean>;
+	init(options: Pick<IAnnotationUIOptions, "owner" | "container"> & Partial<IAnnotationUIOptions>): Promise<boolean>;
 	setConfirmCallback(callback: UIConfirmCallback): void;
 	setCommentTimeFormat(format: string): void;
 	/**
