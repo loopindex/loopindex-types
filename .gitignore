@@ -1,0 +1,14 @@
+
+# Compiled output
+
+# Node
+node_modules
+**/*.log
+
+
+# Visual Studio Code
+.vscode/*
+
+# System files
+.DS_Store
+Thumbs.db
