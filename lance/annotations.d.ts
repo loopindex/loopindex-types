@@ -51,7 +51,7 @@ export declare interface IAnnotationManagerEvents {
 }
 
 export interface IStaticAnnotations {
-	readonly events: IAnnotationManagerEvents;
+	readonly Events: IAnnotationManagerEvents;
 }
 
 export interface ICommentStatus {
