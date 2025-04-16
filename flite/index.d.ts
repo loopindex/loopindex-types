@@ -252,9 +252,9 @@ export interface IFLITEConfiguration extends IPluginUserConfig<IFLITETooltipOpti
 	/**
 	 * Initial user to track with
 	 */
-	user: IFLITEUser;
+	user: Partial<IFLITEUser> | string;
 
-	users: IFLITEUser[];
+	users: Partial<IFLITEUser>[];
 
 	/**
 	 * @member FLITE.configuration
