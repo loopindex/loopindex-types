@@ -462,8 +462,9 @@ export interface IFLITEConfiguration extends IPluginUserConfig<IFLITETooltipOpti
 	disableSpellcheck?: boolean | "delete";
 }
 
-export interface IEditorConfiguration {
+export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
     flite: Partial<IFLITEConfiguration>;
-}
+} & TEditorConfig;
+
 
 

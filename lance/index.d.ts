@@ -31,10 +31,6 @@ export interface ILanceInitEvent {
 	lance: ILancePlugin;
 }
 
-export interface ILanceConfiguration extends IPluginUserConfig {
-
-}
-
 export type UndoPolicy = "none" | "create" | "all";
 export type ResolvedDisplayStyle = "none" | "minimal" | "full";
 export type RuntimeAnnotationType = "pin" | "text";
@@ -62,7 +58,7 @@ export interface ILanceUser extends ILoopIndexUser {
 	readonly picture?: string;
 }
 
-export interface ILanceUserConfiguration extends IPluginUserConfig<ILanceTooltipOptions> {
+export interface ILanceConfiguration extends IPluginUserConfig<ILanceTooltipOptions> {
 	annotations: Partial<IAnnotationOptions>;
 	undoPolicy?: UndoPolicy;
 	/**
@@ -97,3 +93,8 @@ export interface ILanceUserConfiguration extends IPluginUserConfig<ILanceTooltip
 
 	resolveDisplayPolicy: Partial<IResolveDisplayPolicy>
 }
+
+export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
+    lance: Partial<ILanceConfiguration>;
+} & TEditorConfig;
+
