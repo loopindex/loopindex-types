@@ -4,9 +4,15 @@
 export type FroalaModule = unknown;
 
 export type Nullable<T extends {}> = T | null;
+export type Maybe<T extends {}> = T | undefined;
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 
 export type LocalizeFunction = (key: string, defaultValue?: string) => string;
+
+export interface ICommandStatus {
+	readonly enabled: boolean;
+	readonly active?: boolean;
+}
 
 export interface IEvents<TEvent extends string = string> {
 	notifyListeners(event: TEvent, ...args: any[]): void;
