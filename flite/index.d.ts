@@ -466,5 +466,16 @@ export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
     flite: Partial<IFLITEConfiguration>;
 } & Partial<TEditorConfig>;
 
+export namespace FLITEEvents {
+	interface IFLITEEvent<T = any> {
+		readonly flite: IFLITEPlugin<T>;
+	}
+	interface ITrackingEvent<T = any> extends IFLITEEvent<T> { 
+		tracking: boolean;
+	}
 
+	interface IAcceptRejectEvent<T = any> extends IFLITEEvent<T> {
+		options?: any;
+	}
+}
 
