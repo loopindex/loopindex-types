@@ -1,8 +1,58 @@
 
 import type { ILanceUser } from ".";
 import type { 
-	IEvents, Nullable, IUserManager
+	IEvents, Nullable, IUserManager,
+	ILoopIndexPluginEvent
 } from "../common/";
+
+export declare interface IAnnotationManagerEvents {
+	readonly ANNOTATION_CREATED: string;
+	readonly ANNOTATION_DELETED: string;
+	readonly ANNOTATION_RESOLVED: string;
+	readonly ANNOTATION_PRESELECT: string;
+	readonly ANNOTATION_SELECTED: string;
+	readonly ANNOTATION_UPDATED: string;
+	readonly COMMENT_ADDED: string;
+	readonly COMMENT_DELETED: string;
+	readonly COMMENT_CHANGED: string;
+	readonly COMMENT_SELECTED: string;
+	readonly RESET: string;
+	readonly BEFORE_RESET: string;
+	readonly RELOAD: string;
+	readonly ENABLED_CHANGED: string;
+	readonly SIZE_CHANGED: string;
+	readonly DONE_EDITING: string;
+	readonly ATTRIBUTE_CHANGED: string;
+	readonly ANNOTATIONS_RENUMBERED: string;
+	readonly ANNOTATION_POSTSELECT: string;
+	readonly DESTROY: string;
+	readonly USER_CHANGED: string;
+	Host: {
+		readonly ANNOTATION_NODE_REVEALED: string;
+		readonly ANNOTATION_NODES_VISIBLITY: string;
+		readonly ANNOTATION_CONTAINER_SCROLL: string;
+		readonly LOCALE_CHANGED: string;
+	},
+	UI: {
+		/**
+		 * Fired after the UI was created, on the first occasion that the owner is not null;
+		 */
+		readonly CREATED: string;
+		/**
+		 * Fired when an owner is set and the UI has already been reported as created
+		 */
+		readonly ACTIVE: string;
+		/**
+		 * Fired when an comment UI that has focus is about to be removed from DOM
+		 */
+		readonly FOCUSED_REMOVED: string;
+
+	}
+}
+
+export interface IStaticAnnotations {
+	readonly Events: IAnnotationManagerEvents;
+}
 
 export interface ICommentStatus {
 	/**
@@ -203,7 +253,7 @@ export interface IAnnotationsManager {
 	unselectAll(): void;
 	serializeAnnotation(annotation: AnnotationOrId): Nullable<ISerializedAnnotation>;
 	deleteAnnotation(annotationId: AnnotationOrId, ...args: any[]): void;
-	setAnnotationsSequence(ids: Array<string>): void;
+	setAnnotationsSequence(ids: ReadonlyArray<string>): void;
 	getAnnotationById(id: string): Nullable<IAnnotation>;
 	insertAnnotation(data: IInsertAnnotationOptions): IAnnotation;
 	setAttribute(annotationId: string, attrName: string, value: any): Nullable<IAnnotation>;
@@ -214,7 +264,7 @@ export interface IAnnotationsManager {
 	 */
 	getSelectedAnnotationIds(): Array<string>;
 
-	addUsers(users: ILanceUser[]): void;
+	addUsers(users: ReadonlyArray<ILanceUser>): void;
 
 	/**
 	 * Returns the user id of the annotations manager
@@ -306,4 +356,50 @@ export interface IAnnotationOptions {
 	// for the api key test, this is the head element
 	hostOptions?: JQuery;
 	resolveAllPolicy: ResolveAllPolicy;
+}
+
+/**
+ * Basic comment/thread ID structure
+ */
+export declare interface ICommentID {
+	readonly annotationId: string;
+	readonly commentId: string;
+}
+export namespace LanceEvents {
+	interface ICommentEditingDoneEvent extends ICommentID {
+		canceled: boolean;
+		mode: "comment" | "reply"
+	}
+
+	interface IAnnotationEvent {
+		readonly annotation: IAnnotation;
+	}
+	
+	interface ICommentChangedEvent extends IAnnotationEvent{
+		readonly comment: IComment;
+		readonly status: ICommentStatus;
+	}
+
+	interface IAnnotationAttributesEvent extends IAnnotationEvent {
+		readonly attributes: Record<string, string>;
+	}
+	
+	interface IAnnotationsRenumberedEvent {
+		readonly sequence: ReadonlyArray<string>;
+	}
+	
+	interface IAnnotationCreatedEvent extends IAnnotationEvent {
+		next: string;
+		context?: any;
+		before?: string;
+	}
+	
+	interface IAnnotationDeletedEvent {
+		readonly id: string;
+	}
+	
+	interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
+		readonly isSelected: boolean;
+	}
+	
 }

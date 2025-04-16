@@ -5,7 +5,8 @@ import type {
 	LocalizeFunction,
 	IPluginTooltipOptions,
 	Maybe,
-	ICommandStatus
+	ICommandStatus,
+	ILoopIndexPlugin
 } from "../common";
 
 export type FLITECopyBehavior = "raw" | "clean";
@@ -76,9 +77,7 @@ export interface IChangeFilterOptions {
 }
 
 
-export interface IFLITEPlugin<TEditor = unknown> {
-	readonly editor: TEditor;
-	readonly version: string;
+export interface IFLITEPlugin<TEditor = unknown> extends ILoopIndexPlugin<TEditor, IFLITEConfiguration> {
 	readonly users: IUserManager<IFLITEUser>;
 	setUserInfo(idOrUser: string | Partial<ILoopIndexUser>): ILoopIndexUser;
 	getUserInfo(): ILoopIndexUser;

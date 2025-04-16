@@ -1,13 +1,15 @@
 
 import type { 
 	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
-	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser
+	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
+	ILoopIndexPlugin
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
-	IAnnotationOptions, IAnnotationsManager 
+	IAnnotationOptions, IAnnotationsManager, 
+	IStaticAnnotations
 } from "./annotations";
-import type { ICreateAnnotationsUIOptions, ILanceUI } from "./ui";
+import type { ICreateAnnotationsUIOptions, ILanceUI, IStaticAnnotationsUI } from "./ui";
 
 export type * from "./annotations";
 export interface ILanceGlobals {
@@ -18,13 +20,13 @@ export interface ILanceGlobals {
 	}): Promise<boolean>;
 
 	createAnnotationsUI(options: ICreateAnnotationsUIOptions): ILanceUI;
+	readonly Annotations: IStaticAnnotations;
+	readonly AnnotationsUI: IStaticAnnotationsUI;
 }
 
-export interface ILancePlugin<TEditor = unknown> {
+export interface ILancePlugin<TEditor = unknown> extends ILoopIndexPlugin<TEditor, ILanceConfiguration> {
     getAnnotations(): IAnnotationsManager;
-    readonly version: string;
 	readonly App: ILanceGlobals;
-	readonly editor: TEditor;
 }
 
 export interface ILanceInitEvent {
@@ -91,7 +93,9 @@ export interface ILanceConfiguration extends IPluginUserConfig<ILanceTooltipOpti
 
 	commentSelectionPolicy: CommentSelectionPolicy;
 
-	resolveDisplayPolicy: Partial<IResolveDisplayPolicy>
+	resolveDisplayPolicy: Partial<IResolveDisplayPolicy>;
+
+	maximize: unknown;
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
