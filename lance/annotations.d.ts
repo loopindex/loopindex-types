@@ -4,6 +4,55 @@ import type {
 	IEvents, Nullable, IUserManager
 } from "../common/";
 
+export declare interface IAnnotationManagerEvents {
+	readonly ANNOTATION_CREATED: string;
+	readonly ANNOTATION_DELETED: string;
+	readonly ANNOTATION_RESOLVED: string;
+	readonly ANNOTATION_PRESELECT: string;
+	readonly ANNOTATION_SELECTED: string;
+	readonly ANNOTATION_UPDATED: string;
+	readonly COMMENT_ADDED: string;
+	readonly COMMENT_DELETED: string;
+	readonly COMMENT_CHANGED: string;
+	readonly COMMENT_SELECTED: string;
+	readonly RESET: string;
+	readonly BEFORE_RESET: string;
+	readonly RELOAD: string;
+	readonly ENABLED_CHANGED: string;
+	readonly SIZE_CHANGED: string;
+	readonly DONE_EDITING: string;
+	readonly ATTRIBUTE_CHANGED: string;
+	readonly ANNOTATIONS_RENUMBERED: string;
+	readonly ANNOTATION_POSTSELECT: string;
+	readonly DESTROY: string;
+	readonly USER_CHANGED: string;
+	Host: {
+		readonly ANNOTATION_NODE_REVEALED: string;
+		readonly ANNOTATION_NODES_VISIBLITY: string;
+		readonly ANNOTATION_CONTAINER_SCROLL: string;
+		readonly LOCALE_CHANGED: string;
+	},
+	UI: {
+		/**
+		 * Fired after the UI was created, on the first occasion that the owner is not null;
+		 */
+		readonly CREATED: string;
+		/**
+		 * Fired when an owner is set and the UI has already been reported as created
+		 */
+		readonly ACTIVE: string;
+		/**
+		 * Fired when an comment UI that has focus is about to be removed from DOM
+		 */
+		readonly FOCUSED_REMOVED: string;
+
+	}
+}
+
+export interface IStaticAnnotations {
+	readonly events: IAnnotationManagerEvents;
+}
+
 export interface ICommentStatus {
 	/**
 	 * @property {Boolean}

@@ -5,9 +5,10 @@ import type {
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
-	IAnnotationOptions, IAnnotationsManager 
+	IAnnotationOptions, IAnnotationsManager, 
+	IStaticAnnotations
 } from "./annotations";
-import type { ICreateAnnotationsUIOptions, ILanceUI } from "./ui";
+import type { ICreateAnnotationsUIOptions, ILanceUI, IStaticAnnotationsUI } from "./ui";
 
 export type * from "./annotations";
 export interface ILanceGlobals {
@@ -18,6 +19,8 @@ export interface ILanceGlobals {
 	}): Promise<boolean>;
 
 	createAnnotationsUI(options: ICreateAnnotationsUIOptions): ILanceUI;
+	readonly Annotations: IStaticAnnotations;
+	readonly AnnotationsUI: IStaticAnnotationsUI;
 }
 
 export interface ILancePlugin<TEditor = unknown> {

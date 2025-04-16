@@ -6,6 +6,143 @@ export interface ICreateAnnotationsUIOptions {
 	readonly type: "simple" | "aligned";
 }
 
+
+interface ILanceUIEvents {
+	/**
+	 * "annotationui:created"
+	 */
+	readonly ANNOTATION_UI_CREATED: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event ANNOTATION_UI_REMOVED
+	 * "annotationui:removed"
+	 * 
+	 * The ui of the specified annotation (thread) has been removed
+	 * All parameters are enclosed in an Event object
+	 * @param {Object} $node the annotationsui DOM node
+	 * @param {String} id The id of the annotation
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 */
+	readonly ANNOTATION_UI_REMOVED: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event ANNOTATION_UI_SELECTED
+	 * "annotationui:selected"
+	 * 
+	 * An annotation node has been selected or deselected.
+	 * All parameters are enclosed in an Event object
+	 * @param {Object} $node the annotationsui DOM node
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 * @param {String} id The id of the annotation
+	 * @param {Boolean} isSelected the annotation id
+	 */
+	readonly ANNOTATION_UI_SELECTED: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event ANNOTATION_UI_CHANGED
+	 * "annotationui:changed"
+	 * 
+	 * An annotation node has been repopulated.
+	 * All parameters are enclosed in an Event object
+	 * @param {Object} $node the annotationsui DOM node
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 * @param {String} id The id of the annotation
+	 */
+	readonly ANNOTATION_UI_CHANGED: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_CREATED
+	 * "commentui:created"
+	 * 
+	 * A comment node has been created and populated.
+	 * All parameters are enclosed in an Event object
+	 * @param {Object} $node the commentui DOM node
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 * @param {String} commentId The id of the comment
+	 * @param {String} annotationId The id of the annotation
+	 */
+	readonly COMMENT_UI_CREATED: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_CHANGED
+	 * "commentui:changed"
+	 * 
+	 * The content of a comment node has changed.
+	 * All parameters are enclosed in an Event object
+	 * @param {Object} $node the commentui DOM node
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 * @param {String} commentId The id of the comment
+	 * @param {String} annotationId The id of the annotation
+	 */
+	readonly COMMENT_UI_CHANGED: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_DONE
+	 * "commentui:done"
+	 * 
+	 * done editing a comment
+	 * All parameters are enclosed in an Event object
+	 * @param {Object} $node the annotationsui DOM node
+	 * @param {String} id The id of the annotation
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 */
+	readonly COMMENT_UI_DONE: string, // annotation: annotation id
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_REMOVED
+	 * "commentui:removed"
+	 * 
+	 * a comment node has been removed.
+	 * All parameters are enclosed in an Event object
+	 * @param {Object} $node the commentui DOM node
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 * @param {String} commentId The id of the comment
+	 * @param {String} annotationId The id of the annotation
+	 */
+	readonly COMMENT_UI_REMOVED: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_BEFORE_COMMAND
+	 * "commentui:before-command"
+	 * 
+	 * a comment node has been removed.
+	 * All parameters are enclosed in an Event object
+	 * @param {String} command the commentui DOM node
+	 * @param {Object} $node the commentui DOM node
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 * @param {String} commentId The id of the comment
+	 * @param {String} annotationId The id of the annotation
+	 * @param {Boolean} cancel set to false to prevent further command processing
+	 */
+	readonly COMMENT_UI_BEFORE_COMMAND: string,
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_AFTER_COMMAND
+	 * "commentui:after-command"
+	 * 
+	 * a comment node has been removed.
+	 * All parameters are enclosed in an Event object
+	 * @param {String} command the commentui DOM node
+	 * @param {Object} $node the commentui DOM node
+	 * @param {LANCE.AnnotationsUI} ui the containing ui
+	 * @param {String} commentId The id of the comment
+	 * @param {String} annotationId The id of the annotation
+	 */
+	readonly COMMENT_UI_AFTER_COMMAND: string
+}
+
+export interface IStaticAnnotationsUI {
+	readonly Events: Readonly<ILanceUIEvents>;
+}
 export declare interface IToolbarCommandRecord {
 	command: string;
 	iconUrl?: string;
@@ -101,7 +238,7 @@ export interface IUICommandEvent {
 	readonly ui: ILanceUI;
 	readonly annotationId: string;
 	readonly commentId: string;
-	cancel: false;
+	cancel: boolean;
 	readonly manager: IAnnotationsManager;
 }
 
