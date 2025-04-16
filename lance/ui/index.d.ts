@@ -163,7 +163,7 @@ export declare interface IToolbarButton {
 }
 
 export declare type OverflowPolicy = ("show" | "hide" | "fold" | "none");
-export declare type BlurPolicy = ( "save" | "discard");
+export declare type BlurPolicy = ("save" | "discard");
 export declare interface IUIGeneratorOptions {
 	// owner: IAnnotationsManager;
 	generate: boolean;
@@ -228,23 +228,32 @@ export interface ILanceUI {
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
 }
 
-/**
- * Dispatched before (`"commentui:before-command"`) and after (`"commentui:after-command"`).
- * set `cancel` to `true`  to cancel the command
- */
-export interface IUICommandEvent {
-	readonly command: string;
-	readonly $node: Nullable<JQuery>;
-	readonly ui: ILanceUI;
-	readonly annotationId: string;
-	readonly commentId: string;
-	cancel: boolean;
-	readonly manager: IAnnotationsManager;
-}
+export namespace LanceUIEvents {
 
+	/**
+	 * Dispatched before (`"commentui:before-command"`) and after (`"commentui:after-command"`).
+	 * set `cancel` to `true`  to cancel the command
+	 */
+	interface ICommandEvent {
+		readonly command: string;
+		readonly $node: Nullable<JQuery>;
+		readonly ui: ILanceUI;
+		readonly annotationId: string;
+		readonly commentId: string;
+		cancel: boolean;
+		readonly manager: IAnnotationsManager;
+	}
+
+	interface ICreatedEvent {
+		readonly $node: JQuery;
+		readonly ui: ILanceUI;
+		readonly commentId: string;
+		readonly annotationId: string;
+	}
+}
 export interface IViewSaveTextOptions {
 	readonly view: IBaseView;
-	readonly save: boolean 
+	readonly save: boolean
 	readonly event?: Event;
 }
 export type ViewTextHandler = (options: IViewSaveTextOptions) => any;
