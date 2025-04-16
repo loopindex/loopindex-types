@@ -181,3 +181,10 @@ export interface IFroalaCommandRecord {
 	readonly icon?: string;
 	readonly tooltip?: string;
 }
+
+/**
+ * Attempt to standardize cancelable events
+ */
+export interface ILoopIndexPluginEvent {
+	canceled?: boolean;
+}

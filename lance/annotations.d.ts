@@ -1,7 +1,8 @@
 
 import type { ILanceUser } from ".";
 import type { 
-	IEvents, Nullable, IUserManager
+	IEvents, Nullable, IUserManager,
+	ILoopIndexPluginEvent
 } from "../common/";
 
 export declare interface IAnnotationManagerEvents {
@@ -252,7 +253,7 @@ export interface IAnnotationsManager {
 	unselectAll(): void;
 	serializeAnnotation(annotation: AnnotationOrId): Nullable<ISerializedAnnotation>;
 	deleteAnnotation(annotationId: AnnotationOrId, ...args: any[]): void;
-	setAnnotationsSequence(ids: Array<string>): void;
+	setAnnotationsSequence(ids: ReadonlyArray<string>): void;
 	getAnnotationById(id: string): Nullable<IAnnotation>;
 	insertAnnotation(data: IInsertAnnotationOptions): IAnnotation;
 	setAttribute(annotationId: string, attrName: string, value: any): Nullable<IAnnotation>;
@@ -263,7 +264,7 @@ export interface IAnnotationsManager {
 	 */
 	getSelectedAnnotationIds(): Array<string>;
 
-	addUsers(users: ILanceUser[]): void;
+	addUsers(users: ReadonlyArray<ILanceUser>): void;
 
 	/**
 	 * Returns the user id of the annotations manager
@@ -355,4 +356,50 @@ export interface IAnnotationOptions {
 	// for the api key test, this is the head element
 	hostOptions?: JQuery;
 	resolveAllPolicy: ResolveAllPolicy;
+}
+
+/**
+ * Basic comment/thread ID structure
+ */
+export declare interface ICommentID {
+	readonly annotationId: string;
+	readonly commentId: string;
+}
+export namespace LanceEvents {
+	interface ICommentEditingDoneEvent extends ICommentID {
+		canceled: boolean;
+		mode: "comment" | "reply"
+	}
+
+	export interface IAnnotationEvent {
+		readonly annotation: IAnnotation;
+	}
+	
+	export interface ICommentChangedEvent extends IAnnotationEvent{
+		readonly comment: IComment;
+		readonly status: ICommentStatus;
+	}
+
+	export interface IAnnotationAttributesEvent extends IAnnotationEvent {
+		readonly attributes: Record<string, string>;
+	}
+	
+	export interface IAnnotationsRenumberedEvent {
+		readonly sequence: ReadonlyArray<string>;
+	}
+	
+	export interface IAnnotationCreatedEvent extends IAnnotationEvent {
+		next: string;
+		context?: any;
+		before?: string;
+	}
+	
+	export interface IAnnotationDeletedEvent {
+		readonly id: string;
+	}
+	
+	export interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
+		readonly isSelected: boolean;
+	}
+	
 }
