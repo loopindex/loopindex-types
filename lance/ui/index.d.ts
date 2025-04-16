@@ -91,6 +91,20 @@ export interface ILanceUI {
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
 }
 
+/**
+ * Dispatched before (`"commentui:before-command"`) and after (`"commentui:after-command"`).
+ * set `cancel` to `true`  to cancel the command
+ */
+export interface IUICommandEvent {
+	readonly command: string;
+	readonly $node: Nullable<JQuery>;
+	readonly ui: ILanceUI;
+	readonly annotationId: string;
+	readonly commentId: string;
+	cancel: false;
+	readonly manager: IAnnotationsManager;
+}
+
 export interface IViewSaveTextOptions {
 	readonly view: IBaseView;
 	readonly save: boolean 
