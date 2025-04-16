@@ -96,5 +96,5 @@ export interface ILanceConfiguration extends IPluginUserConfig<ILanceTooltipOpti
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
     lance: Partial<ILanceConfiguration>;
-} & TEditorConfig;
+} & Partial<TEditorConfig>;
 

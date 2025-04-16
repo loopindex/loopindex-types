@@ -464,7 +464,7 @@ export interface IFLITEConfiguration extends IPluginUserConfig<IFLITETooltipOpti
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
     flite: Partial<IFLITEConfiguration>;
-} & TEditorConfig;
+} & Partial<TEditorConfig>;
 
 
 
