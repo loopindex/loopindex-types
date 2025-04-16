@@ -125,6 +125,10 @@ export interface ICommandRecord {
 	 */
 	readonly readOnly?: boolean;
 }
+export interface IClientCommandRecord extends ICommandRecord {
+	readonly localized: string;
+}
+
 
 export type UserTooltipsConfig<TConfig extends IPluginTooltipOptions> = boolean | "always" | Partial<TConfig>;
 
@@ -187,4 +191,112 @@ export interface IFroalaCommandRecord {
  */
 export interface ILoopIndexPluginEvent {
 	canceled?: boolean;
+}
+
+/**
+ * Events fired by all plugins
+ */
+export type PluginEvents = "config";
+
+export interface ILoopIndexPlugin<TEditor, TConfig extends IPluginUserConfig> {
+	readonly version: string;
+	readonly build: string;
+	readonly events: IEvents<PluginEvents>;
+	readonly editor: TEditor;
+
+	/**
+	 * Quick ref to jquery
+	 * @param e 
+	 */
+	readonly $: JQueryStatic;
+
+	/**
+	 * The path from which the plugin was loaded 
+	 */
+	readonly path: string;
+
+	/**
+	 * resolve a path relative to the plugin's path and assetpath. Absolute paths are not
+	 * modified. Guaranteed not null
+	 * @param paths 
+	 */
+	resolvePath(...paths: string[]): string;
+
+	/**
+	 * set the state of the commands to the provided values
+	 * @param {String | String[]} commands 
+	 * @param enable 
+	 * @param active only relevant if true
+	 */
+	setCommandsState(commands: string | string[], enable: boolean, active?: boolean): void;
+
+	/**
+	 * Get the definitions of all the commands of this instance - command, title, iconUrl etc
+	 */
+	getCommands(): IClientCommandRecord[];
+
+	/**
+	 * Provides access to the configuration object. Has three modes of calling
+	 * 
+	 *     plugin.config() // returns a copy of the configuration object
+	 *     plugin.config(key: string) // returns the value of the configuration property denoted by key
+	 *     plugin.config(key: string, value: any) // sets the configuration property key to value, returns a copy of the configuration object
+	 * 
+	 */
+	config<Tkey extends keyof TConfig, TRet = TConfig[Tkey]>(key: Tkey, value?: TRet): TRet;
+
+	/**
+	 * For debugging. If true, FLITE will log all editor commands (the command strings) before they are applied
+	 * @member FLITE.FLITEPlugin
+	 * @param {Boolean} log
+	 * @private
+	 * @ignore
+	 */
+	logEditorCommands(log: boolean): void;
+
+	/**
+	 * For debugging. If event logging is on, the plugin will emit log messages for most fired editor
+	 * events. Selection, focus and mouse events are filtered out for the clarity and brevity
+	 * of the log.
+	 * @member FLITE.FLITEPlugin
+	 * @param log 
+	 */
+	logEditorEvents(log: boolean): void;
+
+	/**
+	 * Async set language, returns success (internally gets an error string)
+	 * @param locale "en" if falsy
+	 */
+	setLanguage(locale: string): Promise<boolean>;
+
+	isInline(): boolean;
+
+	getBody(): Nullable<HTMLElement>;
+
+	getDocument(): Nullable<Document>;
+
+	/**
+	 * 
+	 * @param editorOnly If true, return null if the editor thinks there's no selection
+	 */
+	getSelectedRange(editorOnly?: boolean): Nullable<Range>;
+
+	/**
+	 * Returns the window that contains the editor UI, not necessarily the same one that contains the document
+	 */
+	getEditorUIContainer(): Nullable<Window>;
+
+	addDictionary(locale: string, dictionary: Record<string, string>): void;
+
+	/**
+	 * trigger an event thru the editor
+	 * @param event 
+	 * @param data 
+	 */
+	fireEditorEvent(event: string, data?: any): boolean;
+
+	/**
+	 * The plugin needs to read its state from the current content
+	 */
+	reloadFromDocument(): void;
 }

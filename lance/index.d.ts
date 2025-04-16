@@ -1,7 +1,8 @@
 
 import type { 
 	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
-	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser
+	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
+	ILoopIndexPlugin
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
@@ -23,11 +24,9 @@ export interface ILanceGlobals {
 	readonly AnnotationsUI: IStaticAnnotationsUI;
 }
 
-export interface ILancePlugin<TEditor = unknown> {
+export interface ILancePlugin<TEditor = unknown> extends ILoopIndexPlugin<TEditor, ILanceConfiguration> {
     getAnnotations(): IAnnotationsManager;
-    readonly version: string;
 	readonly App: ILanceGlobals;
-	readonly editor: TEditor;
 }
 
 export interface ILanceInitEvent {
