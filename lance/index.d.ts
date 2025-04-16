@@ -91,7 +91,9 @@ export interface ILanceConfiguration extends IPluginUserConfig<ILanceTooltipOpti
 
 	commentSelectionPolicy: CommentSelectionPolicy;
 
-	resolveDisplayPolicy: Partial<IResolveDisplayPolicy>
+	resolveDisplayPolicy: Partial<IResolveDisplayPolicy>;
+
+	maximize: unknown;
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
