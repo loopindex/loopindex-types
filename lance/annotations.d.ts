@@ -371,34 +371,34 @@ export namespace LanceEvents {
 		mode: "comment" | "reply"
 	}
 
-	export interface IAnnotationEvent {
+	interface IAnnotationEvent {
 		readonly annotation: IAnnotation;
 	}
 	
-	export interface ICommentChangedEvent extends IAnnotationEvent{
+	interface ICommentChangedEvent extends IAnnotationEvent{
 		readonly comment: IComment;
 		readonly status: ICommentStatus;
 	}
 
-	export interface IAnnotationAttributesEvent extends IAnnotationEvent {
+	interface IAnnotationAttributesEvent extends IAnnotationEvent {
 		readonly attributes: Record<string, string>;
 	}
 	
-	export interface IAnnotationsRenumberedEvent {
+	interface IAnnotationsRenumberedEvent {
 		readonly sequence: ReadonlyArray<string>;
 	}
 	
-	export interface IAnnotationCreatedEvent extends IAnnotationEvent {
+	interface IAnnotationCreatedEvent extends IAnnotationEvent {
 		next: string;
 		context?: any;
 		before?: string;
 	}
 	
-	export interface IAnnotationDeletedEvent {
+	interface IAnnotationDeletedEvent {
 		readonly id: string;
 	}
 	
-	export interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
+	interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
 		readonly isSelected: boolean;
 	}
 	
