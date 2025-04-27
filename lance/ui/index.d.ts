@@ -222,6 +222,7 @@ export interface ILanceUI {
 	 * @param options if options.load !== false, the annotations will be reloaded 
 	 */
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
+	getOwner(): IAnnotationsManager | null;
 }
 
 export namespace LanceUIEvents {
