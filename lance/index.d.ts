@@ -2,15 +2,12 @@
 import type { 
 	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
 	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
-	ILoopIndexPlugin,
-	Mutable,
-	ICommandRecord,
+	ILoopIndexPlugin, Mutable, ICommandRecord,
 	IPluginConfig
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
-	IAnnotationOptions, IAnnotationsManager, 
-	IStaticAnnotations
+	IAnnotationOptions, IAnnotationsManager, IStaticAnnotations
 } from "./annotations";
 import type { ICreateAnnotationsUIOptions, ILanceUI, IStaticAnnotationsUI } from "./ui";
 
@@ -203,6 +200,6 @@ export interface ILanceConfiguration extends IPluginConfig<ILanceTooltipOptions>
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
-    lance: Partial<ILanceConfiguration>;
+    lance: Partial<ILanceUserConfiguration>;
 } & Partial<TEditorConfig>;
 

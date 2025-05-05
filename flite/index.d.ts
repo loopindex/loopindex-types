@@ -830,14 +830,14 @@ export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
 } & Partial<TEditorConfig>;
 
 export namespace FLITEEvents {
-	interface IFLITEEvent<T extends {} = object> {
-		readonly flite: IFLITEPlugin<T>;
+	interface IFLITEEvent<TEditor extends {} = object> {
+		readonly flite: IFLITEPlugin<TEditor>;
 	}
-	interface ITrackingEvent<T extends {} = object> extends IFLITEEvent<T> { 
+	interface ITrackingEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> { 
 		tracking: boolean;
 	}
 
-	interface IAcceptRejectEvent<T extends {} = object> extends IFLITEEvent<T> {
+	interface IAcceptRejectEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> {
 		options?: any;
 	}
 }
