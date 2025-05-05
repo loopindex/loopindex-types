@@ -454,8 +454,8 @@ export interface IFLITEPlugin<TEditor extends {} = object, TConfig extends IFLIT
 	
 }
 
-export interface IFLITEInitEvent {
-	flite: IFLITEPlugin;
+export interface IFLITEInitEvent<TEditor extends {} = object> {
+	flite: IFLITEPlugin<TEditor>;
 }
 
 
