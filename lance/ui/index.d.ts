@@ -6,7 +6,6 @@ export interface ICreateAnnotationsUIOptions {
 	readonly type: "simple" | "aligned";
 }
 
-
 interface ILanceUIEvents {
 	/**
 	 * "annotationui:created"
@@ -203,9 +202,6 @@ export declare interface IAnnotationUIOptions {
 	readonly overflowPolicy: OverflowPolicy;
 	readonly blurPolicy: BlurPolicy;
 }
-
-export type AnnotationViewOrId = IOneAnnotationView | string;
-
 export interface IUIConfirmOptions {
 	message: string;
 	annotation: IAnnotation;
@@ -226,6 +222,7 @@ export interface ILanceUI {
 	 * @param options if options.load !== false, the annotations will be reloaded 
 	 */
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
+	getOwner(): IAnnotationsManager | null;
 }
 
 export namespace LanceUIEvents {
@@ -244,6 +241,9 @@ export namespace LanceUIEvents {
 		readonly manager: IAnnotationsManager;
 	}
 
+	/**
+	 * Dispatched after a comment UI is created
+	 */
 	interface ICreatedEvent {
 		readonly $node: JQuery;
 		readonly ui: ILanceUI;
@@ -251,85 +251,6 @@ export namespace LanceUIEvents {
 		readonly annotationId: string;
 	}
 }
-export interface IViewSaveTextOptions {
-	readonly view: IBaseView;
-	readonly save: boolean
-	readonly event?: Event;
-}
-export type ViewTextHandler = (options: IViewSaveTextOptions) => any;
 
-interface IBaseView {
-	readonly id: string;
-	readonly $ui: JQuery;
-	setTextHandler(handler: ViewTextHandler): void;
-}
 
-export declare interface ICommentView extends IBaseView {
-	readonly annotationId: string;
-	readonly isSelected: boolean;
-	readonly parent: IOneAnnotationView;
-	// readonly $commentText: JQuery;
-	readonly isEditing: boolean;
-	/**
-	 * If true, will turn reply off
-	 * @param isEditing 
-	 */
-	setEditing(isEditing: boolean): ICommentView;
-	setEditCommands(options: { ok: string, cancel: string }): ICommentView;
-	hasEditedComment(): boolean;
-	// hasEditedReply(): boolean;
-	setSelected(selected: boolean): ICommentView;
-	refresh(): ICommentView;
-	getCommentText(): string;
-	setCommentText(text: string): ICommentView;
-}
-
-export declare interface IOneAnnotationView extends IBaseView {
-	readonly $wrapper: JQuery;
-	readonly $reply: JQuery;
-	/**
-	 * Guaranteed not null
-	 */
-	readonly commentViews: ICommentView[];
-	readonly isSelected: boolean;
-	/**
-	 * True if the view is in collapsed state and has expand override
-	 */
-	readonly isExpanded: boolean;
-	readonly isCollapsed: boolean;
-	readonly isVisible: boolean;
-	readonly annotation: IAnnotation;
-	readonly filteredCount: number;
-	// readonly $reply: JQuery;
-	readonly isReplying: boolean;
-
-	countViews(): number;
-	setReplying(isReplying: boolean): IOneAnnotationView;
-	getReplyText(): string
-	setReplyText(text: string): IOneAnnotationView;
-	setPlaceholder(text: string): IOneAnnotationView;
-	getEditedComment(): Nullable<ICommentView>;
-	setFilterLabel(label: string): IOneAnnotationView;
-	// setSelected(isSelected: boolean): IOneAnnotationView;
-	getCommentUI(commentId: string): ICommentView | null;
-	setExpanded(expanded: boolean): IOneAnnotationView;
-	setResolved(resolved: boolean): IOneAnnotationView;
-	setVisible(resolved: boolean): IOneAnnotationView;
-	// setCollapsed(collapsed: boolean): IAnnotationView;
-	setExpandedCallback(callback: Nullable<(isOpen: boolean) => void>): IOneAnnotationView;
-
-	setCommentFiltered(commentId: string, isFiltered: boolean): IOneAnnotationView;
-
-	refresh(): IOneAnnotationView;
-	addComment(comment: IComment): ICommentView;
-	alignTip(deltaY: number): void;
-	/**
- * If true, this will create a spacer div after the element, to compensate
- * for moving it to absolute positioning
- * @param needsSpacer 
- */
-	setSpacer(needsSpacer: boolean): IOneAnnotationView;
-	clear(): IOneAnnotationView;
-	height(): number;
-}
 

@@ -113,11 +113,11 @@ export type AnnotationRole = "none" | "opener" | "owner" | "user" | "any";
 
 
 export interface IComment {
-	id: string;
-	userId: string;
-	userName: string;
-	time: number;
-	text: string;
+	readonly id: string;
+	readonly userId: string;
+	readonly userName: string;
+	readonly time: number;
+	readonly text: string;
 	setTime(time: number | Date | string): void;
 	setSelected(selected: boolean): void;
 	setUserPicture(url: string): void;
@@ -127,23 +127,23 @@ export interface IComment {
 }
 
 export interface IAnnotation {
+	readonly id: string;
+	readonly attributes: { [key: string]: any };
+	readonly sequence: number;
+	/**
+	 * Guaranteed not null
+	 */
+	readonly comments: ReadonlyArray<IComment>;
 	invalidateStatus(): void;
-	id: string;
 	isSelected(): boolean;
 	isEmpty(): boolean;
 	displayText(): string;
 	/**
 	 * Guaranteed not null
 	 */
-	attributes: { [key: string]: any };
 	setSelected(selected: boolean): void;
 	setResolved(resolved: boolean): void;
 	saveToObject(): any;
-	sequence: number;
-	/**
-	 * Guaranteed not null
-	 */
-	comments: Array<IComment>;
 	/**
 	 * returns the number of comments
 	 */
