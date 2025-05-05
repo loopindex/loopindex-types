@@ -1,5 +1,3 @@
-import { extend } from "jquery";
-
 /**
  * The module/global object passed to the Froala specific plugin init functions
  */
@@ -76,7 +74,9 @@ interface IFroalaCommandRecord {
 	readonly tooltip?: string;
 }
 
-export type NodeOrSelector = string | JQuery | HTMLElement;
+export type NodeOrJQuery = Node | JQuery;
+export type NodeOrSelector = NodeOrJQuery | string;
+export type ElementOrJQuery = Element | JQuery;
 
 export type LocaleMapping = Record<string, string |string[]>;
 
