@@ -1,3 +1,5 @@
+import { extend } from "jquery";
+
 /**
  * The module/global object passed to the Froala specific plugin init functions
  */
@@ -7,6 +9,15 @@ export type Nullable<T extends {}> = T | null;
 export type Maybe<T extends {}> = T | undefined;
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 
+export type DeepMutable<T> = T extends (string | number | boolean | undefined) ? T
+		: T extends ReadonlyArray<infer TElement> ? Array<DeepMutable<TElement>>
+			: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
+				: T;
+
+export interface IDisposable {
+	dispose(): void;
+}
+				
 export type LocalizeFunction = (key: string, defaultValue?: string) => string;
 
 export interface ICommandStatus {
@@ -33,7 +44,7 @@ export interface ILoopIndexUser {
 
 export type UserEvents = "beforeadd" | "add" | "remove" | "update" | "select";
 
-export interface IUserManager<TUser extends ILoopIndexUser> {
+export interface IUserManager<TUser extends ILoopIndexUser> extends IDisposable {
 	setCurrentUser(userId: string): void;
 	/**
 	 * 
@@ -59,7 +70,6 @@ export interface IUserManager<TUser extends ILoopIndexUser> {
 }
 
 
-
 interface IFroalaCommandRecord {
 	readonly command: string;
 	readonly icon?: string;
@@ -75,36 +85,36 @@ export interface IPluginTooltipOptions {
 	* @member App.TooltipsConfiguration
 	* @property show
 	*/
-	show: boolean | "always";
+	readonly show: boolean | "always";
 	/**
 	 * @member App.TooltipsConfiguration
 	 * @property {Number=500} delay msecs to wait before showing tooltip
 	 */
-	delay: number;
+	readonly delay: number;
 	/**
 	 * Plugin specific formatting template for the tooltip
 	 * @member App.TooltipsConfiguration
 	 * @property {String}
 	 */
-	template: string;
+	readonly template: string;
 	/**
 	 * If true, use the standard html title
 	 */
-	useTitle?: boolean;
+	readonly useTitle?: boolean;
 
 	/**
 	 * Override in plugins for a more specific type
 	 */
-	formatter?: Function;
+	readonly formatter?: Function;
 }
 
 export interface IPluginLogOptions {
-	log: boolean;
-	debug: boolean;
-	warn: boolean;
-	error: boolean;
-	trace: boolean;
-	throttle: boolean;
+	readonly log: boolean;
+	readonly debug: boolean;
+	readonly warn: boolean;
+	readonly error: boolean;
+	readonly trace: boolean;
+	readonly throttle: boolean;
 }
 
 export interface ICommandRecord {
@@ -125,12 +135,36 @@ export interface ICommandRecord {
 	 */
 	readonly readOnly?: boolean;
 }
+
+/**
+ * Return by the plugin's api when queried about the commands
+ */
 export interface IClientCommandRecord extends ICommandRecord {
 	readonly localized: string;
 }
 
 
 export type UserTooltipsConfig<TConfig extends IPluginTooltipOptions> = boolean | "always" | Partial<TConfig>;
+
+export type PluginConfigurationKey<TPlugin extends IPluginConfig> = keyof TPlugin;
+export type TPluginConfigKey<TConfig extends IPluginConfig> = PluginConfigurationKey<TConfig>;
+export type TPluginConfigValue<TConfig extends IPluginConfig, TKey extends TPluginConfigKey<TConfig>> = TConfig[TKey];
+export type TPluginConfigResult<TConfig extends IPluginConfig, TKey,
+	TValue> = TKey extends undefined ?
+	TConfig
+	: TKey extends TPluginConfigKey<TConfig> ?
+		TValue extends undefined ? 
+		TConfig[TKey]
+		: TValue extends TPluginConfigValue<TConfig, TKey> ? 
+			TConfig
+			: never
+		: never;
+
+
+export type PluginConfigMethod<TConfig extends IPluginConfig> = <TKey extends (TPluginConfigKey<TConfig> | undefined) = undefined,
+	TValue = undefined>
+	(key?: TKey, value?: TValue) => TPluginConfigResult<TConfig, TKey, TValue>;
+
 
 /**
  * No members are mandatory, so always use a Partial of this interface
@@ -144,41 +178,87 @@ export interface IPluginUserConfig<
 	 * 
 	 * Guaranteed array after init
 	 */
-	pageUrls: string[];
+	readonly pageUrls: string | ReadonlyArray<string>;
 	/**
 	 * relative urls of css files to load. Non relative paths are not modified
 	 * 
 	 * Guaranteed array after init
 	 * */
-	styleUrls: string[];
+	readonly styleUrls: ReadonlyArray<string>;
 
-	localeMapping: LocaleMapping;
+	readonly localeMapping: LocaleMapping;
 
 	/**
 	 * @property {Boolean} logCommands
 	 * If true, log editor commands through the loopindex logger
 	 */
-	logCommands: boolean;
+	readonly logCommands: boolean;
 	/**
 	 * @property {Boolean} logEvents
 	 * If true, log editor events through the loopindex logger
 	 */
-	logEvents: boolean;
+	readonly logEvents: boolean;
 
 	/**
 	 * path to add to the plugin's path when loading plugin assets, so
 	 * http:/..../plugin/folder may become http:/..../plugin/folder/../../common/folder
 	 */
-	assetPath: string;
+	readonly assetPath: string;
 
-	editorTheme: "dark" | "light" | "browser";
+	readonly editorTheme: "dark" | "light" | "browser";
 
-	tooltips: Partial<UserTooltipsConfig<TTooltips>>;
+	readonly tooltips: Partial<UserTooltipsConfig<TTooltips>>;
 
-	debug: Partial<IPluginLogOptions>;
+	readonly debug: Partial<IPluginLogOptions>;
 
-	commands: Partial<TCommands>[];
+	readonly commands: Partial<TCommands>[];
 }
+
+export interface IPluginConfig<
+	TTooltips extends IPluginTooltipOptions = IPluginTooltipOptions,
+	TCommands extends ICommandRecord = ICommandRecord
+	> {
+	/**
+	 * URLs of style sheets to load into the page that runs the plugin code. Non relative paths are not modified.
+	 * 
+	 * Guaranteed array after init
+	 */
+	readonly pageUrls: ReadonlyArray<string>;
+	/**
+	 * relative urls of css files to load. Non relative paths are not modified
+	 * 
+	 * Guaranteed array after init
+	 * */
+	readonly styleUrls: ReadonlyArray<string>;
+
+	readonly localeMapping: LocaleMapping;
+
+	/**
+	 * @property {Boolean} logCommands
+	 * If true, log editor commands through the loopindex logger
+	 */
+	readonly logCommands: boolean;
+	/**
+	 * @property {Boolean} logEvents
+	 * If true, log editor events through the loopindex logger
+	 */
+	readonly logEvents: boolean;
+
+	/**
+	 * path to add to the plugin's path when loading plugin assets, so
+	 * http:/..../plugin/folder may become http:/..../plugin/folder/../../common/folder
+	 */
+	readonly assetPath: string;
+
+	readonly editorTheme: "dark" | "light" | "browser";
+
+	readonly tooltips: TTooltips;
+
+	readonly debug: IPluginLogOptions;
+
+	readonly commands: ReadonlyArray<TCommands>;
+	}
+
 
 export interface IFroalaCommandRecord {
 	readonly command: string;
@@ -198,22 +278,18 @@ export interface ILoopIndexPluginEvent {
  */
 export type PluginEvents = "config";
 
-export interface ILoopIndexPlugin<TEditor, TConfig extends IPluginUserConfig> {
+export type RangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer" | "commonAncestorContainer">;
+
+export interface ICoreLoopIndexPlugin {
 	readonly version: string;
 	readonly build: string;
 	readonly events: IEvents<PluginEvents>;
-	readonly editor: TEditor;
 
 	/**
 	 * Quick ref to jquery
-	 * @param e 
 	 */
 	readonly $: JQueryStatic;
 
-	/**
-	 * The path from which the plugin was loaded 
-	 */
-	readonly path: string;
 
 	/**
 	 * resolve a path relative to the plugin's path and assetpath. Absolute paths are not
@@ -221,6 +297,12 @@ export interface ILoopIndexPlugin<TEditor, TConfig extends IPluginUserConfig> {
 	 * @param paths 
 	 */
 	resolvePath(...paths: string[]): string;
+
+	/**
+	 * Restore focus to the editor.
+	 * @param {Boolean} inline if true, focus even if the editor is in inline mode
+	 */
+	focusEditor(inline?: boolean): void;
 
 	/**
 	 * set the state of the commands to the provided values
@@ -234,16 +316,6 @@ export interface ILoopIndexPlugin<TEditor, TConfig extends IPluginUserConfig> {
 	 * Get the definitions of all the commands of this instance - command, title, iconUrl etc
 	 */
 	getCommands(): IClientCommandRecord[];
-
-	/**
-	 * Provides access to the configuration object. Has three modes of calling
-	 * 
-	 *     plugin.config() // returns a copy of the configuration object
-	 *     plugin.config(key: string) // returns the value of the configuration property denoted by key
-	 *     plugin.config(key: string, value: any) // sets the configuration property key to value, returns a copy of the configuration object
-	 * 
-	 */
-	config<Tkey extends keyof TConfig, TRet = TConfig[Tkey]>(key: Tkey, value?: TRet): TRet;
 
 	/**
 	 * For debugging. If true, FLITE will log all editor commands (the command strings) before they are applied
@@ -280,6 +352,7 @@ export interface ILoopIndexPlugin<TEditor, TConfig extends IPluginUserConfig> {
 	 * @param editorOnly If true, return null if the editor thinks there's no selection
 	 */
 	getSelectedRange(editorOnly?: boolean): Nullable<Range>;
+	setSelectedRange(range: RangeInfo): boolean;
 
 	/**
 	 * Returns the window that contains the editor UI, not necessarily the same one that contains the document
@@ -299,4 +372,15 @@ export interface ILoopIndexPlugin<TEditor, TConfig extends IPluginUserConfig> {
 	 * The plugin needs to read its state from the current content
 	 */
 	reloadFromDocument(): void;
+}
+
+export interface ILoopIndexPlugin<TEditor extends {}, TConfig extends IPluginConfig> extends ICoreLoopIndexPlugin {
+	readonly editor: TEditor;
+
+	/**
+	 * no params: Returns a copy of the configuration object
+	 * @param key If no value is provided, returns the current value
+	 * @param value If the value is provided, it is set and a copy of the config object is returned
+	 */
+	readonly config: PluginConfigMethod<TConfig>;
 }
