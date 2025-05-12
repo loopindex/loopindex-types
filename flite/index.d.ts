@@ -33,7 +33,7 @@ export interface IFLITEUserStyle {
 	}
 }
 
-export interface IFLITEUser extends ILoopIndexUser {
+export interface IFLITEUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
     readonly style?: IFLITEUserStyle;
 }
 
@@ -422,10 +422,14 @@ interface IMutableFLITEConfiguration extends Mutable<IPluginConfig<IFLITETooltip
 
 
 export type IFLITEConfiguration = Readonly<IMutableFLITEConfiguration>;
-export interface IFLITEPlugin<TEditor extends {} = object, TConfig extends IFLITEConfiguration = IFLITEConfiguration> 
+export interface IFLITEPlugin<
+	TEditor extends {} = object,
+	TConfig extends IFLITEConfiguration = IFLITEConfiguration,
+	TUser extends IFLITEUser = IFLITEUser
+	> 
 	extends ILoopIndexPlugin<TEditor, TConfig> {
 
-	readonly users: IUserManager<IFLITEUser>;
+	readonly users: IUserManager<TUser>;
 	/**
 	 * Set the name & id of the current user
 	 * @param {Object} info an object with the fields `name`, `id`

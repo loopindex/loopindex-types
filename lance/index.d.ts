@@ -56,7 +56,7 @@ export interface ILanceTooltipOptions extends IPluginTooltipOptions{
 	formatter?: TooltipCallback;
 }
 
-export interface ILanceUser extends ILoopIndexUser {
+export interface ILanceUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
 	readonly picture?: string;
 }
 
