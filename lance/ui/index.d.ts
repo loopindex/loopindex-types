@@ -1,6 +1,5 @@
-import type { IEvents, NodeOrSelector, Nullable } from "../../common/";
-import type { IAnnotation, IAnnotationsManager, IComment } from "../annotations";
-
+import type { IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
+import type { IAnnotation, IAnnotationsManager, ICommentID } from "../annotations";
 
 export interface ICreateAnnotationsUIOptions {
 	readonly type: "simple" | "aligned";
@@ -211,7 +210,7 @@ export type UIConfirmCallback = (options: IUIConfirmOptions) => Promise<boolean>
 
 export interface ILanceUI {
 	readonly events: IEvents;
-	// getCommentId(node: Element | JQuery): ICommentID;
+	getCommentId(node: NodeOrJQuery): ICommentID;
 	setSearchTerm(term: string): void;
 	init(options: Pick<IAnnotationUIOptions, "owner" | "container"> & Partial<IAnnotationUIOptions>): Promise<boolean>;
 	setConfirmCallback(callback: UIConfirmCallback): void;
