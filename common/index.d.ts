@@ -15,7 +15,14 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 export interface IDisposable {
 	dispose(): void;
 }
-				
+
+export interface IOperationResult<T extends {}> {
+	readonly error?: string;
+	readonly result?: T;
+}
+
+export type OperationPromise<T extends {}> = Promise<IOperationResult<T>>;
+
 export type LocalizeFunction = (key: string, defaultValue?: string) => string;
 
 export interface ICommandStatus {
