@@ -45,8 +45,14 @@ export interface IEvents<TEvent extends string = string> {
 export interface ILoopIndexUser<TUserType extends string = string> {
 	readonly name: string;
 	readonly id: string;
-	readonly type: TUserType;
-	readonly metaData: { readonly [key: string]: string };
+	/**
+	 * Defaults to "user", affects only internal APIs
+	 */
+	readonly type?: TUserType;
+	/**
+	 * For internal use
+	 */
+	readonly metaData?: { readonly [key: string]: string };
 }
 
 export type UserEvents = "beforeadd" | "add" | "remove" | "update" | "select";
