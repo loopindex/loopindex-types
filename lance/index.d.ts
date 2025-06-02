@@ -24,8 +24,14 @@ export interface ILanceGlobals {
 	readonly AnnotationsUI: IStaticAnnotationsUI;
 }
 
-export interface ILancePlugin<TEditor extends {} = object> extends ILoopIndexPlugin<TEditor, ILanceConfiguration> {
-    getAnnotations(): IAnnotationsManager;
+export interface ILancePlugin<
+	TEditor extends {} = object, TConfig extends ILanceConfiguration = ILanceConfiguration
+	> extends ILoopIndexPlugin<TEditor, TConfig> {
+	/**
+	 * @method getAnnotations
+	 * @returns {LANCE.Annotations} The Annotations manager associated with this plugin instance
+	 */
+	getAnnotations(): IAnnotationsManager;
 	readonly App: ILanceGlobals;
 }
 
@@ -56,7 +62,7 @@ export interface ILanceTooltipOptions extends IPluginTooltipOptions{
 	formatter?: TooltipCallback;
 }
 
-export interface ILanceUser extends ILoopIndexUser {
+export interface ILanceUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
 	readonly picture?: string;
 }
 

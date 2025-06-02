@@ -361,7 +361,7 @@ export interface IAnnotationOptions {
 /**
  * Basic comment/thread ID structure
  */
-export declare interface ICommentID {
+export interface ICommentID {
 	readonly annotationId: string;
 	readonly commentId: string;
 }

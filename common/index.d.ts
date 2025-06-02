@@ -15,7 +15,14 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 export interface IDisposable {
 	dispose(): void;
 }
-				
+
+export interface IOperationResult<T extends {}> {
+	readonly error?: string;
+	readonly result?: T;
+}
+
+export type OperationPromise<T extends {}> = Promise<IOperationResult<T>>;
+
 export type LocalizeFunction = (key: string, defaultValue?: string) => string;
 
 export interface ICommandStatus {
@@ -35,14 +42,22 @@ export interface IEvents<TEvent extends string = string> {
 	trigger(event: TEvent, ...args: any[]): IEvents<TEvent>;
 }
 
-export interface ILoopIndexUser {
+export interface ILoopIndexUser<TUserType extends string = string> {
 	readonly name: string;
 	readonly id: string;
+	/**
+	 * Defaults to "user", affects only internal APIs
+	 */
+	readonly type?: TUserType;
+	/**
+	 * For internal use
+	 */
+	readonly metaData?: { readonly [key: string]: string };
 }
 
 export type UserEvents = "beforeadd" | "add" | "remove" | "update" | "select";
 
-export interface IUserManager<TUser extends ILoopIndexUser> extends IDisposable {
+export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser extends ILoopIndexUser<infer U> ? U : never> extends IDisposable {
 	setCurrentUser(userId: string): void;
 	/**
 	 * 
@@ -62,6 +77,7 @@ export interface IUserManager<TUser extends ILoopIndexUser> extends IDisposable 
 	getUsersArray(): TUser[];
 	updateUser(userInfo: Partial<TUser>): Nullable<TUser>;
 	count(filter?: (user: TUser) => boolean): number;
+	getUsersOfType(type: TUserType): TUser[];
 	hasUser(userId: string): boolean;
 	readonly events: IEvents<UserEvents>;
 	readonly currentUserId: string;
