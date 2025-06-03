@@ -2,10 +2,11 @@
 import type { ILanceUser } from ".";
 import type { 
 	IEvents, Nullable, IUserManager,
-	ILoopIndexPluginEvent
+	ILoopIndexPluginEvent,
+	IDisposable
 } from "../common/";
 
-export declare interface IAnnotationManagerEvents {
+export interface IAnnotationManagerEvents {
 	readonly ANNOTATION_CREATED: string;
 	readonly ANNOTATION_DELETED: string;
 	readonly ANNOTATION_RESOLVED: string;
@@ -173,13 +174,13 @@ export interface ISerializedAnnotation {
 export type AnnotationOrId = IAnnotation | string;
 
 
-export declare interface ICommentAndStatus {
+export interface ICommentAndStatus {
 	readonly annotation: IAnnotation;
 	readonly comment: IComment;
 	readonly status: ICommentStatus;
 }
 
-export declare interface IInsertAnnotationOptions {
+export interface IInsertAnnotationOptions {
 	/**
 	 * Position in the annotations sequence. Defaults to last
 	 */
@@ -211,7 +212,7 @@ export interface ISelectCommentOptions {
 	readonly hostData?: any
 }
 
-export declare interface IAnnotationsOwner {
+export interface IAnnotationsOwner {
 	/**
 	 * Creates a path composed of the arguments, prefixed by the plugin path if the arguments
 	 * do not form an absolute url
@@ -223,17 +224,39 @@ export declare interface IAnnotationsOwner {
 	readonly tagName: string;
 }
 
-export interface IAnnotationsManager {
+export interface IAddCommentOptions {
+	/**
+	 * pass the annotation id or the live annotation object
+	 */
+	readonly annotation: string | IAnnotation;
+	readonly text: string;
+	/**
+	 * Defaults to true
+	 */
+	readonly triggerEvent?: boolean;
+	/**
+	 * Defaults to the current user
+	 */
+	readonly userId?: string;
+}
+
+export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> extends IDisposable {
 	readonly events: IEvents;
-	readonly users: IUserManager<ILanceUser>;
+	readonly users: IUserManager<TUser>;
 	loadFromData(data?: Array<any>): void;
-	dispose(): void;
 	/**
 	 * @ignore
 	 * @method getAllAnnotationIds
 	 * @returns {Array} An array of all the current annotation ids
 	 */
 	getAllAnnotationIds(): Array<string>;
+
+	/**
+	 * @method getAllAnnotationIds
+	 * @returns {Array} A copy of the annotations array
+	 */
+	getAllAnnotations(): Array<IAnnotation>;
+
 	/**
 	 * @ignroe
 	 * @param force If true, set to enabled regardless of the disable count
@@ -264,7 +287,7 @@ export interface IAnnotationsManager {
 	 */
 	getSelectedAnnotationIds(): Array<string>;
 
-	addUsers(users: ReadonlyArray<ILanceUser>): void;
+	addUsers(users: ReadonlyArray<Partial<TUser>>): void;
 
 	/**
 	 * Returns the user id of the annotations manager
@@ -291,8 +314,19 @@ export interface IAnnotationsManager {
 	getComment(annotationId: string, commentId: string): ICommentAndStatus;
 	revertComment(annotationId: string, commentId: string, allowDelete: boolean): IComment;
 	setCommentText(annotationId: string | IAnnotation, commentId: string, text: string): Nullable<IComment>;
-	// addComment(annotationId: string | IAnnotation, commentId: string, text: string, noTrigger?: boolean): IComment;
+	/**
+	 * @deprecated Use `addCommentBy` instead
+	 * @param annotationId 
+	 * @param text 
+	 * @param noTrigger 
+	 */
 	addComment(annotationId: string | IAnnotation, text: string, noTrigger?: boolean): Nullable<IComment>;
+	/**
+	 * Better interface for adding comments. Add a comment with the provided text in the provide annotation. using
+	 * the provided userid or the current user id
+	 * @param options 
+	 */
+	addCommentBy(options: IAddCommentOptions): Nullable<IComment>;
 
 	/**
 	 * returns a function that matches a comment if it is related to the provided text
@@ -311,28 +345,28 @@ export interface IAnnotationsManager {
 
 	getHost(): IAnnotationsOwner;
 }
-export declare interface IAnnotationPermissionsDetailedBlock {
+export interface IAnnotationPermissionsDetailedBlock {
 	first?: AnnotationRole;
 	last?: AnnotationRole;
 	default?: AnnotationRole;
 }
 
-export declare interface IAnnotationPermissions {
+export interface IAnnotationPermissions {
 	edit: AnnotationRole | IAnnotationPermissionsDetailedBlock;
 	delete: AnnotationRole | IAnnotationPermissionsDetailedBlock;
 	resolve: AnnotationRole | IAnnotationPermissionsDetailedBlock;
 }
 
-export type RequestUserCallback = (user: ILanceUser, callback: (user: ILanceUser) => any) => any;
+export type RequestUserCallback<TUser extends ILanceUser = ILanceUser> = (user: TUser, callback: (user: TUser) => any) => any;
 
-interface IAnnotationStatusOptions {
+interface IAnnotationStatusOptions<TUser extends ILanceUser = ILanceUser> {
 	comment: IComment;
 	annotation: IAnnotation,
 	status: ICommentStatus;
-	owner: IAnnotationsManager;
+	owner: IAnnotationsManager<TUser>;
 }
 
-export type AnnotationStatusCallback = (options: IAnnotationStatusOptions) => any;
+export type AnnotationStatusCallback<TUser extends ILanceUser = ILanceUser> = (options: IAnnotationStatusOptions<TUser>) => any;
 
 interface IResolveAllCallbackData {
 	readonly owner: IAnnotationsManager;
