@@ -423,9 +423,10 @@ export namespace LanceEvents {
 	}
 	
 	interface IAnnotationCreatedEvent extends IAnnotationEvent {
-		next: string;
-		context?: any;
-		before?: string;
+		readonly next: string;
+		readonly context?: any;
+		readonly before?: string;
+		readonly range?: Range;
 	}
 	
 	interface IAnnotationDeletedEvent {
