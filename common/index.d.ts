@@ -8,9 +8,9 @@ export type Maybe<T extends {}> = T | undefined;
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 
 export type DeepMutable<T> = T extends (string | number | boolean | undefined) ? T
-		: T extends ReadonlyArray<infer TElement> ? Array<DeepMutable<TElement>>
-			: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
-				: T;
+	: T extends ReadonlyArray<infer TElement> ? Array<DeepMutable<TElement>>
+	: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
+	: T;
 
 export interface IDisposable {
 	dispose(): void;
@@ -94,7 +94,7 @@ export type NodeOrJQuery = Node | JQuery;
 export type NodeOrSelector = NodeOrJQuery | string;
 export type ElementOrJQuery = Element | JQuery;
 
-export type LocaleMapping = Record<string, string |string[]>;
+export type LocaleMapping = Record<string, string | string[]>;
 
 export interface IPluginTooltipOptions {
 	/**
@@ -169,12 +169,12 @@ export type TPluginConfigResult<TConfig extends IPluginConfig, TKey,
 	TValue> = TKey extends undefined ?
 	TConfig
 	: TKey extends TPluginConfigKey<TConfig> ?
-		TValue extends undefined ? 
-		TConfig[TKey]
-		: TValue extends TPluginConfigValue<TConfig, TKey> ? 
-			TConfig
-			: never
-		: never;
+	TValue extends undefined ?
+	TConfig[TKey]
+	: TValue extends TPluginConfigValue<TConfig, TKey> ?
+	TConfig
+	: never
+	: never;
 
 
 export type PluginConfigMethod<TConfig extends IPluginConfig> = <TKey extends (TPluginConfigKey<TConfig> | undefined) = undefined,
@@ -188,7 +188,7 @@ export type PluginConfigMethod<TConfig extends IPluginConfig> = <TKey extends (T
 export interface IPluginUserConfig<
 	TTooltips extends IPluginTooltipOptions = IPluginTooltipOptions,
 	TCommands extends ICommandRecord = ICommandRecord
-	> {
+> {
 	/**
 	 * URLs of style sheets to load into the page that runs the plugin code. Non relative paths are not modified.
 	 * 
@@ -233,7 +233,7 @@ export interface IPluginUserConfig<
 export interface IPluginConfig<
 	TTooltips extends IPluginTooltipOptions = IPluginTooltipOptions,
 	TCommands extends ICommandRecord = ICommandRecord
-	> {
+> {
 	/**
 	 * URLs of style sheets to load into the page that runs the plugin code. Non relative paths are not modified.
 	 * 
@@ -273,7 +273,7 @@ export interface IPluginConfig<
 	readonly debug: IPluginLogOptions;
 
 	readonly commands: ReadonlyArray<TCommands>;
-	}
+}
 
 
 export interface IFroalaCommandRecord {
