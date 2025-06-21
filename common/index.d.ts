@@ -30,7 +30,7 @@ export interface ICommandStatus {
 	readonly active?: boolean;
 }
 
-export interface IEvents<TEvent extends string = string> {
+export interface IEvents<TEvent extends string = string> extends IDisposable {
 	notifyListeners(event: TEvent, ...args: any[]): void;
 	on(what: TEvent | TEvent[], callback: Function, scope?: object, options?: object): IEvents<TEvent>;
 	off(eventOrScope?: TEvent | TEvent[] | object | null, scopeOrCallback?: object | Function): IEvents<TEvent>;
