@@ -208,7 +208,7 @@ export interface ISelectCommentOptions {
 	readonly annotationId: string;
 	readonly commentId: string;
 	readonly bSelect: boolean;
-	readonly bEdit: boolean;
+	// readonly bEdit: boolean;
 	readonly hostData?: any
 }
 
