@@ -1,4 +1,5 @@
 
+import { ILoopIndexGlobals } from "..";
 import type { 
 	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
 	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
@@ -20,8 +21,8 @@ export interface ILanceGlobals {
 	}): Promise<boolean>;
 
 	createAnnotationsUI(options: ICreateAnnotationsUIOptions): ILanceUI;
-	readonly Annotations: IStaticAnnotations;
-	readonly AnnotationsUI: IStaticAnnotationsUI;
+	// readonly Annotations: IStaticAnnotations;
+	// readonly AnnotationsUI: IStaticAnnotationsUI;
 }
 
 export interface ILancePlugin<
@@ -209,3 +210,6 @@ export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
     lance: Partial<ILanceUserConfiguration>;
 } & Partial<TEditorConfig>;
 
+export interface ILanceAppGlobals extends ILoopIndexGlobals {
+	readonly LANCE: ILanceGlobals;				
+}

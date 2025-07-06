@@ -1,3 +1,4 @@
+import { ILoopIndexGlobals } from "..";
 import type { 
 	IPluginUserConfig, ILoopIndexUser, IUserManager,
 	Nullable, FroalaModule, IFroalaCommandRecord, 
@@ -846,3 +847,6 @@ export namespace FLITEEvents {
 	}
 }
 
+export interface IFLITEAppGlobals extends ILoopIndexGlobals {
+	readonly FLITE: IFLITEGlobals;
+}

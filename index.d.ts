@@ -8,9 +8,4 @@ export interface ILoopIndexGlobals {
 	readonly FLITE: IFLITEGlobals;
 	readonly LANCE: ILanceGlobals;				
 }
-declare global {
-  interface Window {  
-	LOOPINDEX: ILoopIndexGlobals;
-  }
-}
 

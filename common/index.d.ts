@@ -31,8 +31,15 @@ export interface ICommandStatus {
 }
 
 export interface IEvents<TEvent extends string = string> extends IDisposable {
-	notifyListeners(event: TEvent, ...args: any[]): void;
+	// notifyListeners(event: TEvent, ...args: any[]): void;
 	on(what: TEvent | TEvent[], callback: Function, scope?: object, options?: object): IEvents<TEvent>;
+	/**
+	 * to remove all listeners associated with a scope:
+	 * - If your scope is an object, just pass it as the first param
+	 * - If it's a string, pass `(null, yourscope)` 
+	 * @param eventOrScope 
+	 * @param scopeOrCallback 
+	 */
 	off(eventOrScope?: TEvent | TEvent[] | object | null, scopeOrCallback?: object | Function): IEvents<TEvent>;
 	removeAllListeners(): IEvents<TEvent>;
 	muteListener(listener: any, mute: boolean): IEvents<TEvent>;
@@ -58,6 +65,10 @@ export interface ILoopIndexUser<TUserType extends string = string> {
 export type UserEvents = "beforeadd" | "add" | "remove" | "update" | "select";
 
 export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser extends ILoopIndexUser<infer U> ? U : never> extends IDisposable {
+	/**
+	 * Triggers the `"select"` event if the current user has changed
+	 * @param userId 
+	 */
 	setCurrentUser(userId: string): void;
 	/**
 	 * 
@@ -67,6 +78,11 @@ export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser ex
 	/**
 	 * This method relies  on the `"beforeadd"` event. You should install a handler that updates the `user` field
 	 * in the event  with a new user ,so raw user data is converted to the user type you need
+	 * 
+	 * Triggers the `"add"` event when successful
+	 * 
+	 * If the user is already registered, it is updated from the provided data and no add events are fired
+	 * 
 	 * @param user 
 	 */
 	addUser(user: Partial<TUser>): Nullable<TUser>;
@@ -75,6 +91,10 @@ export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser ex
 	getUser(id: string): Nullable<TUser>;
 	getAllUsers(): Record<string, TUser>;
 	getUsersArray(): TUser[];
+	/**
+	 * Triggers the `"update"` event if any user attributes are updated
+	 * @param userInfo
+	 */
 	updateUser(userInfo: Partial<TUser>): Nullable<TUser>;
 	count(filter?: (user: TUser) => boolean): number;
 	getUsersOfType(type: TUserType): TUser[];
