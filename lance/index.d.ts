@@ -4,7 +4,8 @@ import type {
 	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
 	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
 	ILoopIndexPlugin, Mutable, ICommandRecord,
-	IPluginConfig
+	IPluginConfig,
+	ILoopIndexLogger
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
@@ -13,6 +14,29 @@ import type {
 import type { ICreateAnnotationsUIOptions, ILanceUI, IStaticAnnotationsUI } from "./ui";
 
 export type * from "./annotations";
+
+
+export interface ILanceCommands {
+	/**
+	 * @member LANCE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [ANNOTATE="annotate"]
+	 */
+	readonly ANNOTATE: string,
+	/**
+	 * @member LANCE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [RESOLVE_ALL="lance-resolve-all"]
+	 */
+	readonly RESOLVE_ALL: string,
+}
+
+export interface ILanceEvents {
+	readonly INIT: "lance::init";
+}
+
 export interface ILanceGlobals {
 	initFroalaLancePlugin(Froala: FroalaModule, options: {
 		path: string,
@@ -21,9 +45,14 @@ export interface ILanceGlobals {
 	}): Promise<boolean>;
 
 	createAnnotationsUI(options: ICreateAnnotationsUIOptions): ILanceUI;
-	// readonly Annotations: IStaticAnnotations;
-	// readonly AnnotationsUI: IStaticAnnotationsUI;
+	
+	readonly logger: ILoopIndexLogger;
+	readonly Commands: ILanceCommands;
+	readonly Events: ILanceEvents;
 }
+
+
+
 
 export interface ILancePlugin<
 	TEditor extends {} = object, TConfig extends ILanceConfiguration = ILanceConfiguration

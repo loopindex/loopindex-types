@@ -316,6 +316,31 @@ export type PluginEvents = "config";
 
 export type RangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer" | "commonAncestorContainer">;
 
+export interface ILoopIndexDebugOptions {
+	log: boolean;
+	debug: boolean;
+	warn: boolean;
+	error: boolean;
+	trace: boolean;
+	throttle: boolean;
+}
+
+export interface ILoopIndexLogger {
+	/**
+	 * Returns a copy of the new configuration
+	 * @param options 
+	 */
+	config(options?: Partial<ILoopIndexDebugOptions>): ILoopIndexDebugOptions;
+	log(...args: any[]): void;
+	error(...args: any[]): void;
+	warn(...args: any[]): void;
+	debug(...args: any[]): void;
+	ignore(...args: any[]): void;
+	trace(...args: any[]): void;
+}
+
+// export type PluginEditorEventHandler<TEvent = unknown> = (evt: TEvent) => unknown;
+
 export interface ICoreLoopIndexPlugin {
 	readonly version: string;
 	readonly build: string;
@@ -403,6 +428,8 @@ export interface ICoreLoopIndexPlugin {
 	 * @param data 
 	 */
 	fireEditorEvent(event: string, data?: any): boolean;
+
+	// onEditorEvent<TEvent = unknown>(evt: string, handler: PluginEditorEventHandler<TEvent>): void;
 
 	/**
 	 * The plugin needs to read its state from the current content

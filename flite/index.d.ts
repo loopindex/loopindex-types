@@ -9,7 +9,8 @@ import type {
 	ICommandStatus,
 	ILoopIndexPlugin,
 	IPluginConfig,
-	Mutable
+	Mutable,
+	ILoopIndexLogger
 } from "../common";
 
 export type FLITECopyBehavior = "raw" | "clean";
@@ -467,6 +468,9 @@ export interface IFLITEInitEvent<TEditor extends {} = object> {
 
 
 export interface IFLITEGlobals {
+	readonly Commands: IFLITECommands;
+	readonly Events: IFLITEEvents;
+	readonly logger:ILoopIndexLogger;
 	initFroalaFLITEPlugin(Froala: FroalaModule, options: {
 		path: string,
 		assetPath?: string;
@@ -845,6 +849,163 @@ export namespace FLITEEvents {
 	interface IAcceptRejectEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> {
 		options?: any;
 	}
+}
+
+export interface IFLITEEvents {
+	/**
+	 * @member FLITE.Events
+	 * @event INIT
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 */
+	readonly INIT: "flite:init",
+	/**
+	 * @member FLITE.Events
+	 * @event ACCEPT
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {Object} options filtering options
+	 */
+	readonly ACCEPT: "flite:accept",
+	/**
+	 * @member FLITE.Events
+	 * @event REJECT
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {Object} options filtering options
+	 */
+
+	readonly REJECT: "flite:reject",
+	/**
+	 * @member FLITE.Events
+	 * @event EVENT_INTERCEPTED
+	 * @param {Event} event The event that was intercepted
+	 */
+	readonly EVENT_INTERCEPTED: "flite:event-intercepted",
+	/**
+	* @member FLITE.Events
+	* @event SHOW_HIDE
+	* @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	* @param {Boolean} show indicates the new change tracking show status
+	*/
+	readonly SHOW_HIDE: "flite:showHide",
+	/**
+	 * @member FLITE.Events
+	 * @event TRACKING
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {Boolean} tracking indicates the new tracking status
+	 */
+	readonly TRACKING: "flite:tracking",
+
+	/**
+	 * @member FLITE.Events
+	 * @event CHANGE
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 */
+	readonly CHANGE: "flite:change",
+
+	/**
+	 * @member FLITE.Events
+	 * @event USERS_ADDED
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {FLITE.FLITEUser[]} users a copy of the added user object
+	 */
+	readonly USERS_ADDED: "flite:users-added",
+
+	/**
+	 * @member FLITE.Events
+	 * @event USER_CHANGED
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {FLITE.FLITEUser} user a copy of the changed user object
+	 */
+	readonly USER_CHANGED: "flite:user-changed",
+
+	/**
+	 * @member FLITE.Events
+	 * @event USER_REMOVED
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {FLITE.FLITEUser} user a copy of the changed user object
+	 */
+	readonly USER_REMOVED: "flite:user-removed",
+
+	/**
+	 * @member FLITE.Events
+	 * @event DISABLE_TRACKING
+	 * Fire this event through the editor, to pause this editor's tracker
+	 */
+	readonly DISABLE_TRACKING: "flite:disable-tracking",
+
+	/**
+	 * @member FLITE.Events
+	 * @event ENABLE_TRACKING
+	 * Fire this event through the editor, to resume this editor's tracker. It's the equivalent of 
+	 */
+	readonly ENABLE_TRACKING: "flite:enable-tracking",
+}
+
+export interface IFLITECommands extends Object {
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TOGGLE_TRACKING="flite-toggletracking"]
+	 */
+	TOGGLE_TRACKING: "flite-toggletracking",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TOGGLE_SHOW="flite-toggleshow"]
+	 */
+	TOGGLE_SHOW: "flite-toggleshow",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [ACCEPT_ALL="flite-acceptall"]
+	 */
+	ACCEPT_ALL: "flite-acceptall",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REJECT_ALL="flite-rejectall"]
+	 */
+	REJECT_ALL: "flite-rejectall",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [ACCEPT_ONE="flite-acceptone"]
+	 */
+	ACCEPT_ONE: "flite-acceptone",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REJECT_ONE="flite-rejectone"]
+	 */
+	REJECT_ONE: "flite-rejectone",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TOGGLE_TOOLTIPS="flite-toggletooltips"]
+	 */
+	TOGGLE_TOOLTIPS: "flite-toggletooltips",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [NEXT_CHANGE="flite-nextchange"]
+	 * Place the editor's caret at the beginning of the closest tracked change AFTER the current cursor position
+	 */
+	NEXT_CHANGE: "flite-nextchange",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [PREV_CHANGE="flite-prevchange"]
+	 * Place the editor's caret at the beginning of the closest tracked change BEFORE the current cursor position
+	 */
+	PREV_CHANGE: "flite-prevchange"
 }
 
 export interface IFLITEAppGlobals extends ILoopIndexGlobals {

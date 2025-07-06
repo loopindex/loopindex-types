@@ -1,11 +1,11 @@
-import type { IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
+import type { IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
 import type { IAnnotation, IAnnotationsManager, ICommentID } from "../annotations";
 
 export interface ICreateAnnotationsUIOptions {
 	readonly type: "simple" | "aligned";
 }
 
-interface ILanceUIEvents {
+export interface ILanceUIEvents {
 	/**
 	 * "annotationui:created"
 	 */
@@ -208,7 +208,7 @@ export interface IUIConfirmOptions {
 }
 export type UIConfirmCallback = (options: IUIConfirmOptions) => Promise<boolean>;
 
-export interface ILanceUI {
+export interface ILanceUI extends IDisposable {
 	readonly events: IEvents;
 	getCommentId(node: NodeOrJQuery): ICommentID;
 	setSearchTerm(term: string): void;
