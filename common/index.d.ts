@@ -316,6 +316,22 @@ export type PluginEvents = "config";
 
 export type RangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer" | "commonAncestorContainer">;
 
+/**
+ * Useful for the froala init function in plugins
+ */
+export interface IFroalaInitOptions {
+	/**
+	 * The path to the plugin
+	 */
+	readonly path: string;
+	/**
+	 * the path to the assets folder. "" in production, "../../common" in dev
+	 */
+	readonly assetPath?: string;
+	readonly commands?: IFroalaCommandRecord[];
+	readonly language?: string; // language code
+}
+
 export interface ILoopIndexDebugOptions {
 	log: boolean;
 	debug: boolean;

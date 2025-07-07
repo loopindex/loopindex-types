@@ -5,7 +5,8 @@ import type {
 	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
 	ILoopIndexPlugin, Mutable, ICommandRecord,
 	IPluginConfig,
-	ILoopIndexLogger
+	ILoopIndexLogger,
+	IFroalaInitOptions
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
@@ -38,11 +39,7 @@ export interface ILanceEvents {
 }
 
 export interface ILanceGlobals {
-	initFroalaLancePlugin(Froala: FroalaModule, options: {
-		path: string,
-		assetPath?: string;
-		commands?: IFroalaCommandRecord[];
-	}): Promise<boolean>;
+	initFroalaLancePlugin(Froala: FroalaModule, options: IFroalaInitOptions): Promise<boolean>;
 
 	createAnnotationsUI(options: ICreateAnnotationsUIOptions): ILanceUI;
 	

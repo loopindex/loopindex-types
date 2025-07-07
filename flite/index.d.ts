@@ -1,16 +1,12 @@
 import { ILoopIndexGlobals } from "..";
 import type { 
 	IPluginUserConfig, ILoopIndexUser, IUserManager,
-	Nullable, FroalaModule, IFroalaCommandRecord, 
-	ICommandRecord,
-	LocalizeFunction,
-	IPluginTooltipOptions,
-	Maybe,
-	ICommandStatus,
+	Nullable, FroalaModule, 
+	ICommandRecord, LocalizeFunction,
+	IPluginTooltipOptions, Maybe, ICommandStatus,
 	ILoopIndexPlugin,
-	IPluginConfig,
-	Mutable,
-	ILoopIndexLogger
+	IPluginConfig, Mutable, ILoopIndexLogger,
+	IFroalaInitOptions
 } from "../common";
 
 export type FLITECopyBehavior = "raw" | "clean";
@@ -471,12 +467,7 @@ export interface IFLITEGlobals {
 	readonly Commands: IFLITECommands;
 	readonly Events: IFLITEEvents;
 	readonly logger:ILoopIndexLogger;
-	initFroalaFLITEPlugin(Froala: FroalaModule, options: {
-		path: string,
-		assetPath?: string;
-		commands?: IFroalaCommandRecord[];
-
-	}): Promise<boolean>;
+	initFroalaFLITEPlugin(Froala: FroalaModule, options: IFroalaInitOptions): Promise<boolean>;
 }
 
 export interface ITooltipTitleOptions {
