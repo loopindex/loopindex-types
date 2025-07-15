@@ -32,6 +32,7 @@ export interface IFLITEChangeTracker extends IDisposable {
 
 
 	/**
+	 * 
 	 * start/stop tracking DOM element
 	 * @param {Boolean} start or stop tracking
 	 * @param {Element} root The DOM element under which tracking will be performed. Not needed when
@@ -48,7 +49,12 @@ export interface IFLITEChangeTracker extends IDisposable {
 	acceptAll(options?: Partial<IChangeFilterOptions>): void;
 	rejectAll(options?: Partial<IChangeFilterOptions>): void;
 	countChanges(options?: IChangeFilterOptions): number;
-	getWrappingChangeNode(node: Nullable<Node>): HTMLElement;
+	/**
+	 * Returns the change node that wraps the provided node
+	 * @param node 
+	 * @param nodeOnly if true, test only if the provided node is a change node
+	 */
+	getWrappingChangeNode(node: Nullable<Node>, nodeOnly?: boolean): Nullable<HTMLElement>;
 	findNodeTrackingContext(node: Node, includeContainer?: boolean): IAPITrackingContext;
 	getNodeChangeId(node: Nullable<Node>): Nullable<string>;
 	getTrackedNodes(root?: ElementOrJQuery): JQuery;

@@ -1,7 +1,7 @@
 import { ILoopIndexGlobals } from "..";
-import type { 
+import type {
 	IPluginUserConfig, ILoopIndexUser, IUserManager,
-	Nullable, FroalaModule, 
+	Nullable, FroalaModule,
 	ICommandRecord, LocalizeFunction,
 	IPluginTooltipOptions, Maybe, ICommandStatus,
 	ILoopIndexPlugin,
@@ -15,7 +15,7 @@ export type FLITEOrphanPolicy = "editor" | "div" | "p" | "";
 export type TrackingMode = "full" | "readonly" | "none";
 export type PassiveInsertMode = "none" | "passive" | "active" | "insert";
 export type AttributePolicy = "compact" | "dom" | "full" | "export";
-export type EditorDestroyPolicy = "accept" | "reject" | "hide" |"none";
+export type EditorDestroyPolicy = "accept" | "reject" | "hide" | "none";
 export type IMEMixedPolicy = "hide" | "none";
 export type SpellcheckAttributePolicy = "none" | "all" | "delete";
 
@@ -32,7 +32,7 @@ export interface IFLITEUserStyle {
 }
 
 export interface IFLITEUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
-    readonly style?: IFLITEUserStyle;
+	readonly style?: IFLITEUserStyle;
 }
 
 export interface IFLITECommand extends ICommandRecord {
@@ -91,6 +91,9 @@ export interface IChangeFilterOptions {
 
 }
 
+/**
+ * The configuration object used by FLITE after the user config has been processed
+ */
 interface IMutableFLITEConfiguration extends Mutable<IPluginConfig<IFLITETooltipOptions, IFLITECommand>> {
 	/**
 	 * @member FLITE.configuration
@@ -412,9 +415,24 @@ interface IMutableFLITEConfiguration extends Mutable<IPluginConfig<IFLITETooltip
 	orphanContainer: FLITEOrphanPolicy;
 
 	/**
-	 * If true, add spellcheck="true" to tracked nodes
+	 * Some browser spellchecker honor the `spellcheck` attribute of the elements. If you want to prevent the browser from
+	 * checking the spelling of some or all tracked text, set this option to `true`. If you want to prevent the browser from
+	 * @property {Boolean | "delete"} [disableSpellcheck=false]
+	 * @since FLITE 1.6.25
+	 * Allowed values:
+	 * 
+	 * - `false` - (default) - FLITE does not set the `spellcheck` attribute of tracked text
+	 * - `true` - FLITE adds `spellcheck="false"` to tracked text
+	 * - `"delete"`- FLITE adds `spellcheck="false"` to tracked deleted text
 	 */
 	disableSpellcheck: SpellcheckAttributePolicy;
+
+	/**
+	 * If `true`, override configured user settings with those found in loaded documents.
+	 * 
+	 * Defaults to `false`
+	 */
+	useDocumentUserData: boolean;
 
 }
 
@@ -424,7 +442,7 @@ export interface IFLITEPlugin<
 	TEditor extends {} = object,
 	TConfig extends IFLITEConfiguration = IFLITEConfiguration,
 	TUser extends IFLITEUser = IFLITEUser
-	> 
+>
 	extends ILoopIndexPlugin<TEditor, TConfig> {
 
 	readonly users: IUserManager<TUser>;
@@ -435,9 +453,9 @@ export interface IFLITEPlugin<
 	 * @returns true if the operation succeeded
 	 */
 	setUserInfo(user: Partial<IFLITEUser> | string, silent?: boolean): boolean;
-		/**
-	 * Returns the current user. same as plugin.users.getCurrentUser()
-	 */
+	/**
+ * Returns the current user. same as plugin.users.getCurrentUser()
+ */
 	getUserInfo(): Nullable<IFLITEUser>;
 	getChanges(options?: IChangeFilterOptions): IChangeSet;
 	acceptAll(options?: IChangeFilterOptions): void;
@@ -453,7 +471,7 @@ export interface IFLITEPlugin<
 	 */
 	getChanges(options: IChangeFilterOptions): IChangeSet;
 
-	
+
 }
 
 export interface IFLITEInitEvent<TEditor extends {} = object> {
@@ -466,7 +484,7 @@ export interface IFLITEInitEvent<TEditor extends {} = object> {
 export interface IFLITEGlobals {
 	readonly Commands: IFLITECommands;
 	readonly Events: IFLITEEvents;
-	readonly logger:ILoopIndexLogger;
+	readonly logger: ILoopIndexLogger;
 	initFroalaFLITEPlugin(Froala: FroalaModule, options: IFroalaInitOptions): Promise<boolean>;
 }
 
@@ -486,7 +504,7 @@ export type TooltipCallback = (options: ITooltipTitleOptions) => string;
  * @class FLITE.TooltipsConfiguration
  * @member FLITE
  */
-export interface IFLITETooltipOptions extends IPluginTooltipOptions{
+export interface IFLITETooltipOptions extends IPluginTooltipOptions {
 	/**
 	 * @member FLITE.TooltipsConfiguration
 	 * @property show
@@ -822,18 +840,36 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 
 	orphanContainer?: FLITEOrphanPolicy;
 
+	/**
+	 * Some browser spellchecker honor the `spellcheck` attribute of the elements. If you want to prevent the browser from
+	 * checking the spelling of some or all tracked text, set this option to `true`. If you want to prevent the browser from
+	 * @since FLITE 1.6.25
+	 * Allowed values:
+	 * 
+	 * - `false` - (default) - FLITE does not set the `spellcheck` attribute of tracked text
+	 * - `true` - FLITE adds `spellcheck="false"` to tracked text
+	 * - `"delete"`- FLITE adds `spellcheck="false"` to tracked deleted text
+	 */
 	disableSpellcheck?: boolean | "delete";
+
+	/**
+	 * If `true`, override configured user settings with those found in loaded documents.
+	 * 
+	 * Defaults to `false`
+	 */
+	useDocumentUserData?: boolean;
+
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
-    flite: Partial<IFLITEUserConfiguration>;
+	flite: Partial<IFLITEUserConfiguration>;
 } & Partial<TEditorConfig>;
 
 export namespace FLITEEvents {
 	interface IFLITEEvent<TEditor extends {} = object> {
 		readonly flite: IFLITEPlugin<TEditor>;
 	}
-	interface ITrackingEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> { 
+	interface ITrackingEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> {
 		tracking: boolean;
 	}
 

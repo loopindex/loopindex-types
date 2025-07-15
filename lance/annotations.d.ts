@@ -1,12 +1,12 @@
 
 import type { ILanceUser } from ".";
-import type { 
+import type {
 	IEvents, Nullable, IUserManager,
 	ILoopIndexPluginEvent,
 	IDisposable
 } from "../common/";
 
-export interface IAnnotationManagerEvents {
+export interface IAnnotationManagerEvents1 {
 	readonly ANNOTATION_CREATED: string;
 	readonly ANNOTATION_DELETED: string;
 	readonly ANNOTATION_RESOLVED: string;
@@ -240,12 +240,236 @@ export interface IAddCommentOptions {
 	readonly userId?: string;
 }
 
+export interface IAnnotationManagerEvents {
+	/**
+	 * @member LANCE.Annotations
+	 * @event USER_CHANGED
+	 * fired when the manager is destroyed
+	 */
+	USER_CHANGED: "annotation:user-changed";
+	/**
+	 * @member LANCE.Annotations
+	 * @event DESTROY
+	 * fired when the manager is destroyed
+	 */
+	DESTROY: "annotation:destroy";
+	/**
+	 * @member LANCE.Annotations
+	 * @event ANNOTATION_CREATED
+	 * @param {Annotation} annotation The new Annotation object
+	 */
+	ANNOTATION_CREATED: "annotation:created"; // annotation: annotation
+	/**
+	 * @member LANCE.Annotations
+	 * @event ANNOTATION_DELETED
+	 * @param {String} annotation id of deleted annotation
+	 */
+	ANNOTATION_DELETED: "annotation:deleted"; // annotation: annotation id
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event ANNOTATION_RESOLVED
+	 * @param {Annotation} annotation The Annotation object
+	 */
+	ANNOTATION_RESOLVED: "annotation:resolved";
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event ANNOTATION_PRESELECT
+	 * @param {Object} event An object with the fields:
+	 * @param {LANCE.Annotations.Annotation} annotation The annotation object
+	 * @param {Boolean} isSelected
+	 */
+	ANNOTATION_PRESELECT: "annotation:preselect";  // { annotation : annotation, isSelected : bool }
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event ANNOTATION_SELECTED
+	 * @param {Object} An object with the fields: 
+	 * 
+	 * - annotation: The annotation object
+	 */
+	ANNOTATION_SELECTED: "annotation:selected";  // { annotation : annotation, isSelected : bool }
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event ANNOTATION_UPDATED
+	 * @param {LANCE.Annotations.Annotation} annotation The Annotation object
+	 */
+	ANNOTATION_UPDATED: "annotation:updated";  // { annotation : annotation, isSelected : bool }
+	/**
+	 * @member LANCE.Annotations
+	 * @event COMMENT_ADDED
+	 * @param {LANCE.Annotations.Annotation} annotation The Annotation object
+	 * @param {LANCE.Annotations.Comment} comment The Comment object
+	 * @param {LANCE.Annotations.CommentStatus} status The status of the new comment
+	 */
+	COMMENT_ADDED: "annotation:commentcreated"; // annotation : annotation, comment : comment
+	/**
+	 * @member LANCE.Annotations
+	 * @event COMMENT_DELETED
+	 * @param {string} annotationId The Annotation object
+	 * @param {string} commentId The id of the deleted comment
+	 */
+	COMMENT_DELETED: "annotation:commentdeleted"; // annotation : annotation, comment : comment
+	/**
+	 * @member LANCE.Annotations
+	 * @event COMMENT_CHANGED
+	 * @param {LANCE.Annotations.Annotation} annotation The Annotation object
+	 * @param {LANCE.Annotations.Comment} comment The Comment object
+	 * @param {LANCE.Annotations.CommentStatus} status The new status of the comment
+	 */
+	COMMENT_CHANGED: "annotation:commentchanged"; // annotation : annotation, comment : comment
+	/**
+	 * @member LANCE.Annotations
+	 * @event COMMENT_SELECTED
+	 * @param {LANCE.Annotations.Annotation} annotation The Annotation object
+	 * @param {LANCE.Annotations.Comment} comment The Comment object
+	 * @param {Boolean} isSelected
+	 * @param {Boolean} isEdit Is this comment selected for editing?
+	 */
+	COMMENT_SELECTED: "annotation:commentselected"; // annotation : annotation, comment : comment, isSelected : bool, isSelected : bool, isEdit : bool 
+	/**
+	 * @member LANCE.Annotations
+	 * @event RESET
+	 * The annotations have been reset
+	 */
+	RESET: "annotation:reset";
+	/**
+	 * @member LANCE.Annotations
+	 * @event BEFORE_RESET
+	 * The annotations have been reset
+	 */
+	BEFORE_RESET: "annotation:before-reset";
+	/**
+	 * @member LANCE.Annotations
+	 * @event RELOAD
+	 * All the annotations have potentially changed
+	 */
+	RELOAD: "annotation:reload";
+	/**
+	 * @member LANCE.Annotations
+	 * @event ENABLED_CHANGED
+	 * @param {Boolean} isEnabled the enabled state of the annotations manager
+	 */
+	ENABLED_CHANGED: "annotation:enable"; // isEnabled : boolean 
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event SIZE_CHANGED
+	 * @param {Object} data an object with the new width and height of the hosting editor. If one of the listeners changes the dimensions, the hosting editor
+	 * should resize according to the changed values.
+	 * This event is not initiated by the Annotations object. Rather, an object that is aware of size changes can trigger
+	 * this event in order to relay the information to whatever ui is hooked to the Annotations object.
+	 */
+	SIZE_CHANGED: "annotation:resize";
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event DONE_EDITING
+	 * Sent by the Annotations manager when the ui calls doneEditing.
+	 * This means that the focus can be switched from the comments ui to whoever wants it
+	 */
+	DONE_EDITING: "annotation:done-editing";
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event ATTRIBUTE_CHANGED
+	 * @param {LANCE.Annotations.Annotation} annotation The Annotation object
+	 * @param {Object} attributes the changed attributes in a map format `{key: value}`
+	 */
+	ATTRIBUTE_CHANGED: "annotation:attribute-changed";
+
+	/**
+	 * @member LANCE.Annotations
+	 * @event ANNOTATIONS_RENUMBERED
+	 * @param {LANCE.Annotations.Annotation} annotation The Annotation object
+	 * @param {Object} options `{ sequence: Array&lt;annotation id&gt; }` an
+	 * object with sequence containing an Array of annotation ids in the correct sequence
+	 */
+	ANNOTATIONS_RENUMBERED: "annotation:renumbered";
+
+	/**
+	 * @member LANCE.Annotations
+	 * The annotation with the specified id has been selected. Useful when the page needs to
+	 * scroll before selecting the annotation in the sidebar - the UI listens to postselect, so everything has
+	 * been done by the time it selects the annotation
+	 * @event ANNOTATION_POSTSELECT
+	 * @param {Object} An object with the fields: 
+	 * 
+	 * - annotation: The annotations object
+	 */
+	ANNOTATION_POSTSELECT: "annotation:postselect";
+	Host: {
+		/**
+		 * @member LANCE.Annotations
+		 * This event is placed here for lack of a better place, since the Annotations object is the only channel
+		 * between the plugin and the UI. It notifies the listeners that an annotation node has been selected and revealed.
+		 * Normally this event is consumed only by the {@link LANCE.AnnotationsUI}
+		 * 
+		 * <strong>Note</strong>: Access this event name through `App.LANCE.Annotations.Events.Host`
+		 * @event ANNOTATION_NODE_REVEALED
+		 * @ignore
+		 * @param {Object} node the revealed DOM element
+		 * @param {String} annotationId The ID of the relevant thread
+		 */
+		ANNOTATION_NODE_REVEALED: "annotation:node-revealed";
+		/**
+		 * @member LANCE.Annotations
+		 * @ignore
+		 * This event is placed here for lack of a better place, since the Annotations object is the only channel
+		 * between the plugin and the UI. It notifies the listeners that the visiblity of some annotation nodes has changed  {@link LANCE.AnnotationsUI}
+		 * 
+		 * <strong>Note</strong>: Access this event name through `App.LANCE.Annotations.Events.Host`
+		 * @event ANNOTATION_NODES_VISIBLITY
+		 * @param {IAnnotationNodeVisibilityRecord[]} nodes { node, annotationId, visiblity }
+		 */
+		ANNOTATION_NODES_VISIBLITY: "annotation:node-visiblity";
+
+		/**
+		 * @member LANCE.Annotations
+		 * @ignore
+		 * This event is placed here for lack of a better place, since the Annotations object is the only channel
+		 * between the plugin and the UI. It notifies the listeners that the visiblity of some annotation nodes has changed  {@link LANCE.AnnotationsUI}
+		 * 
+		 * <strong>Note</strong>: Access this event name through `App.LANCE.Annotations.Events.Host`
+		 * @event ANNOTATION_CONTAINER_SCROLL
+		 * @param {IScrollEvent} nodes { scroller, dy }
+		 */
+		ANNOTATION_CONTAINER_SCROLL: "annotation:container-scroll";
+
+		/**
+		 * @member LANCE.Annotations
+		 * @ignore
+		 * Fire when the plugin has successfully switched to another locale. Typically you'll change some UI labels following
+		 * this event.
+		 * 
+		 * <strong>Note</strong>: Access this event name through `App.LANCE.Annotations.Events.Host`
+		 * @event LOCALE_CHANGED
+		 */
+		LOCALE_CHANGED: "host:locale"
+	},
+	UI: {
+		/**
+		 * @member LANCE.Annotations
+		 * A UI Sidebar has been created
+		 * @event UI_CREATED
+		 * @param {Object} Event An object with the fields: 
+		 * - ui: The top level element of the sidebar
+		 */
+		CREATED: "annotationsui:created";
+		ACTIVE: "annotationsui:active";
+		FOCUS_REMOVED: "annotationsui:focusremove";
+	}
+
+}
+
+
 export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> extends IDisposable {
 	readonly events: IEvents;
 	readonly users: IUserManager<TUser>;
-	loadFromData(data?: Array<any>): void;
+	// loadFromData(data?: Array<any>): void;
 	/**
-	 * @ignore
 	 * @method getAllAnnotationIds
 	 * @returns {Array} An array of all the current annotation ids
 	 */
@@ -276,7 +500,6 @@ export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> exte
 	unselectAll(): void;
 	serializeAnnotation(annotation: AnnotationOrId): Nullable<ISerializedAnnotation>;
 	deleteAnnotation(annotationId: AnnotationOrId, ...args: any[]): void;
-	setAnnotationsSequence(ids: ReadonlyArray<string>): void;
 	getAnnotationById(id: string): Nullable<IAnnotation>;
 	insertAnnotation(data: IInsertAnnotationOptions): IAnnotation;
 	setAttribute(annotationId: string, attrName: string, value: any): Nullable<IAnnotation>;
@@ -290,22 +513,18 @@ export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> exte
 	addUsers(users: ReadonlyArray<Partial<TUser>>): void;
 
 	/**
-	 * Returns the user id of the annotations manager
+	 * Returns the current user id of the annotations manager
 	 */
 	getUserId(): string;
 
 	/**
-	* sets the user id of the annotations manager
+	* sets the current user id of the annotations manager
 	* @param id 
 	* @returns the new user id
 	*/
 	setUserId(id: string): string;
 
-	/**
-	 * Used to notify this manager that the comment is no longer edited
-	 * @param annotationId \
-	 */
-	addCustomAttributes(attrs: string | Array<string>): void;
+	// addCustomAttributes(attrs: string | Array<string>): void;
 	getCommentStatus(annotationId: string, commentId: string): ICommentStatus;
 	getLocalizedString(key: string): string;
 	countAnnotations(excludeEmpty?: true): number;
@@ -329,12 +548,6 @@ export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> exte
 	addCommentBy(options: IAddCommentOptions): Nullable<IComment>;
 
 	/**
-	 * returns a function that matches a comment if it is related to the provided text
-	 * @param text 
-	 */
-	createCommentFilter(text: string): CommentFilter;
-
-	/**
 	 * Works according to the resolveAllPolicy in its config
 	 */
 	canResolveAll(): boolean;
@@ -345,6 +558,7 @@ export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> exte
 
 	getHost(): IAnnotationsOwner;
 }
+
 export interface IAnnotationPermissionsDetailedBlock {
 	first?: AnnotationRole;
 	last?: AnnotationRole;
@@ -408,8 +622,8 @@ export namespace LanceEvents {
 	interface IAnnotationEvent {
 		readonly annotation: IAnnotation;
 	}
-	
-	interface ICommentChangedEvent extends IAnnotationEvent{
+
+	interface ICommentChangedEvent extends IAnnotationEvent {
 		readonly comment: IComment;
 		readonly status: ICommentStatus;
 	}
@@ -417,24 +631,24 @@ export namespace LanceEvents {
 	interface IAnnotationAttributesEvent extends IAnnotationEvent {
 		readonly attributes: Record<string, string>;
 	}
-	
+
 	interface IAnnotationsRenumberedEvent {
 		readonly sequence: ReadonlyArray<string>;
 	}
-	
+
 	interface IAnnotationCreatedEvent extends IAnnotationEvent {
 		readonly next: string;
 		readonly context?: any;
 		readonly before?: string;
 		readonly range?: Range;
 	}
-	
+
 	interface IAnnotationDeletedEvent {
 		readonly id: string;
 	}
-	
+
 	interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
 		readonly isSelected: boolean;
 	}
-	
+
 }

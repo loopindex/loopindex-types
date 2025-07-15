@@ -355,6 +355,20 @@ export interface ILoopIndexLogger {
 	trace(...args: any[]): void;
 }
 
+export type AutogrowTransformFunction = (s: string, prevTransform?: AutogrowTransformFunction) => string;
+
+export interface IAutogrowOptions {
+	readonly maxRows: number;
+	readonly css: Record<string, string | number>;
+	// readonly fitOnInit: boolean;
+	readonly transform: AutogrowTransformFunction;
+	readonly mirror: boolean;
+}
+
+export type AutogrowAction = "delete";
+
+
+
 // export type PluginEditorEventHandler<TEvent = unknown> = (evt: TEvent) => unknown;
 
 export interface ICoreLoopIndexPlugin {
