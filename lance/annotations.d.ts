@@ -6,50 +6,6 @@ import type {
 	IDisposable
 } from "../common/";
 
-export interface IAnnotationManagerEvents1 {
-	readonly ANNOTATION_CREATED: string;
-	readonly ANNOTATION_DELETED: string;
-	readonly ANNOTATION_RESOLVED: string;
-	readonly ANNOTATION_PRESELECT: string;
-	readonly ANNOTATION_SELECTED: string;
-	readonly ANNOTATION_UPDATED: string;
-	readonly COMMENT_ADDED: string;
-	readonly COMMENT_DELETED: string;
-	readonly COMMENT_CHANGED: string;
-	readonly COMMENT_SELECTED: string;
-	readonly RESET: string;
-	readonly BEFORE_RESET: string;
-	readonly RELOAD: string;
-	readonly ENABLED_CHANGED: string;
-	readonly SIZE_CHANGED: string;
-	readonly DONE_EDITING: string;
-	readonly ATTRIBUTE_CHANGED: string;
-	readonly ANNOTATIONS_RENUMBERED: string;
-	readonly ANNOTATION_POSTSELECT: string;
-	readonly DESTROY: string;
-	readonly USER_CHANGED: string;
-	Host: {
-		readonly ANNOTATION_NODE_REVEALED: string;
-		readonly ANNOTATION_NODES_VISIBLITY: string;
-		readonly ANNOTATION_CONTAINER_SCROLL: string;
-		readonly LOCALE_CHANGED: string;
-	},
-	UI: {
-		/**
-		 * Fired after the UI was created, on the first occasion that the owner is not null;
-		 */
-		readonly CREATED: string;
-		/**
-		 * Fired when an owner is set and the UI has already been reported as created
-		 */
-		readonly ACTIVE: string;
-		/**
-		 * Fired when an comment UI that has focus is about to be removed from DOM
-		 */
-		readonly FOCUSED_REMOVED: string;
-
-	}
-}
 
 export interface IStaticAnnotations {
 	readonly Events: IAnnotationManagerEvents;
@@ -454,12 +410,22 @@ export interface IAnnotationManagerEvents {
 		 * @member LANCE.Annotations
 		 * A UI Sidebar has been created
 		 * @event UI_CREATED
-		 * @param {Object} Event An object with the fields: 
+		 * @param {Object} event An object with the fields: 
 		 * - ui: The top level element of the sidebar
 		 */
 		CREATED: "annotationsui:created";
 		ACTIVE: "annotationsui:active";
 		FOCUS_REMOVED: "annotationsui:focusremove";
+		/**
+		 * @member LANCE.Annotations
+		 * A UI Sidebar has been created
+		 * @event MENTION
+		 * @param {ILanceUser[]} users The mentioned users
+		 * @param {String} annotationId The id of the annotation
+		 * @param {String} commentId The id of the comment that includes the mentions
+		 * All parameters are enclosed in a {@link LanceEvents.ICommentMentionEvent} object
+		 */
+		MENTION: "annotationsui:mention"
 	}
 
 }
@@ -649,6 +615,13 @@ export namespace LanceEvents {
 
 	interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
 		readonly isSelected: boolean;
+	}
+
+	interface ICommentMentionEvent extends ICommentID {
+		readonly users: ReadonlyArray<{
+			readonly name: string;
+			readonly user: Nullable<ILanceUser>;
+		}>;
 	}
 
 }

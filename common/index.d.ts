@@ -92,6 +92,11 @@ export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser ex
 	getAllUsers(): Record<string, TUser>;
 	getUsersArray(): TUser[];
 	/**
+	 * Case insensitive search
+	 * @param name
+	 */
+	getUserByName(name: string): Nullable<TUser>;
+	/**
 	 * Triggers the `"update"` event if any user attributes are updated
 	 * @param userInfo
 	 */
@@ -365,7 +370,7 @@ export interface IAutogrowOptions {
 	readonly mirror: boolean;
 }
 
-export type AutogrowAction = "delete";
+export type AutogrowAction = "delete" | "mirror";
 
 
 
