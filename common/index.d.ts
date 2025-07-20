@@ -64,17 +64,17 @@ export interface ILoopIndexUser<TUserType extends string = string> {
 
 export type UserEvents = "beforeadd" | "add" | "remove" | "update" | "select";
 
+/**
+ * All relevant methods return clones of the stored objects
+ */
 export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser extends ILoopIndexUser<infer U> ? U : never> extends IDisposable {
 	/**
 	 * Triggers the `"select"` event if the current user has changed
 	 * @param userId 
 	 */
 	setCurrentUser(userId: string): void;
-	/**
-	 * 
-	 * @param createDefault If true, return a default user object if there's no current user
-	 */
-	getCurrentUser(createDefault?: boolean): Nullable<TUser>;
+
+	getCurrentUser(): Nullable<TUser>;
 	/**
 	 * This method relies  on the `"beforeadd"` event. You should install a handler that updates the `user` field
 	 * in the event  with a new user ,so raw user data is converted to the user type you need
@@ -92,7 +92,7 @@ export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser ex
 	getAllUsers(): Record<string, TUser>;
 	getUsersArray(): TUser[];
 	/**
-	 * Case insensitive search
+	 * Case insensitive search, sequences of spaces and _ are treated as a single space
 	 * @param name
 	 */
 	getUserByName(name: string): Nullable<TUser>;

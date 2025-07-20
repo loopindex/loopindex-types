@@ -182,6 +182,18 @@ export declare interface IUIGeneratorOptions {
 }
 
 export type CommentStylingType = "mention" | "link";
+/**
+ * `"full"` - highlight only mentions of exact known user
+ * `"prefix"` - highlight only mentions with a 3+ prefix of a known user name
+ * `"any"` - highlight any mention
+ */
+export type MentionPolicy = "full" | "prefix";
+
+export interface IMentionOptions {
+	readonly policy: MentionPolicy;
+	readonly usersOnly: boolean;
+}
+
 
 export declare interface IAnnotationUIOptions {
 	readonly container: NodeOrSelector;
@@ -213,7 +225,8 @@ export declare interface IAnnotationUIOptions {
 	/**
 	 * Defaults to [ "link", "mention" ]
 	 */
-	readonly transformTypes: CommentStylingType[]
+	readonly transformTypes: CommentStylingType[];
+	readonly mention: IMentionOptions;
 }
 export interface IUIConfirmOptions {
 	message: string;
