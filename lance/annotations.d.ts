@@ -416,16 +416,6 @@ export interface IAnnotationManagerEvents {
 		CREATED: "annotationsui:created";
 		ACTIVE: "annotationsui:active";
 		FOCUS_REMOVED: "annotationsui:focusremove";
-		/**
-		 * @member LANCE.Annotations
-		 * A UI Sidebar has been created
-		 * @event MENTION
-		 * @param {ILanceUser[]} users The mentioned users
-		 * @param {String} annotationId The id of the annotation
-		 * @param {String} commentId The id of the comment that includes the mentions
-		 * All parameters are enclosed in a {@link LanceEvents.ICommentMentionEvent} object
-		 */
-		MENTION: "annotationsui:mention"
 	}
 
 }
@@ -615,13 +605,6 @@ export namespace LanceEvents {
 
 	interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
 		readonly isSelected: boolean;
-	}
-
-	interface ICommentMentionEvent extends ICommentID {
-		readonly users: ReadonlyArray<{
-			readonly name: string;
-			readonly user: Nullable<ILanceUser>;
-		}>;
 	}
 
 }

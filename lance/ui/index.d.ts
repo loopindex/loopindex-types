@@ -138,11 +138,26 @@ export interface ILanceUIEvents {
 	 * 
 	 * A @mention sequence is clicked.
 	 * All parameters are enclosed in an Event object
-	 * @param {user} The mentioned user id
+	 * @param {IMentionedUser} user The mentioned user
 	 * @param {string} annotationId The clicked thread id
 	 * @param {string} commentId The clicked comment id
+	 * See {@link LanceUIEvents.IMentionActiveEvent}
 	 */
 	COMMENT_UI_MENTION_ACTIVE: "commentui:mention:active";
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_MENTION_ADD
+	 * 
+	 * One ore more @mention sequences were added to a comment
+	 * All parameters are enclosed in an Event object
+	 * @param {IMentionedUser[]} The mentioned users added
+	 * @param {string} annotationId The thread id
+	 * @param {string} commentId The comment id
+	 * @param {ILanceUI} ui the containing UI
+	 * See {@link LanceUIEvents.IMentionAddEvent}
+	 */
+	COMMENT_UI_MENTION_ADD: "commentui:mention:add";
 
 }
 
@@ -251,6 +266,10 @@ export interface ILanceUI extends IDisposable {
 	getOwner(): IAnnotationsManager | null;
 }
 
+export interface IMentionedUser {
+	readonly name: string;
+	readonly user: Nullable<ILanceUser>;
+}
 /**
  * These events are triggered through the UI's `events` member
  */
@@ -281,11 +300,15 @@ export namespace LanceUIEvents {
 		readonly annotationId: string;
 	}
 
-	interface IMentionEvent {
-		readonly name: string;
-		readonly user: Nullable<ILanceUser>;
+	interface IMentionAddEvent {
+		readonly users: IMentionedUser[];
 		readonly commentId: string;
 		readonly annotationId: string;
+		readonly ui: ILanceUI;
+	}
+
+	interface IMentionActiveEvent extends Omit<IMentionAddEvent, "users"> {
+		readonly user: Nullable<IMentionedUser>;
 	}
 }
 
