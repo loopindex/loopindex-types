@@ -6,7 +6,7 @@ Typescript types for LoopIndex plugins
 
 Add this depenency to your project's `package.json`
 
-    		"loopindex-types": "git+https://github.com/loopindex/loopindex-types.git"
+    "loopindex-types": "git+https://github.com/loopindex/loopindex-types.git"
 
 
 ### Updating the module
@@ -16,12 +16,13 @@ This module is updated at least once a month, so make sure that you update regul
     yarn upgrade loopindex-types
 
 Or
+
     npm update loopindex-types
 
 
 ### Trouble shooting updates
 
-yarn may fail to update the package, if the cached copy has been edited (usually by mistake). In this case,
+`yarn` may fail to update the package, if the cached copy has been edited (usually by mistake). In this case,
 removing the module from the cache. You can either clean completely:
 
     yarn cache clean
