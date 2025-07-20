@@ -46,6 +46,8 @@ export interface ILanceGlobals {
 	readonly logger: ILoopIndexLogger;
 	readonly Commands: ILanceCommands;
 	readonly Events: ILanceEvents;
+	readonly Annotations: IStaticAnnotations;
+	readonly AnnotationsUI: IStaticAnnotationsUI;
 }
 
 
