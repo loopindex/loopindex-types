@@ -1,14 +1,12 @@
-import type { 
+import { ILoopIndexGlobals } from "..";
+import type {
 	IPluginUserConfig, ILoopIndexUser, IUserManager,
-	Nullable, FroalaModule, IFroalaCommandRecord, 
-	ICommandRecord,
-	LocalizeFunction,
-	IPluginTooltipOptions,
-	Maybe,
-	ICommandStatus,
+	Nullable, FroalaModule,
+	ICommandRecord, LocalizeFunction,
+	IPluginTooltipOptions, Maybe, ICommandStatus,
 	ILoopIndexPlugin,
-	IPluginConfig,
-	Mutable
+	IPluginConfig, Mutable, ILoopIndexLogger,
+	IFroalaInitOptions
 } from "../common";
 
 export type FLITECopyBehavior = "raw" | "clean";
@@ -17,7 +15,7 @@ export type FLITEOrphanPolicy = "editor" | "div" | "p" | "";
 export type TrackingMode = "full" | "readonly" | "none";
 export type PassiveInsertMode = "none" | "passive" | "active" | "insert";
 export type AttributePolicy = "compact" | "dom" | "full" | "export";
-export type EditorDestroyPolicy = "accept" | "reject" | "hide" |"none";
+export type EditorDestroyPolicy = "accept" | "reject" | "hide" | "none";
 export type IMEMixedPolicy = "hide" | "none";
 export type SpellcheckAttributePolicy = "none" | "all" | "delete";
 
@@ -34,7 +32,7 @@ export interface IFLITEUserStyle {
 }
 
 export interface IFLITEUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
-    readonly style?: IFLITEUserStyle;
+	readonly style?: IFLITEUserStyle;
 }
 
 export interface IFLITECommand extends ICommandRecord {
@@ -93,6 +91,9 @@ export interface IChangeFilterOptions {
 
 }
 
+/**
+ * The configuration object used by FLITE after the user config has been processed
+ */
 interface IMutableFLITEConfiguration extends Mutable<IPluginConfig<IFLITETooltipOptions, IFLITECommand>> {
 	/**
 	 * @member FLITE.configuration
@@ -414,9 +415,24 @@ interface IMutableFLITEConfiguration extends Mutable<IPluginConfig<IFLITETooltip
 	orphanContainer: FLITEOrphanPolicy;
 
 	/**
-	 * If true, add spellcheck="true" to tracked nodes
+	 * Some browser spellchecker honor the `spellcheck` attribute of the elements. If you want to prevent the browser from
+	 * checking the spelling of some or all tracked text, set this option to `true`. If you want to prevent the browser from
+	 * @property {Boolean | "delete"} [disableSpellcheck=false]
+	 * @since FLITE 1.6.25
+	 * Allowed values:
+	 * 
+	 * - `false` - (default) - FLITE does not set the `spellcheck` attribute of tracked text
+	 * - `true` - FLITE adds `spellcheck="false"` to tracked text
+	 * - `"delete"`- FLITE adds `spellcheck="false"` to tracked deleted text
 	 */
 	disableSpellcheck: SpellcheckAttributePolicy;
+
+	/**
+	 * If `true`, override configured user settings with those found in loaded documents.
+	 * 
+	 * Defaults to `false`
+	 */
+	useDocumentUserData: boolean;
 
 }
 
@@ -426,7 +442,7 @@ export interface IFLITEPlugin<
 	TEditor extends {} = object,
 	TConfig extends IFLITEConfiguration = IFLITEConfiguration,
 	TUser extends IFLITEUser = IFLITEUser
-	> 
+>
 	extends ILoopIndexPlugin<TEditor, TConfig> {
 
 	readonly users: IUserManager<TUser>;
@@ -437,9 +453,9 @@ export interface IFLITEPlugin<
 	 * @returns true if the operation succeeded
 	 */
 	setUserInfo(user: Partial<IFLITEUser> | string, silent?: boolean): boolean;
-		/**
-	 * Returns the current user. same as plugin.users.getCurrentUser()
-	 */
+	/**
+ * Returns the current user. same as plugin.users.getCurrentUser()
+ */
 	getUserInfo(): Nullable<IFLITEUser>;
 	getChanges(options?: IChangeFilterOptions): IChangeSet;
 	acceptAll(options?: IChangeFilterOptions): void;
@@ -455,7 +471,7 @@ export interface IFLITEPlugin<
 	 */
 	getChanges(options: IChangeFilterOptions): IChangeSet;
 
-	
+
 }
 
 export interface IFLITEInitEvent<TEditor extends {} = object> {
@@ -466,12 +482,10 @@ export interface IFLITEInitEvent<TEditor extends {} = object> {
 
 
 export interface IFLITEGlobals {
-	initFroalaFLITEPlugin(Froala: FroalaModule, options: {
-		path: string,
-		assetPath?: string;
-		commands?: IFroalaCommandRecord[];
-
-	}): Promise<boolean>;
+	readonly Commands: IFLITECommands;
+	readonly Events: IFLITEEvents;
+	readonly logger: ILoopIndexLogger;
+	initFroalaFLITEPlugin(Froala: FroalaModule, options: IFroalaInitOptions): Promise<boolean>;
 }
 
 export interface ITooltipTitleOptions {
@@ -490,7 +504,7 @@ export type TooltipCallback = (options: ITooltipTitleOptions) => string;
  * @class FLITE.TooltipsConfiguration
  * @member FLITE
  */
-export interface IFLITETooltipOptions extends IPluginTooltipOptions{
+export interface IFLITETooltipOptions extends IPluginTooltipOptions {
 	/**
 	 * @member FLITE.TooltipsConfiguration
 	 * @property show
@@ -826,18 +840,36 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 
 	orphanContainer?: FLITEOrphanPolicy;
 
+	/**
+	 * Some browser spellchecker honor the `spellcheck` attribute of the elements. If you want to prevent the browser from
+	 * checking the spelling of some or all tracked text, set this option to `true`. If you want to prevent the browser from
+	 * @since FLITE 1.6.25
+	 * Allowed values:
+	 * 
+	 * - `false` - (default) - FLITE does not set the `spellcheck` attribute of tracked text
+	 * - `true` - FLITE adds `spellcheck="false"` to tracked text
+	 * - `"delete"`- FLITE adds `spellcheck="false"` to tracked deleted text
+	 */
 	disableSpellcheck?: boolean | "delete";
+
+	/**
+	 * If `true`, override configured user settings with those found in loaded documents.
+	 * 
+	 * Defaults to `false`
+	 */
+	useDocumentUserData?: boolean;
+
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
-    flite: Partial<IFLITEUserConfiguration>;
+	flite: Partial<IFLITEUserConfiguration>;
 } & Partial<TEditorConfig>;
 
 export namespace FLITEEvents {
 	interface IFLITEEvent<TEditor extends {} = object> {
 		readonly flite: IFLITEPlugin<TEditor>;
 	}
-	interface ITrackingEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> { 
+	interface ITrackingEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> {
 		tracking: boolean;
 	}
 
@@ -846,3 +878,163 @@ export namespace FLITEEvents {
 	}
 }
 
+export interface IFLITEEvents {
+	/**
+	 * @member FLITE.Events
+	 * @event INIT
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 */
+	readonly INIT: "flite:init",
+	/**
+	 * @member FLITE.Events
+	 * @event ACCEPT
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {Object} options filtering options
+	 */
+	readonly ACCEPT: "flite:accept",
+	/**
+	 * @member FLITE.Events
+	 * @event REJECT
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {Object} options filtering options
+	 */
+
+	readonly REJECT: "flite:reject",
+	/**
+	 * @member FLITE.Events
+	 * @event EVENT_INTERCEPTED
+	 * @param {Event} event The event that was intercepted
+	 */
+	readonly EVENT_INTERCEPTED: "flite:event-intercepted",
+	/**
+	* @member FLITE.Events
+	* @event SHOW_HIDE
+	* @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	* @param {Boolean} show indicates the new change tracking show status
+	*/
+	readonly SHOW_HIDE: "flite:showHide",
+	/**
+	 * @member FLITE.Events
+	 * @event TRACKING
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {Boolean} tracking indicates the new tracking status
+	 */
+	readonly TRACKING: "flite:tracking",
+
+	/**
+	 * @member FLITE.Events
+	 * @event CHANGE
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 */
+	readonly CHANGE: "flite:change",
+
+	/**
+	 * @member FLITE.Events
+	 * @event USERS_ADDED
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {FLITE.FLITEUser[]} users a copy of the added user object
+	 */
+	readonly USERS_ADDED: "flite:users-added",
+
+	/**
+	 * @member FLITE.Events
+	 * @event USER_CHANGED
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {FLITE.FLITEUser} user a copy of the changed user object
+	 */
+	readonly USER_CHANGED: "flite:user-changed",
+
+	/**
+	 * @member FLITE.Events
+	 * @event USER_REMOVED
+	 * @param {FLITE.FLITEPlugin} flite an instance of a flite object associated with an editor instance
+	 * @param {FLITE.FLITEUser} user a copy of the changed user object
+	 */
+	readonly USER_REMOVED: "flite:user-removed",
+
+	/**
+	 * @member FLITE.Events
+	 * @event DISABLE_TRACKING
+	 * Fire this event through the editor, to pause this editor's tracker
+	 */
+	readonly DISABLE_TRACKING: "flite:disable-tracking",
+
+	/**
+	 * @member FLITE.Events
+	 * @event ENABLE_TRACKING
+	 * Fire this event through the editor, to resume this editor's tracker. It's the equivalent of 
+	 */
+	readonly ENABLE_TRACKING: "flite:enable-tracking",
+}
+
+export interface IFLITECommands extends Object {
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TOGGLE_TRACKING="flite-toggletracking"]
+	 */
+	TOGGLE_TRACKING: "flite-toggletracking",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TOGGLE_SHOW="flite-toggleshow"]
+	 */
+	TOGGLE_SHOW: "flite-toggleshow",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [ACCEPT_ALL="flite-acceptall"]
+	 */
+	ACCEPT_ALL: "flite-acceptall",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REJECT_ALL="flite-rejectall"]
+	 */
+	REJECT_ALL: "flite-rejectall",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [ACCEPT_ONE="flite-acceptone"]
+	 */
+	ACCEPT_ONE: "flite-acceptone",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REJECT_ONE="flite-rejectone"]
+	 */
+	REJECT_ONE: "flite-rejectone",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TOGGLE_TOOLTIPS="flite-toggletooltips"]
+	 */
+	TOGGLE_TOOLTIPS: "flite-toggletooltips",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [NEXT_CHANGE="flite-nextchange"]
+	 * Place the editor's caret at the beginning of the closest tracked change AFTER the current cursor position
+	 */
+	NEXT_CHANGE: "flite-nextchange",
+	/**
+	 * @member FLITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [PREV_CHANGE="flite-prevchange"]
+	 * Place the editor's caret at the beginning of the closest tracked change BEFORE the current cursor position
+	 */
+	PREV_CHANGE: "flite-prevchange"
+}
+
+export interface IFLITEAppGlobals extends ILoopIndexGlobals {
+	readonly FLITE: IFLITEGlobals;
+}

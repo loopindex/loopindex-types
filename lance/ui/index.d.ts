@@ -1,20 +1,20 @@
-import type { IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
+import { ILanceUser } from "..";
+import type { IAutogrowOptions, IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
 import type { IAnnotation, IAnnotationsManager, ICommentID } from "../annotations";
 
 export interface ICreateAnnotationsUIOptions {
 	readonly type: "simple" | "aligned";
 }
 
-interface ILanceUIEvents {
+export interface ILanceUIEvents {
 	/**
 	 * "annotationui:created"
 	 */
-	readonly ANNOTATION_UI_CREATED: string,
+	readonly ANNOTATION_UI_CREATED: "annotationui:created",
 
 	/**
 	 * @member LANCE.AnnotationsUI
 	 * @event ANNOTATION_UI_REMOVED
-	 * "annotationui:removed"
 	 * 
 	 * The ui of the specified annotation (thread) has been removed
 	 * All parameters are enclosed in an Event object
@@ -22,12 +22,11 @@ interface ILanceUIEvents {
 	 * @param {String} id The id of the annotation
 	 * @param {LANCE.AnnotationsUI} ui the containing ui
 	 */
-	readonly ANNOTATION_UI_REMOVED: string,
+	readonly ANNOTATION_UI_REMOVED: "annotationui:removed",
 
 	/**
 	 * @member LANCE.AnnotationsUI
 	 * @event ANNOTATION_UI_SELECTED
-	 * "annotationui:selected"
 	 * 
 	 * An annotation node has been selected or deselected.
 	 * All parameters are enclosed in an Event object
@@ -36,12 +35,11 @@ interface ILanceUIEvents {
 	 * @param {String} id The id of the annotation
 	 * @param {Boolean} isSelected the annotation id
 	 */
-	readonly ANNOTATION_UI_SELECTED: string,
+	readonly ANNOTATION_UI_SELECTED: "annotationui:selected",
 
 	/**
 	 * @member LANCE.AnnotationsUI
 	 * @event ANNOTATION_UI_CHANGED
-	 * "annotationui:changed"
 	 * 
 	 * An annotation node has been repopulated.
 	 * All parameters are enclosed in an Event object
@@ -49,12 +47,11 @@ interface ILanceUIEvents {
 	 * @param {LANCE.AnnotationsUI} ui the containing ui
 	 * @param {String} id The id of the annotation
 	 */
-	readonly ANNOTATION_UI_CHANGED: string,
+	readonly ANNOTATION_UI_CHANGED: "annotationui:changed",
 
 	/**
 	 * @member LANCE.AnnotationsUI
 	 * @event COMMENT_UI_CREATED
-	 * "commentui:created"
 	 * 
 	 * A comment node has been created and populated.
 	 * All parameters are enclosed in an Event object
@@ -63,7 +60,7 @@ interface ILanceUIEvents {
 	 * @param {String} commentId The id of the comment
 	 * @param {String} annotationId The id of the annotation
 	 */
-	readonly COMMENT_UI_CREATED: string,
+	readonly COMMENT_UI_CREATED: "commentui:created",
 
 	/**
 	 * @member LANCE.AnnotationsUI
@@ -77,7 +74,7 @@ interface ILanceUIEvents {
 	 * @param {String} commentId The id of the comment
 	 * @param {String} annotationId The id of the annotation
 	 */
-	readonly COMMENT_UI_CHANGED: string,
+	readonly COMMENT_UI_CHANGED: "commentui:changed",
 
 	/**
 	 * @member LANCE.AnnotationsUI
@@ -90,12 +87,11 @@ interface ILanceUIEvents {
 	 * @param {String} id The id of the annotation
 	 * @param {LANCE.AnnotationsUI} ui the containing ui
 	 */
-	readonly COMMENT_UI_DONE: string, // annotation: annotation id
+	readonly COMMENT_UI_DONE: "commentui:done", // annotation: annotation id
 
 	/**
 	 * @member LANCE.AnnotationsUI
 	 * @event COMMENT_UI_REMOVED
-	 * "commentui:removed"
 	 * 
 	 * a comment node has been removed.
 	 * All parameters are enclosed in an Event object
@@ -104,12 +100,11 @@ interface ILanceUIEvents {
 	 * @param {String} commentId The id of the comment
 	 * @param {String} annotationId The id of the annotation
 	 */
-	readonly COMMENT_UI_REMOVED: string,
+	readonly COMMENT_UI_REMOVED: "commentui:removed",
 
 	/**
 	 * @member LANCE.AnnotationsUI
 	 * @event COMMENT_UI_BEFORE_COMMAND
-	 * "commentui:before-command"
 	 * 
 	 * a comment node has been removed.
 	 * All parameters are enclosed in an Event object
@@ -120,7 +115,7 @@ interface ILanceUIEvents {
 	 * @param {String} annotationId The id of the annotation
 	 * @param {Boolean} cancel set to false to prevent further command processing
 	 */
-	readonly COMMENT_UI_BEFORE_COMMAND: string,
+	readonly COMMENT_UI_BEFORE_COMMAND:  "commentui:before-command",
 
 	/**
 	 * @member LANCE.AnnotationsUI
@@ -135,7 +130,35 @@ interface ILanceUIEvents {
 	 * @param {String} commentId The id of the comment
 	 * @param {String} annotationId The id of the annotation
 	 */
-	readonly COMMENT_UI_AFTER_COMMAND: string
+	readonly COMMENT_UI_AFTER_COMMAND: "commentui:after-command";
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_MENTION_ACTIVE
+	 * 
+	 * A @mention sequence is clicked.
+	 * All parameters are enclosed in an Event object
+	 * @param {IMentionedUser} user The mentioned user
+	 * @param {string} annotationId The clicked thread id
+	 * @param {string} commentId The clicked comment id
+	 * See {@link LanceUIEvents.IMentionActiveEvent}
+	 */
+	COMMENT_UI_MENTION_ACTIVE: "commentui:mention:active";
+
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @event COMMENT_UI_MENTION_ADD
+	 * 
+	 * One ore more @mention sequences were added to a comment
+	 * All parameters are enclosed in an Event object
+	 * @param {IMentionedUser[]} The mentioned users added
+	 * @param {string} annotationId The thread id
+	 * @param {string} commentId The comment id
+	 * @param {ILanceUI} ui the containing UI
+	 * See {@link LanceUIEvents.IMentionAddEvent}
+	 */
+	COMMENT_UI_MENTION_ADD: "commentui:mention:add";
+
 }
 
 export interface IStaticAnnotationsUI {
@@ -173,6 +196,20 @@ export declare interface IUIGeneratorOptions {
 	templateClasses: string;
 }
 
+export type CommentStylingType = "mention" | "link";
+/**
+ * `"full"` - highlight only mentions of exact known user
+ * `"prefix"` - highlight only mentions with a 3+ prefix of a known user name
+ * `"any"` - highlight any mention
+ */
+export type MentionPolicy = "full" | "prefix";
+
+export interface IMentionOptions {
+	readonly policy: MentionPolicy;
+	readonly usersOnly: boolean;
+}
+
+
 export declare interface IAnnotationUIOptions {
 	readonly container: NodeOrSelector;
 	readonly owner: IAnnotationsManager;
@@ -184,7 +221,7 @@ export declare interface IAnnotationUIOptions {
 	// readonly threadTemplate: NodeOrSelector;
 	readonly commentTemplate: NodeOrSelector;
 	readonly templateClass: string;
-	readonly autoGrow: boolean | object;
+	readonly autoGrow: boolean | Partial<IAutogrowOptions>;
 	readonly autoScroll: boolean;
 	readonly searchComments: boolean;
 	readonly textareaOptions: any;
@@ -200,6 +237,11 @@ export declare interface IAnnotationUIOptions {
 
 	readonly overflowPolicy: OverflowPolicy;
 	readonly blurPolicy: BlurPolicy;
+	/**
+	 * Defaults to [ "link", "mention" ]
+	 */
+	readonly transformTypes: CommentStylingType[];
+	readonly mention: IMentionOptions;
 }
 export interface IUIConfirmOptions {
 	message: string;
@@ -208,7 +250,7 @@ export interface IUIConfirmOptions {
 }
 export type UIConfirmCallback = (options: IUIConfirmOptions) => Promise<boolean>;
 
-export interface ILanceUI {
+export interface ILanceUI extends IDisposable {
 	readonly events: IEvents;
 	getCommentId(node: NodeOrJQuery): ICommentID;
 	setSearchTerm(term: string): void;
@@ -223,6 +265,14 @@ export interface ILanceUI {
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
 	getOwner(): IAnnotationsManager | null;
 }
+
+export interface IMentionedUser {
+	readonly name: string;
+	readonly user: Nullable<ILanceUser>;
+}
+/**
+ * These events are triggered through the UI's `events` member
+ */
 
 export namespace LanceUIEvents {
 
@@ -248,6 +298,17 @@ export namespace LanceUIEvents {
 		readonly ui: ILanceUI;
 		readonly commentId: string;
 		readonly annotationId: string;
+	}
+
+	interface IMentionAddEvent {
+		readonly users: IMentionedUser[];
+		readonly commentId: string;
+		readonly annotationId: string;
+		readonly ui: ILanceUI;
+	}
+
+	interface IMentionActiveEvent extends Omit<IMentionAddEvent, "users"> {
+		readonly user: Nullable<IMentionedUser>;
 	}
 }
 
