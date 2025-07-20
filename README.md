@@ -8,6 +8,19 @@ Add this depenency to your project's `package.json`
 
     "loopindex-types": "git+https://github.com/loopindex/loopindex-types.git"
 
+Once the module is installed, you can import loopindex types from "loopindex-types", e.g.
+
+```typescript
+// Import some lance types
+import type { ILanceAppGlobals, IAnnotationsManager, ILanceInitEvent, ILancePlugin } from "loopindex-types/lance";
+
+// import some FLITE types
+import type { IFLITEAppGlobals, IFLITEPlugin, FLITEEvents } from "loopindex-types/flite";
+
+// import common types
+import type { Nullable, Mutable, IEvents } from "loopindex-types";
+```
+
 
 ### Updating the module
 
@@ -23,7 +36,7 @@ Or
 ### Trouble shooting updates
 
 `yarn` may fail to update the package, if the cached copy has been edited (usually by mistake). In this case,
-removing the module from the cache. You can either clean completely:
+removing the module from the cache will solve the problem. You can either clean completely:
 
     yarn cache clean
 
