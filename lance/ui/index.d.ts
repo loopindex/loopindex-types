@@ -2,8 +2,9 @@ import { ILanceUser } from "..";
 import type { IAutogrowOptions, IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
 import type { IAnnotation, IAnnotationsManager, ICommentID } from "../annotations";
 
+export type LanceUIType = "simple" | "aligned";
 export interface ICreateAnnotationsUIOptions {
-	readonly type: "simple" | "aligned";
+	readonly type: LanceUIType;
 }
 
 export interface ILanceUIEvents {
@@ -164,36 +165,36 @@ export interface ILanceUIEvents {
 export interface IStaticAnnotationsUI {
 	readonly Events: Readonly<ILanceUIEvents>;
 }
-export declare interface IToolbarCommandRecord {
-	command: string;
-	iconUrl?: string;
-	svgUrl?: string;
-	svgData?: string;
-	title?: string;
-	label?: string;
+export interface IToolbarCommandRecord {
+	readonly command: string;
+	readonly iconUrl?: string;
+	readonly svgUrl?: string;
+	readonly svgData?: string;
+	readonly title?: string;
+	readonly label?: string;
 }
 
-export declare interface IToolbarConfiguration {
-	buttons: Array<IToolbarButton>;
-	commands: Array<IToolbarCommandRecord>;
+export interface IToolbarConfiguration {
+	readonly buttons: ReadonlyArray<IToolbarButton>;
+	readonly commands: ReadonlyArray<IToolbarCommandRecord>;
 }
 
-export declare interface IToolbarButton {
-	command: string;
-	display?: "auto" | "show"
+export interface IToolbarButton {
+	readonly command: string;
+	readonly display?: "auto" | "show"
 }
 
-export declare type OverflowPolicy = ("show" | "hide" | "fold" | "none");
-export declare type BlurPolicy = ("save" | "discard");
-export declare interface IUIGeneratorOptions {
+export type OverflowPolicy = ("show" | "hide" | "fold" | "none");
+export type BlurPolicy = ("save" | "discard");
+export interface IUIGeneratorOptions {
 	// owner: IAnnotationsManager;
-	generate: boolean;
-	generateCSS: boolean;
-	commentTemplate?: NodeOrSelector;
+	readonly generate: boolean;
+	readonly generateCSS: boolean;
+	readonly commentTemplate?: NodeOrSelector;
 	// styleUrls: Array<string>;
-	toolbar: IToolbarConfiguration;
-	overflow: OverflowPolicy;
-	templateClasses: string;
+	readonly toolbar: IToolbarConfiguration;
+	readonly overflow: OverflowPolicy;
+	readonly templateClasses: string;
 }
 
 export type CommentStylingType = "mention" | "link";
@@ -210,7 +211,7 @@ export interface IMentionOptions {
 }
 
 
-export declare interface IAnnotationUIOptions {
+export interface IAnnotationUIOptions {
 	readonly container: NodeOrSelector;
 	readonly owner: IAnnotationsManager;
 	readonly commentTimeFormat?: string;
@@ -244,9 +245,9 @@ export declare interface IAnnotationUIOptions {
 	readonly mention: IMentionOptions;
 }
 export interface IUIConfirmOptions {
-	message: string;
-	annotation: IAnnotation;
-	commentId: string;
+	readonly message: string;
+	readonly annotation: IAnnotation;
+	readonly commentId: string;
 }
 export type UIConfirmCallback = (options: IUIConfirmOptions) => Promise<boolean>;
 

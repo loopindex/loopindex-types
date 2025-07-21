@@ -65,7 +65,7 @@ export interface ILancePlugin<
 }
 
 export interface ILanceInitEvent {
-	lance: ILancePlugin;
+	readonly lance: ILancePlugin;
 }
 
 export type UndoPolicy = "none" | "create" | "all";
@@ -81,14 +81,14 @@ export interface IResolveDisplayPolicy{
 }
 
 export interface ITooltipTitleOptions {
-	config: ILanceTooltipOptions;
-	annotation: IAnnotation;
-	localize: LocalizeFunction;
+	readonly config: ILanceTooltipOptions;
+	readonly annotation: IAnnotation;
+	readonly localize: LocalizeFunction;
 }
 export type TooltipCallback = (options: ITooltipTitleOptions) => string;
 
 export interface ILanceTooltipOptions extends IPluginTooltipOptions{
-	formatter?: TooltipCallback;
+	readonly formatter?: TooltipCallback;
 }
 
 export interface ILanceUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
@@ -153,89 +153,51 @@ export interface ILanceUserConfiguration extends Mutable<IPluginUserConfig<ILanc
 	resolvedDisplayPolicy?: Partial<IResolvedDisplayPolicy>
 }
 
-
-// export interface ILanceConfiguration extends IPluginUserConfig<ILanceTooltipOptions> {
-// 	annotations: Partial<IAnnotationOptions>;
-// 	undoPolicy?: UndoPolicy;
-// 	/**
-// 	 * Guranteed AnnotationType[] after validation
-// 	 */
-// 	useTextSelection: boolean | AnnotationType | AnnotationType[];
-// 	extendFocus: boolean;
-// 	customAttributes: string[];
-
-// 	/**
-// 	 * Defaults to true
-// 	 */
-// 	autoScroll: boolean | "smooth" | "live";
-// 	/**
-// 	 * Defaults to `annotation`
-// 	 */
-// 	tagName: string;
-// 	/**
-// 	 * Defaults to `"none"`
-// 	 */
-// 	readonlyPolicy: ReadOnlyPolicy;
-
-// 	/**
-// 	 * For CKE
-// 	 */
-// 	ckeStrictSelection: boolean;
-
-// 	statusCallback?: AnnotationStatusCallback;
-
-
-// 	commentSelectionPolicy: CommentSelectionPolicy;
-
-// 	resolveDisplayPolicy: Partial<IResolveDisplayPolicy>;
-
-// 	maximize: unknown;
-// }
-
+/**
+ * This is the configuration object maintained by each instance of the Lance plugin
+ */
 export interface ILanceConfiguration extends IPluginConfig<ILanceTooltipOptions> {
-	plugins?: any[];
-	annotations: Partial<IAnnotationOptions>;
-	isDragEnabled?: boolean;
-	undoPolicy: UndoPolicy;
+	readonly plugins: ReadonlyArray<unknown>;
+	readonly annotations: Partial<IAnnotationOptions>;
+	readonly isDragEnabled?: boolean;
+	readonly undoPolicy: UndoPolicy;
 	/**
 	 * Guranteed AnnotationType[] after validation
 	 */
-	useTextSelection: AnnotationType[];
-	extendFocus: boolean;
-	customAttributes?: string[];
-	maximize?: any;
+	readonly useTextSelection: AnnotationType[];
+	readonly extendFocus: boolean;
+	readonly customAttributes?: string[];
+	readonly maximize?: unknown;
 
 	// tooltips: ILanceTooltipOptions;
 	/**
 	 * Defaults to true
 	 */
-	autoScroll: boolean | "smooth" | "live";
+	readonly autoScroll: boolean | "smooth" | "live";
 	/**
 	 * Defaults to `annotation`
 	 */
-	tagName: string;
+	readonly tagName: string;
 	/**
 	 * Defaults to `"none"`
 	 */
-	readonlyPolicy: ReadOnlyPolicy;
+	readonly readonlyPolicy: ReadOnlyPolicy;
 
 	/**
 	 * For CKE
 	 */
-	ckeStrictSelection?: boolean;
+	readonly ckeStrictSelection?: boolean;
 
-	statusCallback?: AnnotationStatusCallback;
+	readonly statusCallback?: AnnotationStatusCallback;
 
-	commands: ICommandRecord[];
+	readonly commentSelectionPolicy: CommentSelectionPolicy;
 
-	commentSelectionPolicy: CommentSelectionPolicy;
-
-	resolvedDisplayPolicy: IResolvedDisplayPolicy;
+	readonly resolvedDisplayPolicy: IResolvedDisplayPolicy;
 
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, any>> = {
-    lance: Partial<ILanceUserConfiguration>;
+    readonly lance: Partial<ILanceUserConfiguration>;
 } & Partial<TEditorConfig>;
 
 export interface ILanceAppGlobals extends ILoopIndexGlobals {
