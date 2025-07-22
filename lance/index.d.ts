@@ -64,6 +64,10 @@ export interface ILancePlugin<
 	readonly App: ILanceGlobals;
 }
 
+/**
+ * Defined here rather than in LanceEvents, because the LANCE namespace may not be available when you
+ * set a listener for this event
+ */
 export interface ILanceInitEvent {
 	readonly lance: ILancePlugin;
 }

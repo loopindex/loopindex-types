@@ -116,7 +116,7 @@ export interface ILanceUIEvents {
 	 * @param {String} annotationId The id of the annotation
 	 * @param {Boolean} cancel set to false to prevent further command processing
 	 */
-	readonly COMMENT_UI_BEFORE_COMMAND:  "commentui:before-command",
+	readonly COMMENT_UI_BEFORE_COMMAND: "commentui:before-command",
 
 	/**
 	 * @member LANCE.AnnotationsUI
@@ -164,6 +164,7 @@ export interface ILanceUIEvents {
 
 export interface IStaticAnnotationsUI {
 	readonly Events: Readonly<ILanceUIEvents>;
+	readonly instances: ReadonlyArray<ILanceUI>;
 }
 export interface IToolbarCommandRecord {
 	readonly command: string;
@@ -270,12 +271,34 @@ export interface ILanceUI extends IDisposable {
 export interface IMentionedUser {
 	readonly name: string;
 	readonly user: Nullable<ILanceUser>;
+	/**
+	 * The full mention string, e.g. "@parker"
+	 */
+	readonly mention: string;
 }
 /**
  * These events are triggered through the UI's `events` member
  */
 
 export namespace LanceUIEvents {
+
+	interface ILanceUICreatedEvent {
+		readonly ui: ILanceUI;
+		readonly root: HTMLElement;
+	}
+
+	interface IAnnotationSelectedEvent {
+		readonly isSelected: boolean;
+		/**
+		 * JQuery wrapper of the node that contains this annotation's view
+		 */
+		readonly $node: JQuery;
+		readonly ui: ILanceUI;
+		/**
+		 * The id of the annotation whose view is de/selecetd
+		 */
+		readonly id: string;
+	}
 
 	/**
 	 * Dispatched before (`"commentui:before-command"`) and after (`"commentui:after-command"`).
