@@ -6,7 +6,9 @@ import type {
 	ILoopIndexPlugin, Mutable, ICommandRecord,
 	IPluginConfig,
 	ILoopIndexLogger,
-	IFroalaInitOptions
+	IFroalaInitOptions,
+	OperationPromise,
+	RangeInfo
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
@@ -50,7 +52,28 @@ export interface ILanceGlobals {
 	readonly AnnotationsUI: IStaticAnnotationsUI;
 }
 
+export interface IDocumentLocation {
+	readonly start: number;
+	readonly end: number;
+	readonly text?: string;
+}
 
+export interface IAnnotateWithOptions {
+	readonly userId: string;
+	readonly text: string;
+	readonly location?: IDocumentLocation;
+	readonly bookmarkId?: string;
+	/**
+	 * If not null/undefined, append to this annotation
+	 */
+	readonly annotationId?: string;
+}
+
+
+export interface IAnnotationBookmarkOptions {
+	readonly range?: RangeInfo;
+	readonly maxLength?: number;
+}
 
 
 export interface ILancePlugin<
@@ -61,7 +84,26 @@ export interface ILancePlugin<
 	 * @returns {LANCE.Annotations} The Annotations manager associated with this plugin instance
 	 */
 	getAnnotations(): IAnnotationsManager;
+	/**
+	 * returns the DOM node correspoding to an annotation
+	 * @param {String} id The Annotation id
+	 */
+	getAnnotationNodeForId(id: string): HTMLElement;
+
+	/**
+	 * Return all the nodes associated with this annotation
+	 * @param annId 
+	 */
+	getAllAnnotationNodesForId(annId: string): HTMLElement[];
+
+	annotateWith(options: IAnnotateWithOptions): OperationPromise<IAnnotation>;
+
+	setAnnotationBookmark(options: IAnnotationBookmarkOptions): string;
+
+
 	readonly App: ILanceGlobals;
+
+	readonly isEnabled: boolean;
 }
 
 /**
