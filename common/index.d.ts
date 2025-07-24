@@ -462,7 +462,7 @@ export interface ICoreLoopIndexPlugin {
 	 * @param event 
 	 * @param data 
 	 */
-	fireEditorEvent(event: string, data?: any): boolean;
+	fireEditorEvent(event: string, data?: unknown): boolean;
 
 	// onEditorEvent<TEvent = unknown>(evt: string, handler: PluginEditorEventHandler<TEvent>): void;
 
