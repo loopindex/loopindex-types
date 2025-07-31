@@ -12,6 +12,11 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 	: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
 	: T;
 
+	/**
+	 * Allows using keyof vars as indices
+	 */
+export type KeyOf<TObject extends object> = (string & keyof TObject);
+
 export interface IDisposable {
 	dispose(): void;
 }

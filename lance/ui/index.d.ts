@@ -187,16 +187,6 @@ export interface IToolbarButton {
 
 export type OverflowPolicy = ("show" | "hide" | "fold" | "none");
 export type BlurPolicy = ("save" | "discard");
-export interface IUIGeneratorOptions {
-	// owner: IAnnotationsManager;
-	readonly generate: boolean;
-	readonly generateCSS: boolean;
-	readonly commentTemplate?: NodeOrSelector;
-	// styleUrls: Array<string>;
-	readonly toolbar: IToolbarConfiguration;
-	readonly overflow: OverflowPolicy;
-	readonly templateClasses: string;
-}
 
 export type CommentStylingType = "mention" | "link";
 /**
@@ -210,7 +200,6 @@ export interface IMentionOptions {
 	readonly policy: MentionPolicy;
 	readonly usersOnly: boolean;
 }
-
 
 export interface IAnnotationUIOptions {
 	readonly container: NodeOrSelector;
