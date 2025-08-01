@@ -1,5 +1,5 @@
 import { ILanceUser } from "..";
-import type { IAutogrowOptions, IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
+import type { ElementOrJQuery, IAutogrowOptions, IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
 import type { IAnnotation, IAnnotationsManager, ICommentID } from "../annotations";
 
 export type LanceUIType = "simple" | "aligned";
@@ -255,6 +255,14 @@ export interface ILanceUI extends IDisposable {
 	 */
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
 	getOwner(): IAnnotationsManager | null;
+			/**
+		 * @member LANCE.AnnotationsUI
+		 * @method localizeNode
+		 * @readonly
+		 * translates the marked placeholders in the text content and attributes of the node
+		 * using the current owner's localizer.
+		 */
+	localizeNode(targetNode: ElementOrJQuery): void;
 }
 
 export interface IMentionedUser {

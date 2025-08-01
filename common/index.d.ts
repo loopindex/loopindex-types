@@ -414,6 +414,13 @@ export interface ICoreLoopIndexPlugin {
 	setCommandsState(commands: string | string[], enable: boolean, active?: boolean): void;
 
 	/**
+	 * Get a localized version of the key, from the plugin's internal dictionary
+	 * @param key 
+	 */
+
+	getLocalizedString(key: string): string;
+
+	/**
 	 * Get the definitions of all the commands of this instance - command, title, iconUrl etc
 	 */
 	getCommands(): IClientCommandRecord[];
