@@ -436,6 +436,14 @@ interface IMutableFLITEConfiguration extends Mutable<IPluginConfig<IFLITETooltip
 
 }
 
+export interface IFLITEToggleTrackingOptions {
+	notify?: boolean;
+	force?: boolean;
+}
+
+export interface IAcceptRejectOneOptions {
+	autoNext?: boolean;
+}
 
 export type IFLITEConfiguration = Readonly<IMutableFLITEConfiguration>;
 export interface IFLITEPlugin<
@@ -446,6 +454,19 @@ export interface IFLITEPlugin<
 	extends ILoopIndexPlugin<TEditor, TConfig> {
 
 	readonly users: IUserManager<TUser>;
+
+	/**
+	 * Are changes tracked? Note that this property returns the overall tracking state, so e.g. it will be false when the document is in readonly mode.
+	 * 
+	 * If you want to know whether or not FLITE is set to track, you can use `<your plugin instance>.trackingState.isTracking`
+	 */
+	readonly isTracking: boolean;
+
+	/**
+	 * Are changes visible
+	 */
+	readonly isVisible: boolean;
+
 	/**
 	 * Set the name & id of the current user
 	 * @param {Object} info an object with the fields `name`, `id`
@@ -470,6 +491,16 @@ export interface IFLITEPlugin<
 	 * @param options
 	 */
 	getChanges(options: IChangeFilterOptions): IChangeSet;
+
+	toggleTracking(track?: boolean, options?: IFLITEToggleTrackingOptions | boolean): IFLITEPlugin;
+
+	acceptChange(node: Node, options?: IAcceptRejectOneOptions): boolean;
+
+	rejectChange(node: Node, options?: IAcceptRejectOneOptions): boolean;
+
+	toggleShow(show?: boolean, bNotify?: boolean): void;
+
+
 
 
 }
