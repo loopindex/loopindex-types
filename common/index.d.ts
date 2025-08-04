@@ -16,6 +16,7 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 	 * Allows using keyof vars as indices
 	 */
 export type KeyOf<TObject extends object> = (string & keyof TObject);
+export type AnyFunction = (...args: any[]) => unknown;
 
 export interface IDisposable {
 	dispose(): void;

@@ -1,6 +1,6 @@
 import { ElementOrJQuery } from "../common";
 import { IChangeFilterOptions, IChangeSet, IFLITEUser, ITrackedChange } from ".";
-import type { IDisposable, Nullable } from "../common";
+import type { AnyFunction, IDisposable, Nullable } from "../common";
 
 export interface ICleanDomOptions {
 	/**
@@ -83,4 +83,21 @@ export interface IFLITEChangeTracker extends IDisposable {
 	 * @param node 
 	 */
 	getChangeForId(id: string | null | undefined): Nullable<ITrackedChange>;
+
+	/**
+	 * @member IFLITEChangeTracker
+	 * @method startBatch
+	 * @since Version 1.7.05
+	 * Indicates that all the tracked changes from this point until the end of the batch
+	 * will have the same change id.
+	 * 
+	 * This method returns a function which is **the only way** to end the batch. Failing to
+	 * call this function will cause the tracker to be "stuck" in the same batch change, until
+	 * a document is loaded (e.g. after undo/redo).
+	 * 
+	 * If the tracker can't start a batch change (either a change is being processed or tracking is disabled), the method returns `null`.
+	 * @returns {Function|null} a function to call when you want to add the batch or `null`
+	 */
+	startBatch(): Nullable<AnyFunction>;
+
 }

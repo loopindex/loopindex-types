@@ -8,6 +8,7 @@ import type {
 	IPluginConfig, Mutable, ILoopIndexLogger,
 	IFroalaInitOptions
 } from "../common";
+import { IFLITEChangeTracker } from "./tracker";
 
 export type FLITECopyBehavior = "raw" | "clean";
 export type FLITESessionPolicy = "always" | "manual" | "never";
@@ -466,6 +467,11 @@ export interface IFLITEPlugin<
 	 * Are changes visible
 	 */
 	readonly isVisible: boolean;
+
+	/**
+	 * The tracking engine used by this plugin
+	 */
+	readonly tracker: IFLITEChangeTracker;
 
 	/**
 	 * Set the name & id of the current user
