@@ -57,7 +57,7 @@ export interface IFLITEChangeTracker extends IDisposable {
 	getWrappingChangeNode(node: Nullable<Node>, nodeOnly?: boolean): Nullable<HTMLElement>;
 	findNodeTrackingContext(node: Node, includeContainer?: boolean): IAPITrackingContext;
 	getNodeChangeId(node: Nullable<Node>): Nullable<string>;
-	getTrackedNodes(root?: ElementOrJQuery): JQuery;
+	getTrackedNodes(root?: ElementOrJQuery, changeType?: "insertType" | "deleteType"): JQuery;
 	hasChanges(): boolean;
 	setShowChanges(bShow: boolean): void;
 	// getDeleteClass(): string;
