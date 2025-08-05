@@ -1,9 +1,10 @@
 import { ILanceUser } from "..";
-import type { IAutogrowOptions, IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
+import type { ElementOrJQuery, IAutogrowOptions, IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
 import type { IAnnotation, IAnnotationsManager, ICommentID } from "../annotations";
 
+export type LanceUIType = "simple" | "aligned";
 export interface ICreateAnnotationsUIOptions {
-	readonly type: "simple" | "aligned";
+	readonly type: LanceUIType;
 }
 
 export interface ILanceUIEvents {
@@ -115,7 +116,7 @@ export interface ILanceUIEvents {
 	 * @param {String} annotationId The id of the annotation
 	 * @param {Boolean} cancel set to false to prevent further command processing
 	 */
-	readonly COMMENT_UI_BEFORE_COMMAND:  "commentui:before-command",
+	readonly COMMENT_UI_BEFORE_COMMAND: "commentui:before-command",
 
 	/**
 	 * @member LANCE.AnnotationsUI
@@ -163,38 +164,29 @@ export interface ILanceUIEvents {
 
 export interface IStaticAnnotationsUI {
 	readonly Events: Readonly<ILanceUIEvents>;
+	readonly instances: ReadonlyArray<ILanceUI>;
 }
-export declare interface IToolbarCommandRecord {
-	command: string;
-	iconUrl?: string;
-	svgUrl?: string;
-	svgData?: string;
-	title?: string;
-	label?: string;
-}
-
-export declare interface IToolbarConfiguration {
-	buttons: Array<IToolbarButton>;
-	commands: Array<IToolbarCommandRecord>;
+export interface IToolbarCommandRecord {
+	readonly command: string;
+	readonly iconUrl?: string;
+	readonly svgUrl?: string;
+	readonly svgData?: string;
+	readonly title?: string;
+	readonly label?: string;
 }
 
-export declare interface IToolbarButton {
-	command: string;
-	display?: "auto" | "show"
+export interface IToolbarConfiguration {
+	readonly buttons: ReadonlyArray<IToolbarButton>;
+	readonly commands: ReadonlyArray<IToolbarCommandRecord>;
 }
 
-export declare type OverflowPolicy = ("show" | "hide" | "fold" | "none");
-export declare type BlurPolicy = ("save" | "discard");
-export declare interface IUIGeneratorOptions {
-	// owner: IAnnotationsManager;
-	generate: boolean;
-	generateCSS: boolean;
-	commentTemplate?: NodeOrSelector;
-	// styleUrls: Array<string>;
-	toolbar: IToolbarConfiguration;
-	overflow: OverflowPolicy;
-	templateClasses: string;
+export interface IToolbarButton {
+	readonly command: string;
+	readonly display?: "auto" | "show"
 }
+
+export type OverflowPolicy = ("show" | "hide" | "fold" | "none");
+export type BlurPolicy = ("save" | "discard");
 
 export type CommentStylingType = "mention" | "link";
 /**
@@ -209,8 +201,7 @@ export interface IMentionOptions {
 	readonly usersOnly: boolean;
 }
 
-
-export declare interface IAnnotationUIOptions {
+export interface IAnnotationUIOptions {
 	readonly container: NodeOrSelector;
 	readonly owner: IAnnotationsManager;
 	readonly commentTimeFormat?: string;
@@ -244,9 +235,9 @@ export declare interface IAnnotationUIOptions {
 	readonly mention: IMentionOptions;
 }
 export interface IUIConfirmOptions {
-	message: string;
-	annotation: IAnnotation;
-	commentId: string;
+	readonly message: string;
+	readonly annotation: IAnnotation;
+	readonly commentId: string;
 }
 export type UIConfirmCallback = (options: IUIConfirmOptions) => Promise<boolean>;
 
@@ -264,17 +255,47 @@ export interface ILanceUI extends IDisposable {
 	 */
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
 	getOwner(): IAnnotationsManager | null;
+			/**
+		 * @member LANCE.AnnotationsUI
+		 * @method localizeNode
+		 * @readonly
+		 * translates the marked placeholders in the text content and attributes of the node
+		 * using the current owner's localizer.
+		 */
+	localizeNode(targetNode: ElementOrJQuery): void;
 }
 
 export interface IMentionedUser {
 	readonly name: string;
 	readonly user: Nullable<ILanceUser>;
+	/**
+	 * The full mention string, e.g. "@parker"
+	 */
+	readonly mention: string;
 }
 /**
  * These events are triggered through the UI's `events` member
  */
 
 export namespace LanceUIEvents {
+
+	interface ILanceUICreatedEvent {
+		readonly ui: ILanceUI;
+		readonly root: HTMLElement;
+	}
+
+	interface IAnnotationSelectedEvent {
+		readonly isSelected: boolean;
+		/**
+		 * JQuery wrapper of the node that contains this annotation's view
+		 */
+		readonly $node: JQuery;
+		readonly ui: ILanceUI;
+		/**
+		 * The id of the annotation whose view is de/selecetd
+		 */
+		readonly id: string;
+	}
 
 	/**
 	 * Dispatched before (`"commentui:before-command"`) and after (`"commentui:after-command"`).

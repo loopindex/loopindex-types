@@ -593,8 +593,9 @@ export namespace LanceEvents {
 	}
 
 	interface IAnnotationCreatedEvent extends IAnnotationEvent {
-		readonly next: string;
-		readonly context?: any;
+		// context set by the originator of the event
+		readonly context?: unknown;
+		// ID of the annotation before which this one is placed
 		readonly before?: string;
 		readonly range?: Range;
 	}
@@ -605,6 +606,15 @@ export namespace LanceEvents {
 
 	interface IAnnotationPreselectEvent extends ILoopIndexPluginEvent, IAnnotationEvent {
 		readonly isSelected: boolean;
+	}
+
+	interface ISequenceChangedEvent {
+		readonly sequence: ReadonlyArray<string>;
+	}
+
+	interface IAnnotationResolvedEvent {
+		readonly annotation: IAnnotation;
+		readonly context?: unknown;
 	}
 
 }

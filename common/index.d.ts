@@ -12,6 +12,12 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 	: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
 	: T;
 
+	/**
+	 * Allows using keyof vars as indices
+	 */
+export type KeyOf<TObject extends object> = (string & keyof TObject);
+export type AnyFunction = (...args: any[]) => unknown;
+
 export interface IDisposable {
 	dispose(): void;
 }
@@ -409,6 +415,13 @@ export interface ICoreLoopIndexPlugin {
 	setCommandsState(commands: string | string[], enable: boolean, active?: boolean): void;
 
 	/**
+	 * Get a localized version of the key, from the plugin's internal dictionary
+	 * @param key 
+	 */
+
+	getLocalizedString(key: string): string;
+
+	/**
 	 * Get the definitions of all the commands of this instance - command, title, iconUrl etc
 	 */
 	getCommands(): IClientCommandRecord[];
@@ -455,14 +468,34 @@ export interface ICoreLoopIndexPlugin {
 	 */
 	getEditorUIContainer(): Nullable<Window>;
 
-	addDictionary(locale: string, dictionary: Record<string, string>): void;
+	/**
+	 * @method addDictionary
+	 * @member App.LoopindexPlugin
+	 * With this method you can add language translations to the plugin, or modify the current translation for a locale.
+	 * @param {string} locale The code for the locale to which the dictionary is added, e.g. `"fr"`, `"ar"`, `"zh"`. If the locale is already defined, the
+	 * provided dictionary will override the current definitions, otherwise the language will be added.
+	 * @param {Object} dictionary An object with translation codes as keys and translation values as values. The values are usually strings, but they can 
+	 * also be arrays of strings or objects of the type `{ [key: string] : string }`.
+	 */
+
+	addDictionary(locale: string, dictionary: Record<string, string | string[] | Record<string, string>>): void;
+
+	/**
+	 * @method setlanguage
+	 * @member App.LoopindexPlugin
+	 * Set the language used in the plugin's UI (toolbar buttons, menus, tooltips, sidebar etc.)
+	 * @returns {Promise} A promise that resolves to true if the language was loaded successfully.
+	 * @param {string} locale The code for the locale to use, e.g. `"fr"`, `"ar"`, `"zh"`.
+	 * The locale must be defined, either by the plugin or through the {@link App.LoopindexPlugin#method-addDictionary addDictionary method}.
+	 */
+	setLanguage(langCode: string): Promise<boolean>;
 
 	/**
 	 * trigger an event thru the editor
 	 * @param event 
 	 * @param data 
 	 */
-	fireEditorEvent(event: string, data?: any): boolean;
+	fireEditorEvent(event: string, data?: unknown): boolean;
 
 	// onEditorEvent<TEvent = unknown>(evt: string, handler: PluginEditorEventHandler<TEvent>): void;
 
