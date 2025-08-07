@@ -96,6 +96,12 @@ export interface ILancePlugin<
 	 */
 	getAllAnnotationNodesForId(annId: string): HTMLElement[];
 
+	/**
+	 * Return all the annotation nodes in the document
+	 * @param type If provided, return only annotation nodes of this type 
+	 */
+	getAllAnnotationNodes(type?: RuntimeAnnotationType): HTMLElement[];
+
 	annotateWith(options: IAnnotateWithOptions): OperationPromise<IAnnotation>;
 
 	setAnnotationBookmark(options: IAnnotationBookmarkOptions): string;
