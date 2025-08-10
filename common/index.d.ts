@@ -12,9 +12,11 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 	: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
 	: T;
 
-	/**
-	 * Allows using keyof vars as indices
-	 */
+export type PartialWith<TObject extends {}, TKey extends keyof TObject = keyof TObject> = Pick<TObject, TKey> & Partial<TObject>;	
+
+/**
+ * Allows using keyof vars as indices
+ */
 export type KeyOf<TObject extends object> = (string & keyof TObject);
 export type AnyFunction = (...args: any[]) => unknown;
 
