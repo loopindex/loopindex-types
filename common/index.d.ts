@@ -72,6 +72,8 @@ export interface ILoopIndexUser<TUserType extends string = string> {
 
 export type UserEvents = "beforeadd" | "add" | "remove" | "update" | "select";
 
+export type EditorTheme = "dark" | "light" | "browser";
+
 /**
  * All relevant methods return clones of the stored objects
  */
@@ -254,7 +256,7 @@ export interface IPluginUserConfig<
 	 */
 	readonly assetPath: string;
 
-	readonly editorTheme: "dark" | "light" | "browser";
+	readonly editorTheme: EditorTheme;
 
 	readonly tooltips: Partial<UserTooltipsConfig<TTooltips>>;
 

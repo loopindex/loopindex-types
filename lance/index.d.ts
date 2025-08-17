@@ -1,14 +1,12 @@
 
-import { ILoopIndexGlobals } from "..";
+import type { ILoopIndexGlobals } from "..";
 import type { 
-	IFroalaCommandRecord, FroalaModule,	IPluginUserConfig,
+	FroalaModule, IPluginUserConfig,
 	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
 	ILoopIndexPlugin, Mutable, ICommandRecord,
-	IPluginConfig,
-	ILoopIndexLogger,
-	IFroalaInitOptions,
-	OperationPromise,
-	RangeInfo
+	IPluginConfig, ILoopIndexLogger,
+	IFroalaInitOptions,	OperationPromise,
+	RangeInfo, Nullable
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
@@ -88,7 +86,7 @@ export interface ILancePlugin<
 	 * returns the DOM node correspoding to an annotation
 	 * @param {String} id The Annotation id
 	 */
-	getAnnotationNodeForId(id: string): HTMLElement;
+	getAnnotationNodeForId(id: string): Nullable<HTMLElement>;
 
 	/**
 	 * Return all the nodes associated with this annotation
@@ -126,6 +124,7 @@ export type RuntimeAnnotationType = "pin" | "text";
 export type AnnotationType = RuntimeAnnotationType | "all" | "pin/start" | "pin/end";
 export type ReadOnlyPolicy = "none" | "full";
 export type CommentSelectionPolicy = "full" | "caret" | "none";
+export type EditorScrollType = "smooth" | "live";
 
 export interface IResolveDisplayPolicy{
 	readonly display: ResolvedDisplayStyle;
@@ -225,7 +224,7 @@ export interface ILanceConfiguration extends IPluginConfig<ILanceTooltipOptions>
 	/**
 	 * Defaults to true
 	 */
-	readonly autoScroll: boolean | "smooth" | "live";
+	readonly autoScroll: boolean | EditorScrollType;
 	/**
 	 * Defaults to `annotation`
 	 */

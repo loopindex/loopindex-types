@@ -110,13 +110,14 @@ export interface IAnnotation {
 	setCommentText(commentId: string, text: string): void;
 	isFirst(commendId: string): boolean;
 	isLast(commendId: string): boolean;
-	getOpenerId(): string;
+	getOpenerId(): Nullable<string>;
 	addComment(props: any): IComment;
 	deleteComment(commentId: string): boolean;
 	selectComment(id: string, bSelected: boolean): void;
 	isResolved(): boolean;
 	isSelected(): boolean;
-	firstComment(): IComment;
+	lastComment(): Nullable<IComment>;
+	firstComment(): Nullable<IComment>;
 }
 
 export type ISerializedComment = IComment;
@@ -486,8 +487,8 @@ export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> exte
 	countAnnotations(excludeEmpty?: true): number;
 	getAnnotationByIndex(index: number): Nullable<IAnnotation>;
 	deleteComment(annotationId: string, commentId: string): this;
-	getComment(annotationId: string, commentId: string): ICommentAndStatus;
-	revertComment(annotationId: string, commentId: string, allowDelete: boolean): IComment;
+	getComment(annotationId: string, commentId: string): Nullable<ICommentAndStatus>;
+	revertComment(annotationId: string, commentId: string, allowDelete: boolean): Nullable<IComment>;
 	setCommentText(annotationId: string | IAnnotation, commentId: string, text: string): Nullable<IComment>;
 	/**
 	 * @deprecated Use `addCommentBy` instead
