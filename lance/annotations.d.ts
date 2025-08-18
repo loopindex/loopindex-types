@@ -195,6 +195,11 @@ export interface IAddCommentOptions {
 	 * Defaults to the current user
 	 */
 	readonly userId?: string;
+	readonly mentions?: ReadonlyArray<string>;
+}
+
+export interface IUpdateCommentOptions extends Omit<IAddCommentOptions, "userId"> {
+	readonly commentId: string;
 }
 
 export interface IAnnotationManagerEvents {
@@ -489,6 +494,13 @@ export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> exte
 	deleteComment(annotationId: string, commentId: string): this;
 	getComment(annotationId: string, commentId: string): Nullable<ICommentAndStatus>;
 	revertComment(annotationId: string, commentId: string, allowDelete: boolean): Nullable<IComment>;
+	updateComment(options: IUpdateCommentOptions): Nullable<IComment>;
+	/**
+	 * @deprecated Use `updateComment`
+	 * @param annotationId 
+	 * @param commentId 
+	 * @param text 
+	 */
 	setCommentText(annotationId: string | IAnnotation, commentId: string, text: string): Nullable<IComment>;
 	/**
 	 * @deprecated Use `addCommentBy` instead
@@ -583,6 +595,7 @@ export namespace LanceEvents {
 	interface ICommentChangedEvent extends IAnnotationEvent {
 		readonly comment: IComment;
 		readonly status: ICommentStatus;
+		readonly mentions: ReadonlyArray<string>;
 	}
 
 	interface IAnnotationAttributesEvent extends IAnnotationEvent {
