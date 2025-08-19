@@ -3,6 +3,7 @@ export interface IAlertOptions {
 	readonly text: string;
 	readonly title?: string;
 	readonly type?: AlertType;
+	readonly timeoutMsecs?: number;
 }
 
 export interface IConfirmOptions extends IAlertOptions {
