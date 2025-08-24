@@ -252,6 +252,10 @@ export interface ILanceUI extends IDisposable {
 }
 
 export interface IMentionedUser {
+	/**
+	 * If the mention references an existing users, this is the user's full name, otherwise
+	 * it's the mentioned name without @
+	 */
 	readonly name: string;
 	readonly user: Nullable<ILanceUser>;
 	/**

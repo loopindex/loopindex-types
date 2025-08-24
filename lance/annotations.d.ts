@@ -5,6 +5,7 @@ import type {
 	ILoopIndexPluginEvent,
 	IDisposable
 } from "../common/";
+import { IMentionedUser } from "./ui";
 
 
 export interface IStaticAnnotations {
@@ -195,7 +196,10 @@ export interface IAddCommentOptions {
 	 * Defaults to the current user
 	 */
 	readonly userId?: string;
-	readonly mentions?: ReadonlyArray<string>;
+	/**
+	 * already filtered for duplicates
+	 */
+	readonly mentions?: ReadonlyArray<IMentionedUser>;
 }
 
 export interface IUpdateCommentOptions extends Omit<IAddCommentOptions, "userId"> {
@@ -595,7 +599,7 @@ export namespace LanceEvents {
 	interface ICommentChangedEvent extends IAnnotationEvent {
 		readonly comment: IComment;
 		readonly status: ICommentStatus;
-		readonly mentions: ReadonlyArray<string>;
+		readonly mentions: ReadonlyArray<IMentionedUser>;
 	}
 
 	interface IAnnotationAttributesEvent extends IAnnotationEvent {

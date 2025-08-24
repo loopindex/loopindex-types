@@ -20,7 +20,9 @@ export type AttributePolicy = "compact" | "dom" | "full" | "export";
 export type EditorDestroyPolicy = "accept" | "reject" | "hide" | "none";
 export type IMEMixedPolicy = "hide" | "none";
 export type SpellcheckAttributePolicy = "none" | "all" | "delete";
-export type ContainerTrackingStyle = "border" | "marker"
+export type ContainerTrackingStyle = "border" | "marker";
+export type QuitTrackingPolicy = "accept" | "reject" | boolean;
+
 
 export interface IFLITEUserStyle {
 	readonly "delete"?: {
@@ -255,7 +257,7 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	 * @member FLITE.configuration
 	 * @property {Boolean | Function} allowQuitWithChanges=false
 	 */
-	readonly allowQuitWithChanges: boolean | ((plugin: IFLITEPlugin) => Promise<Boolean | "accept" | "reject">);
+	readonly allowQuitWithChanges: QuitTrackingPolicy | ((plugin: IFLITEPlugin) => QuitTrackingPolicy | Promise<QuitTrackingPolicy>);
 
 	/**
 	 * @member FLITE.configuration
@@ -715,7 +717,7 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	 * @member FLITE.configuration
 	 * @property {Boolean | Function} allowQuitWithChanges=false
 	 */
-	allowQuitWithChanges: boolean | ((plugin: IFLITEPlugin) => Promise<Boolean | "accept" | "reject">);
+	allowQuitWithChanges: boolean | ((plugin: IFLITEPlugin) => QuitTrackingPolicy | Promise<QuitTrackingPolicy>);
 
 	/**
 	 * @member FLITE.configuration

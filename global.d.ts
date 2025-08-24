@@ -7,9 +7,13 @@ interface LIGlobals {
     readonly LANCE: ILanceGlobals;				
 }
 
+export interface LoopIndexPluginGlobals extends ILoopIndexGlobals {
+    readonly FLITE: IFLITEGlobals;
+    readonly LANCE: ILanceGlobals;				
+}
 declare global {
   interface Window {  
-	  readonly LOOPINDEX: ILoopIndexGlobals & LIGlobals;
+	  readonly LOOPINDEX: LoopIndexPluginGlobals;
   }
 }
 
