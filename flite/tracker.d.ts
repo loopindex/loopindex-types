@@ -98,6 +98,6 @@ export interface IFLITEChangeTracker extends IDisposable {
 	 * If the tracker can't start a batch change (either a change is being processed or tracking is disabled), the method returns `null`.
 	 * @returns {Function|null} a function to call when you want to add the batch or `null`
 	 */
-	startBatch(): Nullable<AnyFunction>;
+	startBatch(): AnyFunction;
 
 }
