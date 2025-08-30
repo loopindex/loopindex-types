@@ -22,6 +22,7 @@ export type IMEMixedPolicy = "hide" | "none";
 export type SpellcheckAttributePolicy = "none" | "all" | "delete";
 export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
+export type SpellCheckPolicy = "editor" | "browser" | "none";
 
 
 export interface IFLITEUserStyle {
@@ -311,11 +312,16 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	readonly showChangesWhenInactive: boolean;
 
 	/**
-	 * @member FLITE.configuration
-	 * @property {Boolean} [trackSpellcheck=false]
-	 * if `false`, hide tracking styles when not tracking
+	 * @member FLITE.Configuration
+	 * @property {SpellCheckPolicy[]} [trackSpellcheck="browser"]
+	 * Determins how FLITE tracks changes made by the running speller
+	 * 
+	 * - `"none"` - do not try to track spelling changes
+	 * - `"editor"` - try to track spelling changes made by the editor's speller
+	 * - `"browser"` - (Default) try to track spelling changes made by the browser's speller
+	 * - 
 	 */
-	readonly trackSpellcheck: boolean;
+	readonly trackSpellcheck: ReadonlyArray<SpellCheckPolicy>;
 
 	/**
 	* @member FLITE.configuration
@@ -440,7 +446,6 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	readonly useDocumentUserData: boolean;
 
 	readonly containerTrackingStyle: ReadonlyArray<ContainerTrackingStyle>;
-
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -775,7 +780,7 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	 * @property {Boolean} [trackSpellcheck=false]
 	 * if `false`, hide tracking styles when not tracking
 	 */
-	trackSpellcheck: boolean;
+	trackSpellcheck: boolean | SpellCheckPolicy | SpellCheckPolicy[];
 
 	/**
 	* @member FLITE.configuration
