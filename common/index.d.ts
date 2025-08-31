@@ -329,7 +329,8 @@ export interface ILoopIndexPluginEvent {
  */
 export type PluginEvents = "config";
 
-export type RangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer" | "commonAncestorContainer">;
+export type BaseRangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer">;
+export type RangeInfo = BaseRangeInfo & Pick<Range, "commonAncestorContainer">;
 
 /**
  * Useful for the froala init function in plugins
