@@ -22,7 +22,7 @@ export type IMEMixedPolicy = "hide" | "none";
 export type SpellcheckAttributePolicy = "none" | "all" | "delete";
 export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
-export type SpellCheckPolicy = "editor" | "browser" | "none";
+export type SpellCheckPolicy = "editor" | "browser";
 /**
  * `"delete"` - if a table row is removed, discard its data
  * `"preserve"` - Move content of removed table rows outside the table
