@@ -23,6 +23,11 @@ export type SpellcheckAttributePolicy = "none" | "all" | "delete";
 export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
 export type SpellCheckPolicy = "editor" | "browser" | "none";
+/**
+ * `"delete"` - if a table row is removed, discard its data
+ * `"preserve"` - Move content of removed table rows outside the table
+ */
+export type TableContentPolicy = "delete" | "preserve";
 
 
 export interface IFLITEUserStyle {
@@ -446,6 +451,8 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	readonly useDocumentUserData: boolean;
 
 	readonly containerTrackingStyle: ReadonlyArray<ContainerTrackingStyle>;
+
+	readonly tableContentPolicy: TableContentPolicy;
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -907,6 +914,8 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	useDocumentUserData: boolean;
 
 	containerTrackingStyle: ContainerTrackingStyle | ContainerTrackingStyle[];
+
+	tableContentPolicy: TableContentPolicy;
 
 }
 
