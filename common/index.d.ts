@@ -1,3 +1,5 @@
+import type { IModalAlertManager } from "./alerts";
+
 /**
  * The module/global object passed to the Froala specific plugin init functions
  */
@@ -391,6 +393,7 @@ export interface ICoreLoopIndexPlugin {
 	readonly version: string;
 	readonly build: string;
 	readonly events: IEvents<PluginEvents>;
+	readonly alertManager: IModalAlertManager;
 
 	/**
 	 * Quick ref to jquery

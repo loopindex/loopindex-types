@@ -15,6 +15,11 @@ export interface IPromptOptions extends IConfirmOptions {
 	readonly defaultValue: string;
 }
 
+export interface IAlertReport {
+	readonly alert: number;
+	readonly confirm: number;
+	readonly prompt: number;
+}
 
 export interface IModalAlertMethods {
 	alert(options: IAlertOptions): Promise<void>;
@@ -24,4 +29,5 @@ export interface IModalAlertMethods {
 
 export interface IModalAlertManager extends IModalAlertMethods {
 	configure(methods: Partial<IModalAlertMethods>): void;
+	count(): IAlertReport;
 }
