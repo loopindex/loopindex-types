@@ -1,3 +1,5 @@
+import type { IModalAlertManager } from "./alerts";
+
 /**
  * The module/global object passed to the Froala specific plugin init functions
  */
@@ -12,9 +14,11 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 	: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
 	: T;
 
-	/**
-	 * Allows using keyof vars as indices
-	 */
+export type PartialWith<TObject extends {}, TKey extends keyof TObject = keyof TObject> = Pick<TObject, TKey> & Partial<TObject>;	
+
+/**
+ * Allows using keyof vars as indices
+ */
 export type KeyOf<TObject extends object> = (string & keyof TObject);
 export type AnyFunction = (...args: any[]) => unknown;
 
@@ -69,6 +73,8 @@ export interface ILoopIndexUser<TUserType extends string = string> {
 }
 
 export type UserEvents = "beforeadd" | "add" | "remove" | "update" | "select";
+
+export type EditorTheme = "dark" | "light" | "browser";
 
 /**
  * All relevant methods return clones of the stored objects
@@ -252,7 +258,7 @@ export interface IPluginUserConfig<
 	 */
 	readonly assetPath: string;
 
-	readonly editorTheme: "dark" | "light" | "browser";
+	readonly editorTheme: EditorTheme;
 
 	readonly tooltips: Partial<UserTooltipsConfig<TTooltips>>;
 
@@ -325,7 +331,8 @@ export interface ILoopIndexPluginEvent {
  */
 export type PluginEvents = "config";
 
-export type RangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer" | "commonAncestorContainer">;
+export type BaseRangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer">;
+export type RangeInfo = BaseRangeInfo & Pick<Range, "commonAncestorContainer">;
 
 /**
  * Useful for the froala init function in plugins
@@ -386,6 +393,7 @@ export interface ICoreLoopIndexPlugin {
 	readonly version: string;
 	readonly build: string;
 	readonly events: IEvents<PluginEvents>;
+	readonly alertManager: IModalAlertManager;
 
 	/**
 	 * Quick ref to jquery

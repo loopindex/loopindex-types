@@ -146,20 +146,6 @@ export interface ILanceUIEvents {
 	 */
 	COMMENT_UI_MENTION_ACTIVE: "commentui:mention:active";
 
-	/**
-	 * @member LANCE.AnnotationsUI
-	 * @event COMMENT_UI_MENTION_ADD
-	 * 
-	 * One ore more @mention sequences were added to a comment
-	 * All parameters are enclosed in an Event object
-	 * @param {IMentionedUser[]} The mentioned users added
-	 * @param {string} annotationId The thread id
-	 * @param {string} commentId The comment id
-	 * @param {ILanceUI} ui the containing UI
-	 * See {@link LanceUIEvents.IMentionAddEvent}
-	 */
-	COMMENT_UI_MENTION_ADD: "commentui:mention:add";
-
 }
 
 export interface IStaticAnnotationsUI {
@@ -266,6 +252,10 @@ export interface ILanceUI extends IDisposable {
 }
 
 export interface IMentionedUser {
+	/**
+	 * If the mention references an existing users, this is the user's full name, otherwise
+	 * it's the mentioned name without @
+	 */
 	readonly name: string;
 	readonly user: Nullable<ILanceUser>;
 	/**
