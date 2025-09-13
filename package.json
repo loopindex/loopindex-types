@@ -1,11 +1,11 @@
 {
   "name": "loopindex-types",
-  "version": "1.2.22",
+  "version": "1.2.23",
   "license": "UNLICENSED",
   "dependencies": {
-    "@types/jquery": "^3.5.32"
+    "@types/jquery": "^3.5.33"
   },
   "scripts": {
-    "postinstall": "node -e \"const fs = require('fs');fs.writeFileSync('log.txt', 'logged');\""
+    "postinstall": "node hooks/post-install"
   }
 }
