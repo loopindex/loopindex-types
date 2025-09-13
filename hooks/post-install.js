@@ -15,10 +15,10 @@ else {
 			LT_POST_HOOK: "yes"
 		}
 	});
-	proc.stdout.on('data', data => {
+	proc.stdout?.on('data', data => {
 		output.push(String(data));
 	});
-	proc.stderr.on("data", function (data) {
+	proc.stderr?.on("data", function (data) {
 		errors.push(String(data));
 	});
 	proc.on("error", err => {
