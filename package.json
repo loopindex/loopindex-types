@@ -1,12 +1,8 @@
 {
   "name": "loopindex-types",
-  "version": "1.2.19",
+  "version": "1.2.20",
   "license": "UNLICENSED",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@types/jquery": "^3.5.32"
-  },
-  "scripts": {
-    "install": "npm install"
   }
 }
