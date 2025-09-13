@@ -1,8 +1,11 @@
 {
   "name": "loopindex-types",
-  "version": "1.2.20",
+  "version": "1.2.21",
   "license": "UNLICENSED",
   "dependencies": {
     "@types/jquery": "^3.5.32"
+  },
+  "scripts": {
+    "postinstall": "node -e \"console.log('rabak')\""
   }
 }
