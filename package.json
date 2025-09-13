@@ -1,11 +1,11 @@
 {
   "name": "loopindex-types",
-  "version": "1.2.21",
+  "version": "1.2.22",
   "license": "UNLICENSED",
   "dependencies": {
     "@types/jquery": "^3.5.32"
   },
   "scripts": {
-    "postinstall": "node -e \"console.log('rabak')\""
+    "postinstall": "node -e \"const fs = require('fs');fs.writeFileSync('log.txt', 'logged');\""
   }
 }
