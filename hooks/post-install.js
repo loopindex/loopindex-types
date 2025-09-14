@@ -9,7 +9,7 @@ const ts = () => {
 }
 
 const logIt = (name, msg) => {
-	fs.writeFileSync(name, `${ts()}: ${msg}`);
+	// fs.writeFileSync(name, `${ts()}: ${msg}`);
 }
 
 const guard = process.env.LT_POST_HOOK;
