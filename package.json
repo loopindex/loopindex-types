@@ -1,9 +1,11 @@
 {
   "name": "loopindex-types",
-  "version": "1.2.16",
+  "version": "1.2.30",
   "license": "UNLICENSED",
-  "dependencies": {},
-  "devDependencies": {
-    "@types/jquery": "^3.5.32"
+  "dependencies": {
+    "@types/jquery": "^3.5.33"
+  },
+  "scripts": {
+    "postinstall": "node hooks/post-install"
   }
 }

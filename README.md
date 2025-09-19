@@ -33,9 +33,12 @@ Or
     npm update loopindex-types
 
 
-### Trouble shooting updates
+### Troubleshooting updates
 
-`yarn` may fail to update the package, if the cached copy has been edited (usually by mistake). In this case,
+When installing projects that use `loopindex-types` as a dependency, `yarn` may fail to update the package, indicating a problem
+with the locally cached copy. Two common reasons are a reset in the package's `master` branch, or an accidental
+edit in the cached copy.
+
 removing the module from the cache will solve the problem. You can either clean completely:
 
     yarn cache clean
