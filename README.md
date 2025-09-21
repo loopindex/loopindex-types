@@ -21,6 +21,12 @@ import type { IFLITEAppGlobals, IFLITEPlugin, FLITEEvents } from "loopindex-type
 import type { Nullable, Mutable, IEvents } from "loopindex-types";
 ```
 
+### Compilation Errors
+
+Your typescript source may fail to compile after importing some LoopIndex type declarations, due to
+some unidentified `JQueryXXX` symbols. This happens when the `types` field is defined in your `tsconfig.json`.
+In this case, please add `"jquery"` to the `types` array. No need to define or install the dependency - this is done inside
+the `loopindex-types` module.
 
 ### Updating the module
 
