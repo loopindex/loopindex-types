@@ -40,9 +40,14 @@ export interface ICommandStatus {
 	readonly active?: boolean;
 }
 
+export interface IEventListenerOptions {
+	readonly scope: unknown;
+	readonly count: number;
+}
+
 export interface IEvents<TEvent extends string = string> extends IDisposable {
 	// notifyListeners(event: TEvent, ...args: any[]): void;
-	on(what: TEvent | TEvent[], callback: Function, scope?: object, options?: object): IEvents<TEvent>;
+	on(what: TEvent | TEvent[], callback: Function, options?: Partial<IEventListenerOptions>): IEvents<TEvent>;
 	/**
 	 * to remove all listeners associated with a scope:
 	 * - If your scope is an object, just pass it as the first param
@@ -50,13 +55,14 @@ export interface IEvents<TEvent extends string = string> extends IDisposable {
 	 * @param eventOrScope 
 	 * @param scopeOrCallback 
 	 */
-	off(eventOrScope?: TEvent | TEvent[] | object | null, scopeOrCallback?: object | Function): IEvents<TEvent>;
+	off(eventOrScope?: TEvent | TEvent[] | object | null, scopeOrCallback?: object | AnyFunction): IEvents<TEvent>;
 	removeAllListeners(): IEvents<TEvent>;
-	muteListener(listener: any, mute: boolean): IEvents<TEvent>;
+	muteListener(scope: unknown, mute: boolean): IEvents<TEvent>;
 	muteEvents(): IEvents<TEvent>;
 	unmuteEvents(): IEvents<TEvent>;
-	once(event: TEvent | TEvent[], callback: Function, scope?: object, options?: any): IEvents<TEvent>;
-	trigger(event: TEvent, ...args: any[]): IEvents<TEvent>;
+	once(event: TEvent | TEvent[], callback: AnyFunction, scope?: unknown): IEvents<TEvent>;
+	trigger(event: TEvent, ...args: unknown[]): IEvents<TEvent>;
+	hasListener(event: TEvent, scope?: unknown): boolean;
 }
 
 export interface ILoopIndexUser<TUserType extends string = string> {
