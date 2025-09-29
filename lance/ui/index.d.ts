@@ -156,14 +156,16 @@ export interface IToolbarCommandRecord {
 	readonly command: string;
 	readonly iconUrl?: string;
 	readonly svgUrl?: string;
+	readonly htmlData?: string;
 	readonly svgData?: string;
 	readonly title?: string;
 	readonly label?: string;
+	readonly classNames?: string | string[];
 }
 
 export interface IToolbarConfiguration {
 	readonly buttons: ReadonlyArray<IToolbarButton>;
-	readonly commands: ReadonlyArray<IToolbarCommandRecord>;
+	readonly commands: ReadonlyArray<Pick<IToolbarCommandRecord, "command"> & Partial<IToolbarCommandRecord>>;
 }
 
 export interface IToolbarButton {
