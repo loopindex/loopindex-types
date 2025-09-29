@@ -173,6 +173,7 @@ export interface IToolbarButton {
 
 export type OverflowPolicy = ("show" | "hide" | "fold" | "none");
 export type BlurPolicy = ("save" | "discard");
+export type ResolvedDisplayPolicy = ("show" | "hide" | "fold");
 
 export type CommentStylingType = "mention" | "link";
 /**
@@ -219,6 +220,10 @@ export interface IAnnotationUIOptions {
 	 */
 	readonly transformTypes: CommentStylingType[];
 	readonly mention: IMentionOptions;
+	readonly placeholderText: string;
+	readonly resolvedDisplayPolicy: ResolvedDisplayPolicy;
+
+
 }
 export interface IUIConfirmOptions {
 	readonly message: string;
