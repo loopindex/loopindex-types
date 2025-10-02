@@ -210,13 +210,13 @@ export type TPluginConfigKey<TConfig extends IPluginConfig> = PluginConfiguratio
 export type TPluginConfigValue<TConfig extends IPluginConfig, TKey extends TPluginConfigKey<TConfig>> = TConfig[TKey];
 export type TPluginConfigResult<TConfig extends IPluginConfig, TKey,
 	TValue> = TKey extends undefined ?
-	TConfig
-	: TKey extends TPluginConfigKey<TConfig> ?
-	TValue extends undefined ?
-	TConfig[TKey]
-	: TValue extends TPluginConfigValue<TConfig, TKey> ?
-	TConfig
-	: never
+		TConfig
+		: TKey extends TPluginConfigKey<TConfig> ?
+			TValue extends undefined ?
+			TConfig[TKey]
+		: TValue extends TPluginConfigValue<TConfig, TKey> ?
+			TConfig
+			: never
 	: never;
 
 
@@ -393,7 +393,22 @@ export type AutogrowAction = "delete" | "mirror";
 
 
 
-// export type PluginEditorEventHandler<TEvent = unknown> = (evt: TEvent) => unknown;
+export interface ILogEditorEventsOptions {
+	log: boolean;
+	/**
+	 * Event names to report (overrides `exclude`)
+	 */
+	include?: string | string[];
+	/**
+	 * Event names to exclude from reporting, unless `include` was specified
+	 */
+	exclude?: string | string[];
+
+	/**
+	 * If true, maintain a map with the number of events for each monitored event
+	 */
+	debug?: boolean;
+}
 
 export interface ICoreLoopIndexPlugin {
 	readonly version: string;
@@ -456,7 +471,7 @@ export interface ICoreLoopIndexPlugin {
 	 * @member FLITE.FLITEPlugin
 	 * @param log 
 	 */
-	logEditorEvents(log: boolean): void;
+	logEditorEvents(options: ILogEditorEventsOptions): void;
 
 	/**
 	 * Async set language, returns success (internally gets an error string)
