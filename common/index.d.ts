@@ -256,7 +256,7 @@ export interface IPluginUserConfig<
 	 * @property {Boolean} logEvents
 	 * If true, log editor events through the loopindex logger
 	 */
-	readonly logEvents: boolean;
+	readonly logEvents: boolean | PartialWith<ILogEditorEventsOptions, "log"> ;
 
 	/**
 	 * path to add to the plugin's path when loading plugin assets, so
@@ -301,7 +301,7 @@ export interface IPluginConfig<
 	 * @property {Boolean} logEvents
 	 * If true, log editor events through the loopindex logger
 	 */
-	readonly logEvents: boolean;
+	readonly logEvents: ILogEditorEventsOptions;
 
 	/**
 	 * path to add to the plugin's path when loading plugin assets, so
@@ -394,20 +394,25 @@ export type AutogrowAction = "delete" | "mirror";
 
 
 export interface ILogEditorEventsOptions {
-	log: boolean;
+	readonly log: boolean;
 	/**
 	 * Event names to report (overrides `exclude`)
 	 */
-	include?: string | string[];
+	readonly include?: string | string[];
 	/**
 	 * Event names to exclude from reporting, unless `include` was specified
 	 */
-	exclude?: string | string[];
+	readonly exclude?: string | string[];
 
 	/**
 	 * If true, maintain a map with the number of events for each monitored event
 	 */
-	debug?: boolean;
+	readonly debug?: boolean;
+
+	/**
+	 * If true, logger.trace instead of log
+	 */
+	readonly trace?: boolean;
 }
 
 export interface ICoreLoopIndexPlugin {
@@ -469,9 +474,9 @@ export interface ICoreLoopIndexPlugin {
 	 * events. Selection, focus and mouse events are filtered out for the clarity and brevity
 	 * of the log.
 	 * @member FLITE.FLITEPlugin
-	 * @param log 
+	 * @param options log options or boolean
 	 */
-	logEditorEvents(options: ILogEditorEventsOptions): void;
+	logEditorEvents(options: ILogEditorEventsOptions | boolean): void;
 
 	/**
 	 * Async set language, returns success (internally gets an error string)
