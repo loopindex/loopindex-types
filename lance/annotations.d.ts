@@ -387,10 +387,10 @@ export interface IAnnotationManagerEvents {
 		 * between the plugin and the UI. It notifies the listeners that the visiblity of some annotation nodes has changed  {@link LANCE.AnnotationsUI}
 		 * 
 		 * <strong>Note</strong>: Access this event name through `App.LANCE.Annotations.Events.Host`
-		 * @event ANNOTATION_NODES_VISIBLITY
-		 * @param {IAnnotationNodeVisibilityRecord[]} nodes { node, annotationId, visiblity }
+		 * @event ANNOTATION_NODES_VISIBILITY
+		 * @param {IAnnotationNodeVisibilityRecord[]} nodes { node, annotationId, visibility }
 		 */
-		ANNOTATION_NODES_VISIBLITY: "annotation:node-visiblity";
+		ANNOTATION_NODES_VISIBILITY: "annotation:node-visibility";
 
 		/**
 		 * @member LANCE.Annotations

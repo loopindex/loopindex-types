@@ -15,6 +15,7 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 	: T;
 
 export type PartialWith<TObject extends {}, TKey extends keyof TObject = keyof TObject> = Pick<TObject, TKey> & Partial<TObject>;	
+export type PartialWithout<TObject extends {}, TKey extends keyof TObject> = Omit<TObject, TKey> & Partial<TObject>;	
 
 /**
  * Allows using keyof vars as indices
@@ -40,9 +41,14 @@ export interface ICommandStatus {
 	readonly active?: boolean;
 }
 
+export interface IEventListenerOptions {
+	readonly scope: unknown;
+	readonly count: number;
+}
+
 export interface IEvents<TEvent extends string = string> extends IDisposable {
 	// notifyListeners(event: TEvent, ...args: any[]): void;
-	on(what: TEvent | TEvent[], callback: Function, scope?: object, options?: object): IEvents<TEvent>;
+	on(what: TEvent | TEvent[], callback: Function, options?: Partial<IEventListenerOptions>): IEvents<TEvent>;
 	/**
 	 * to remove all listeners associated with a scope:
 	 * - If your scope is an object, just pass it as the first param
@@ -50,13 +56,14 @@ export interface IEvents<TEvent extends string = string> extends IDisposable {
 	 * @param eventOrScope 
 	 * @param scopeOrCallback 
 	 */
-	off(eventOrScope?: TEvent | TEvent[] | object | null, scopeOrCallback?: object | Function): IEvents<TEvent>;
+	off(eventOrScope?: TEvent | TEvent[] | object | null, scopeOrCallback?: object | AnyFunction): IEvents<TEvent>;
 	removeAllListeners(): IEvents<TEvent>;
-	muteListener(listener: any, mute: boolean): IEvents<TEvent>;
+	muteListener(scope: unknown, mute: boolean): IEvents<TEvent>;
 	muteEvents(): IEvents<TEvent>;
 	unmuteEvents(): IEvents<TEvent>;
-	once(event: TEvent | TEvent[], callback: Function, scope?: object, options?: any): IEvents<TEvent>;
-	trigger(event: TEvent, ...args: any[]): IEvents<TEvent>;
+	once(event: TEvent | TEvent[], callback: AnyFunction, scope?: unknown): IEvents<TEvent>;
+	trigger(event: TEvent, ...args: unknown[]): IEvents<TEvent>;
+	hasListener(event: TEvent, scope?: unknown): boolean;
 }
 
 export interface ILoopIndexUser<TUserType extends string = string> {
@@ -204,13 +211,13 @@ export type TPluginConfigKey<TConfig extends IPluginConfig> = PluginConfiguratio
 export type TPluginConfigValue<TConfig extends IPluginConfig, TKey extends TPluginConfigKey<TConfig>> = TConfig[TKey];
 export type TPluginConfigResult<TConfig extends IPluginConfig, TKey,
 	TValue> = TKey extends undefined ?
-	TConfig
-	: TKey extends TPluginConfigKey<TConfig> ?
-	TValue extends undefined ?
-	TConfig[TKey]
-	: TValue extends TPluginConfigValue<TConfig, TKey> ?
-	TConfig
-	: never
+		TConfig
+		: TKey extends TPluginConfigKey<TConfig> ?
+			TValue extends undefined ?
+			TConfig[TKey]
+		: TValue extends TPluginConfigValue<TConfig, TKey> ?
+			TConfig
+			: never
 	: never;
 
 
@@ -250,7 +257,7 @@ export interface IPluginUserConfig<
 	 * @property {Boolean} logEvents
 	 * If true, log editor events through the loopindex logger
 	 */
-	readonly logEvents: boolean;
+	readonly logEvents: boolean | PartialWith<ILogEditorEventsOptions, "log"> ;
 
 	/**
 	 * path to add to the plugin's path when loading plugin assets, so
@@ -295,7 +302,7 @@ export interface IPluginConfig<
 	 * @property {Boolean} logEvents
 	 * If true, log editor events through the loopindex logger
 	 */
-	readonly logEvents: boolean;
+	readonly logEvents: ILogEditorEventsOptions;
 
 	/**
 	 * path to add to the plugin's path when loading plugin assets, so
@@ -387,7 +394,27 @@ export type AutogrowAction = "delete" | "mirror";
 
 
 
-// export type PluginEditorEventHandler<TEvent = unknown> = (evt: TEvent) => unknown;
+export interface ILogEditorEventsOptions {
+	readonly log: boolean;
+	/**
+	 * Event names to report (overrides `exclude`)
+	 */
+	readonly include?: string | string[];
+	/**
+	 * Event names to exclude from reporting, unless `include` was specified
+	 */
+	readonly exclude?: string | string[];
+
+	/**
+	 * If true, maintain a map with the number of events for each monitored event
+	 */
+	readonly debug?: boolean;
+
+	/**
+	 * If true, logger.trace instead of log
+	 */
+	readonly trace?: boolean;
+}
 
 export interface ICoreLoopIndexPlugin {
 	readonly version: string;
@@ -448,9 +475,9 @@ export interface ICoreLoopIndexPlugin {
 	 * events. Selection, focus and mouse events are filtered out for the clarity and brevity
 	 * of the log.
 	 * @member FLITE.FLITEPlugin
-	 * @param log 
+	 * @param options log options or boolean
 	 */
-	logEditorEvents(log: boolean): void;
+	logEditorEvents(options: ILogEditorEventsOptions | boolean): void;
 
 	/**
 	 * Async set language, returns success (internally gets an error string)

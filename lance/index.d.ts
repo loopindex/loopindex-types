@@ -105,7 +105,7 @@ export interface ILancePlugin<
 	setAnnotationBookmark(options: IAnnotationBookmarkOptions): string;
 
 
-	readonly App: ILanceGlobals;
+	readonly App: ILanceAppGlobals;
 
 	readonly isEnabled: boolean;
 }

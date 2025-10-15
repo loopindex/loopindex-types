@@ -473,6 +473,11 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	 * - `"all"`: Try to track both insertion and deletion caused by a drag&drop operation
 	 */
 	readonly dropTrackingPolicy: DropTrackingPolicy;
+
+	/**
+	 * Number of msecs between changes, after which an edit operation is considered belonging to a new change
+	 */
+	readonly changeGroupTime: number;
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -490,6 +495,8 @@ export interface IFLITEPlugin<
 	TUser extends IFLITEUser = IFLITEUser
 >
 	extends ILoopIndexPlugin<TEditor, TConfig> {
+
+	readonly App: IFLITEAppGlobals;
 
 	readonly users: IUserManager<TUser>;
 
@@ -938,6 +945,11 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	 * - `"all"`: Try to track both insertion and deletion caused by a drag&drop operation
 	 */
 	readonly dropTrackingPolicy: DropTrackingPolicy;
+
+	/**
+	 * Number of msecs between changes, after which an edit operation is considered belonging to a new change
+	 */
+	readonly changeGroupTime: number;
 
 
 }
