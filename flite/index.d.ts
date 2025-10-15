@@ -496,6 +496,8 @@ export interface IFLITEPlugin<
 >
 	extends ILoopIndexPlugin<TEditor, TConfig> {
 
+	readonly App: IFLITEAppGlobals;
+
 	readonly users: IUserManager<TUser>;
 
 	/**
