@@ -15,6 +15,7 @@ export type DeepMutable<T> = T extends (string | number | boolean | undefined) ?
 	: T;
 
 export type PartialWith<TObject extends {}, TKey extends keyof TObject = keyof TObject> = Pick<TObject, TKey> & Partial<TObject>;	
+export type PartialWithout<TObject extends {}, TKey extends keyof TObject> = Omit<TObject, TKey> & Partial<TObject>;	
 
 /**
  * Allows using keyof vars as indices
