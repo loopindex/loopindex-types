@@ -142,7 +142,8 @@ export interface ILanceTooltipOptions extends IPluginTooltipOptions{
 	readonly formatter?: TooltipCallback;
 }
 
-export interface ILanceUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
+export type LanceUserTypes = "user" | "bot-comment";
+export interface ILanceUser<TUserType extends string = LanceUserTypes> extends ILoopIndexUser<TUserType> {
 	readonly picture?: string;
 }
 

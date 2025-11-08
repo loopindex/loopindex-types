@@ -44,7 +44,9 @@ export interface IFLITEUserStyle {
 	}
 }
 
-export interface IFLITEUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
+export type FLITEUserTypes = "user" | "bot-track";
+
+export interface IFLITEUser<TUserType extends string = FLITEUserTypes> extends ILoopIndexUser<TUserType> {
 	readonly style?: IFLITEUserStyle;
 }
 

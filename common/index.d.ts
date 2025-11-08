@@ -41,6 +41,8 @@ export interface ICommandStatus {
 	readonly active?: boolean;
 }
 
+export type PopStateFunction<TValue> = (timeout?: number) => TValue;
+
 export interface IEventListenerOptions {
 	readonly scope: unknown;
 	readonly count: number;
@@ -59,8 +61,8 @@ export interface IEvents<TEvent extends string = string> extends IDisposable {
 	off(eventOrScope?: TEvent | TEvent[] | object | null, scopeOrCallback?: object | AnyFunction): IEvents<TEvent>;
 	removeAllListeners(): IEvents<TEvent>;
 	muteListener(scope: unknown, mute: boolean): IEvents<TEvent>;
-	muteEvents(): IEvents<TEvent>;
-	unmuteEvents(): IEvents<TEvent>;
+	muteEvents(): PopStateFunction<boolean>;
+	unmuteEvents(): PopStateFunction<boolean>;
 	once(event: TEvent | TEvent[], callback: AnyFunction, scope?: unknown): IEvents<TEvent>;
 	trigger(event: TEvent, ...args: unknown[]): IEvents<TEvent>;
 	hasListener(event: TEvent, scope?: unknown): boolean;
