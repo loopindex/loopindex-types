@@ -104,6 +104,8 @@ export interface IAnnotation {
 	getCommentByIndex(index: number): Nullable<IComment>;
 	getCommentById(commentId: string): Nullable<IComment>;
 
+	saveToObject(): any;
+
 	isFirst(commendId: string): boolean;
 	isLast(commendId: string): boolean;
 	getOpenerId(): Nullable<string>;
@@ -141,6 +143,7 @@ export interface IInsertAnnotationOptions {
 	 */
 	context?: any;
 	fromData?: boolean;
+	type?: ThreadType;
 }
 
 export interface ISelectAnnotationOptions {
