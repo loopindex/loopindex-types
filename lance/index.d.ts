@@ -10,7 +10,8 @@ import type {
 } from "../common/";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
-	IAnnotationOptions, IAnnotationsManager, IStaticAnnotations
+	IAnnotationOptions, IAnnotationsManager, IStaticAnnotations,
+	ThreadType
 } from "./annotations";
 import type { ICreateAnnotationsUIOptions, ILanceUI, IStaticAnnotationsUI } from "./ui";
 
@@ -65,6 +66,10 @@ export interface IAnnotateWithOptions {
 	 * If not null/undefined, append to this annotation
 	 */
 	readonly annotationId?: string;
+	/**
+	 * Defaults to `"normal"`
+	 */
+	readonly type?: ThreadType;
 }
 
 
