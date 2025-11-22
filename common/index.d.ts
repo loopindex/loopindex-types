@@ -1,4 +1,5 @@
 import type { IModalAlertManager } from "./alerts";
+import { RangeInfo } from "./dom";
 
 /**
  * The module/global object passed to the Froala specific plugin init functions
@@ -129,16 +130,11 @@ export interface IUserManager<TUser extends ILoopIndexUser, TUserType = TUser ex
 	readonly currentUserId: string;
 }
 
-
 interface IFroalaCommandRecord {
 	readonly command: string;
 	readonly icon?: string;
 	readonly tooltip?: string;
 }
-
-export type NodeOrJQuery = Node | JQuery;
-export type NodeOrSelector = NodeOrJQuery | string;
-export type ElementOrJQuery = Element | JQuery;
 
 export type LocaleMapping = Record<string, string | string[]>;
 
@@ -339,9 +335,6 @@ export interface ILoopIndexPluginEvent {
  * Events fired by all plugins
  */
 export type PluginEvents = "config";
-
-export type BaseRangeInfo = Pick<Range, "startOffset" | "endOffset" | "startContainer" | "endContainer">;
-export type RangeInfo = BaseRangeInfo & Pick<Range, "commonAncestorContainer">;
 
 /**
  * Useful for the froala init function in plugins

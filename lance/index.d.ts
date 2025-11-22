@@ -6,8 +6,9 @@ import type {
 	ILoopIndexPlugin, Mutable, ICommandRecord,
 	IPluginConfig, ILoopIndexLogger,
 	IFroalaInitOptions,	OperationPromise,
-	RangeInfo, Nullable
+	Nullable
 } from "../common/";
+import type { RangeInfo } from "../common/dom";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
 	IAnnotationOptions, IAnnotationsManager, IStaticAnnotations,
@@ -214,6 +215,9 @@ export interface ILanceUserConfiguration extends Mutable<IPluginUserConfig<ILanc
  * This is the configuration object maintained by each instance of the Lance plugin
  */
 export interface ILanceConfiguration extends IPluginConfig<ILanceTooltipOptions> {
+	/**
+	 * CKEditor only
+	 */
 	readonly plugins: ReadonlyArray<unknown>;
 	readonly annotations: Partial<IAnnotationOptions>;
 	readonly isDragEnabled?: boolean;

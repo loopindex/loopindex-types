@@ -1,5 +1,5 @@
-import { ElementOrJQuery } from "../common";
-import { IChangeFilterOptions, IChangeSet, IFLITEUser, ITrackedChange } from ".";
+import type { ElementOrJQuery } from "../common/dom";
+import type { IChangeFilterOptions, IChangeSet, IFLITEUser, ITrackedChange } from ".";
 import type { AnyFunction, IDisposable, Nullable } from "../common";
 
 export interface ICleanDomOptions {
