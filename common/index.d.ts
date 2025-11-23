@@ -1,39 +1,15 @@
 import type { IModalAlertManager } from "./alerts";
-import { RangeInfo } from "./dom";
+import type { AnyFunction, IDisposable, Nullable, PartialWith, PopStateFunction } from "./core";
+import type { RangeInfo } from "./dom";
+
+export * from "./core";
 
 /**
  * The module/global object passed to the Froala specific plugin init functions
  */
 export type FroalaModule = unknown;
 
-export type Nullable<T extends {}> = T | null;
-export type Maybe<T extends {}> = T | undefined;
-export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 
-export type DeepMutable<T> = T extends (string | number | boolean | undefined) ? T
-	: T extends ReadonlyArray<infer TElement> ? Array<DeepMutable<TElement>>
-	: T extends object ? { -readonly [P in keyof T]: DeepMutable<T[P]> }
-	: T;
-
-export type PartialWith<TObject extends {}, TKey extends keyof TObject = keyof TObject> = Pick<TObject, TKey> & Partial<TObject>;	
-export type PartialWithout<TObject extends {}, TKey extends keyof TObject> = Omit<TObject, TKey> & Partial<TObject>;	
-
-/**
- * Allows using keyof vars as indices
- */
-export type KeyOf<TObject extends object> = (string & keyof TObject);
-export type AnyFunction = (...args: any[]) => unknown;
-
-export interface IDisposable {
-	dispose(): void;
-}
-
-export interface IOperationResult<T extends {}> {
-	readonly error?: string;
-	readonly result?: T;
-}
-
-export type OperationPromise<T extends {}> = Promise<IOperationResult<T>>;
 
 export type LocalizeFunction = (key: string, defaultValue?: string) => string;
 
@@ -41,8 +17,6 @@ export interface ICommandStatus {
 	readonly enabled: boolean;
 	readonly active?: boolean;
 }
-
-export type PopStateFunction<TValue> = (timeout?: number) => TValue;
 
 export interface IEventListenerOptions {
 	readonly scope: unknown;
@@ -315,13 +289,6 @@ export interface IPluginConfig<
 	readonly debug: IPluginLogOptions;
 
 	readonly commands: ReadonlyArray<TCommands>;
-}
-
-
-export interface IFroalaCommandRecord {
-	readonly command: string;
-	readonly icon?: string;
-	readonly tooltip?: string;
 }
 
 /**
