@@ -17,6 +17,16 @@ export type PartialWithout<TObject extends {}, TKey extends keyof TObject> = Omi
 export type KeyOf<TObject extends object> = (string & keyof TObject);
 export type AnyFunction = (...args: any[]) => unknown;
 
+export type StringConverter = (s: string) => string;
+
+export type Tuple<TFirst, TSecond> = [key: TFirst, value: TSecond];
+
+export interface IClonable<T> {
+    clone(): T;
+}
+
+export type IClonableMixin<T> = T & IClonable<T>;
+
 export interface IDisposable {
 	dispose(): void;
 }
@@ -36,6 +46,13 @@ export interface IEventListenerOptions {
 	readonly scope: unknown;
 	readonly count: number;
 }
+
+
+export type StringEnum<T extends string[]> = T extends [string, ...infer U] ? 
+	U extends string[] ? T[0] | StringEnum<U> : never
+	: T[0];
+
+
 
 export interface IEvents<TEvent extends string = string> extends IDisposable {
 	// notifyListeners(event: TEvent, ...args: any[]): void;
