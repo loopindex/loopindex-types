@@ -2,7 +2,7 @@ import type { IModalAlertManager } from "./alerts";
 import type { AnyFunction, IDisposable, Nullable, PartialWith, PopStateFunction } from "./core";
 import type { RangeInfo } from "./dom";
 
-export * from "./core";
+export type * from "./core";
 
 /**
  * The module/global object passed to the Froala specific plugin init functions

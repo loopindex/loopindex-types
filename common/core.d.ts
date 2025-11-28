@@ -22,7 +22,7 @@ export type StringConverter = (s: string) => string;
 export type Tuple<TFirst, TSecond> = [key: TFirst, value: TSecond];
 
 export interface IClonable<T> {
-    clone(): T;
+    clone(): IClonableMixin<T>;
 }
 
 export type IClonableMixin<T> = T & IClonable<T>;
