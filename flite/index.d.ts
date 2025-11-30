@@ -24,6 +24,11 @@ export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
 export type SpellCheckPolicy = "editor" | "browser";
 /**
+ * - `"all"` - accept/reject all changes contained in the current selection
+ * - `"first" - accept/reject the first change in the current selection
+ */
+export type AcceptSelectionPolicy = "first" | "all";
+/**
  * `"delete"` - if a table row is removed, discard its data
  * `"preserve"` - Move content of removed table rows outside the table
  */
@@ -480,6 +485,8 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	 * Number of msecs between changes, after which an edit operation is considered belonging to a new change
 	 */
 	readonly changeGroupTime: number;
+
+	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -952,6 +959,8 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	 * Number of msecs between changes, after which an edit operation is considered belonging to a new change
 	 */
 	readonly changeGroupTime: number;
+
+	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 
 
 }
