@@ -2,7 +2,9 @@ import type { IDisposable, IEvents } from "../common";
 import type { IModalAlertManager } from "../common/alerts";
 
 export type CommaiteTriggers = "paragraph" | "inline" | "sentence";
-export type CommaiteEvents = "personas:change" | "personas:update" | "user:signin" | "user:signout" | "user:session";
+export type CommaiteEvents = "personas:change" | "personas:update" 
+	| "user:signin" | "user:signout" | "user:session"
+	| "signin:on" | "signin:off";
 export type PersonasUIEvents = "select" | "signin";
 export type SuggestReplaceMode = "group" | "parts";
 export type TrackGroupingPolicy = "single" | "group";
