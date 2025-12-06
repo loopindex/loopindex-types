@@ -36,6 +36,10 @@ export interface ILanceCommands {
 	readonly RESOLVE_ALL: string,
 }
 
+export interface ILanceFroalaInitOptions extends IFroalaInitOptions {
+	readonly tagName: string;
+}
+
 export interface ILanceEvents {
 	readonly INIT: "lance::init";
 }
