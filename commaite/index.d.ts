@@ -48,7 +48,7 @@ export interface ICommaiteConfiguration {
 	 */
 	readonly groupTrackingMode: TrackGroupingPolicy;
 
-	readonly assetPath?: string;
+	readonly assetPath: string;
 	/**
 	 * If not null, the rest of the fields are ignored and the config
 	 * is read from this url
@@ -56,6 +56,8 @@ export interface ICommaiteConfiguration {
 	readonly configUrl?: string;
 
 	readonly overrides?: Partial<Omit<ICommaiteConfiguration, "configUrl">>;
+
+	readonly persistSuggestions: boolean;
 }
 
 export interface IPersonaUI {
