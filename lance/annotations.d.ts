@@ -68,7 +68,7 @@ export interface ICommentStatus {
 export type CommentFilter = (comment: IComment) => boolean;
 
 export type AnnotationRole = "none" | "opener" | "owner" | "user" | "any";
-
+export type ThreadType = "normal" | "temp" | "hidden";
 
 export interface IComment {
 	readonly id: string;
@@ -88,33 +88,27 @@ export interface IAnnotation {
 	readonly id: string;
 	readonly attributes: { [key: string]: any };
 	readonly sequence: number;
+	readonly type: ThreadType;
 	/**
 	 * Guaranteed not null
 	 */
 	readonly comments: ReadonlyArray<IComment>;
-	invalidateStatus(): void;
 	isSelected(): boolean;
 	isEmpty(): boolean;
 	displayText(): string;
-	/**
-	 * Guaranteed not null
-	 */
-	setSelected(selected: boolean): void;
-	setResolved(resolved: boolean): void;
-	saveToObject(): any;
+
 	/**
 	 * returns the number of comments
 	 */
 	count(): number;
 	getCommentByIndex(index: number): Nullable<IComment>;
 	getCommentById(commentId: string): Nullable<IComment>;
-	setCommentText(commentId: string, text: string): void;
+
+	saveToObject(): any;
+
 	isFirst(commendId: string): boolean;
 	isLast(commendId: string): boolean;
 	getOpenerId(): Nullable<string>;
-	addComment(props: any): IComment;
-	deleteComment(commentId: string): boolean;
-	selectComment(id: string, bSelected: boolean): void;
 	isResolved(): boolean;
 	isSelected(): boolean;
 	lastComment(): Nullable<IComment>;
@@ -149,6 +143,7 @@ export interface IInsertAnnotationOptions {
 	 */
 	context?: any;
 	fromData?: boolean;
+	type?: ThreadType;
 }
 
 export interface ISelectAnnotationOptions {
@@ -533,24 +528,24 @@ export interface IAnnotationsManager<TUser extends ILanceUser = ILanceUser> exte
 }
 
 export interface IAnnotationPermissionsDetailedBlock {
-	first?: AnnotationRole;
-	last?: AnnotationRole;
-	default?: AnnotationRole;
+	readonly first?: AnnotationRole;
+	readonly last?: AnnotationRole;
+	readonly default?: AnnotationRole;
 }
 
 export interface IAnnotationPermissions {
-	edit: AnnotationRole | IAnnotationPermissionsDetailedBlock;
-	delete: AnnotationRole | IAnnotationPermissionsDetailedBlock;
-	resolve: AnnotationRole | IAnnotationPermissionsDetailedBlock;
+	readonly edit: AnnotationRole | IAnnotationPermissionsDetailedBlock;
+	readonly delete: AnnotationRole | IAnnotationPermissionsDetailedBlock;
+	readonly resolve: AnnotationRole | IAnnotationPermissionsDetailedBlock;
 }
 
 export type RequestUserCallback<TUser extends ILanceUser = ILanceUser> = (user: TUser, callback: (user: TUser) => any) => any;
 
 interface IAnnotationStatusOptions<TUser extends ILanceUser = ILanceUser> {
-	comment: IComment;
-	annotation: IAnnotation,
-	status: ICommentStatus;
-	owner: IAnnotationsManager<TUser>;
+	readonly comment: IComment;
+	readonly annotation: IAnnotation,
+	readonly status: ICommentStatus;
+	readonly owner: IAnnotationsManager<TUser>;
 }
 
 export type AnnotationStatusCallback<TUser extends ILanceUser = ILanceUser> = (options: IAnnotationStatusOptions<TUser>) => any;
@@ -589,7 +584,7 @@ export interface ICommentID {
 export namespace LanceEvents {
 	interface ICommentEditingDoneEvent extends ICommentID {
 		canceled: boolean;
-		mode: "comment" | "reply"
+		readonly mode: "comment" | "reply"
 	}
 
 	interface IAnnotationEvent {

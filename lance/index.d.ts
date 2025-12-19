@@ -6,11 +6,13 @@ import type {
 	ILoopIndexPlugin, Mutable, ICommandRecord,
 	IPluginConfig, ILoopIndexLogger,
 	IFroalaInitOptions,	OperationPromise,
-	RangeInfo, Nullable
+	Nullable
 } from "../common/";
+import type { RangeInfo } from "../common/dom";
 import type { 
 	AnnotationStatusCallback, IAnnotation,
-	IAnnotationOptions, IAnnotationsManager, IStaticAnnotations
+	IAnnotationOptions, IAnnotationsManager, IStaticAnnotations,
+	ThreadType
 } from "./annotations";
 import type { ICreateAnnotationsUIOptions, ILanceUI, IStaticAnnotationsUI } from "./ui";
 
@@ -32,6 +34,10 @@ export interface ILanceCommands {
 	 * @property {String} [RESOLVE_ALL="lance-resolve-all"]
 	 */
 	readonly RESOLVE_ALL: string,
+}
+
+export interface ILanceFroalaInitOptions extends IFroalaInitOptions {
+	readonly tagName: string;
 }
 
 export interface ILanceEvents {
@@ -65,6 +71,10 @@ export interface IAnnotateWithOptions {
 	 * If not null/undefined, append to this annotation
 	 */
 	readonly annotationId?: string;
+	/**
+	 * Defaults to `"normal"`
+	 */
+	readonly type?: ThreadType;
 }
 
 
@@ -142,7 +152,8 @@ export interface ILanceTooltipOptions extends IPluginTooltipOptions{
 	readonly formatter?: TooltipCallback;
 }
 
-export interface ILanceUser<TUserType extends string = string> extends ILoopIndexUser<TUserType> {
+export type LanceUserTypes = "user" | "bot-comment";
+export interface ILanceUser<TUserType extends string = LanceUserTypes> extends ILoopIndexUser<TUserType> {
 	readonly picture?: string;
 }
 
@@ -208,6 +219,9 @@ export interface ILanceUserConfiguration extends Mutable<IPluginUserConfig<ILanc
  * This is the configuration object maintained by each instance of the Lance plugin
  */
 export interface ILanceConfiguration extends IPluginConfig<ILanceTooltipOptions> {
+	/**
+	 * CKEditor only
+	 */
 	readonly plugins: ReadonlyArray<unknown>;
 	readonly annotations: Partial<IAnnotationOptions>;
 	readonly isDragEnabled?: boolean;

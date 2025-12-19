@@ -1,5 +1,6 @@
 import { ILanceUser } from "..";
-import type { ElementOrJQuery, IAutogrowOptions, IDisposable, IEvents, NodeOrJQuery, NodeOrSelector, Nullable } from "../../common/";
+import type { IAutogrowOptions, IDisposable, IEvents, Nullable } from "../../common/";
+import type { ElementOrJQuery, NodeOrJQuery, NodeOrSelector } from "../../common/dom";
 import type { IAnnotation, IAnnotationsManager, ICommentID } from "../annotations";
 
 export type LanceUIType = "simple" | "aligned";
@@ -183,7 +184,7 @@ export type CommentStylingType = "mention" | "link";
  * `"prefix"` - highlight only mentions with a 3+ prefix of a known user name
  * `"any"` - highlight any mention
  */
-export type MentionPolicy = "full" | "prefix";
+export type MentionPolicy = "full" | "prefix" | "sub";
 
 export interface IMentionOptions {
 	readonly policy: MentionPolicy;

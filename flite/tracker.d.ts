@@ -1,5 +1,5 @@
-import { ElementOrJQuery } from "../common";
-import { IChangeFilterOptions, IChangeSet, IFLITEUser, ITrackedChange } from ".";
+import type { ElementOrJQuery } from "../common/dom";
+import type { IChangeFilterOptions, IChangeSet, IFLITEUser, ITrackedChange } from ".";
 import type { AnyFunction, IDisposable, Nullable } from "../common";
 
 export interface ICleanDomOptions {
@@ -87,6 +87,7 @@ export interface IFLITEChangeTracker extends IDisposable {
 	/**
 	 * @member IFLITEChangeTracker
 	 * @method startBatch
+	 * @param {Boolean} [suppressEvents=false] If true, do not generate any events until the batch is finished
 	 * @since Version 1.7.05
 	 * Indicates that all the tracked changes from this point until the end of the batch
 	 * will have the same change id.
@@ -95,9 +96,9 @@ export interface IFLITEChangeTracker extends IDisposable {
 	 * call this function will cause the tracker to be "stuck" in the same batch change, until
 	 * a document is loaded (e.g. after undo/redo).
 	 * 
-	 * If the tracker can't start a batch change (either a change is being processed or tracking is disabled), the method returns `null`.
-	 * @returns {Function|null} a function to call when you want to add the batch or `null`
+	 * If the tracker can't start a batch change (either a change is being processed or tracking is disabled), a no-op function is returned.
+	 * @returns {Function} a function to call when you want to add the batch
 	 */
-	startBatch(): AnyFunction;
+	startBatch(suppressEvents?: boolean): AnyFunction;
 
 }
