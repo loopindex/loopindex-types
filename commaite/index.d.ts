@@ -50,14 +50,26 @@ export interface ICommaiteConfiguration {
 
 	readonly assetPath: string;
 	/**
-	 * If not null, the rest of the fields are ignored and the config
+	 * If not null, the rest of the fields except `overrides` are ignored and the config
 	 * is read from this url
 	 */
 	readonly configUrl?: string;
 
+
+	/**
+	 * Allows you to override settings in configUrl, meaningless otherwise
+	 */
 	readonly overrides?: Partial<Omit<ICommaiteConfiguration, "configUrl">>;
 
+	/**
+	 * For debugging, leaves the suggestions UI onscreen after it has been applied
+	 */
 	readonly persistSuggestions: boolean;
+
+	/**
+	 * Ruleset to use in requests
+	 */
+	readonly ruleSet: string;
 }
 
 export interface IPersonaUI {
