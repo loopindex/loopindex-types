@@ -30,6 +30,8 @@ export interface ICommaiteConfiguration {
 	 */
     readonly personas: IPersonaConfig[];
 	readonly triggers: CommaiteTriggers[];
+
+	readonly minParagraphSentences: number;
 	/**
 	 * Defaults to ???
 	 */
