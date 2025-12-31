@@ -93,6 +93,8 @@ export interface ICommaitePlugin extends IDisposable {
 	readonly serverUrl: string;
 	readonly isMock: boolean;
 	readonly alertManager: IModalAlertManager;
+	readonly build: string;
+	readonly version: string;
 	createPersonaUI(optionss: IPersonaUIOptions): Promise<IPersonaUI>;
 	getLocalizedString(key: string): string;
 }
