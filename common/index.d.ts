@@ -378,7 +378,7 @@ export interface ILogEditorEventsOptions {
 	readonly trace?: boolean;
 }
 
-export interface ICoreLoopIndexPlugin {
+export interface ICoreLoopIndexPlugin extends IDisposable {
 	readonly version: string;
 	readonly build: string;
 	readonly events: IEvents<PluginEvents>;

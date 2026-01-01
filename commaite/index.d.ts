@@ -1,8 +1,8 @@
-import type { IDisposable, IEvents } from "../common";
+import type { IDisposable, IEvents, ILoopIndexPlugin, IPluginConfig, PluginEvents } from "../common";
 import type { IModalAlertManager } from "../common/alerts";
 
 export type CommaiteTriggers = "paragraph" | "inline" | "sentence";
-export type CommaiteEvents = "personas:change" | "personas:update" 
+export type CommaiteEvents = PluginEvents | "personas:change" | "personas:update" 
 	| "user:signin" | "user:signout" | "user:session"
 	| "signin:on" | "signin:off";
 export type PersonasUIEvents = "select" | "signin";
@@ -23,7 +23,7 @@ export interface IPersonaConfig {
 	readonly description: string;
 }
 
-export interface ICommaiteConfiguration {
+export interface ICommaiteConfiguration extends IPluginConfig {
 	readonly serverUrl: string;
 	/**
 	 * Defaults to all server personas
@@ -50,7 +50,6 @@ export interface ICommaiteConfiguration {
 	 */
 	readonly groupTrackingMode: TrackGroupingPolicy;
 
-	readonly assetPath: string;
 	/**
 	 * If not null, the rest of the fields except `overrides` are ignored and the config
 	 * is read from this url
@@ -88,13 +87,13 @@ export interface IPersonaUIOptions {
 	readonly styleUrls?: string | string[];
 }
 
-export interface ICommaitePlugin extends IDisposable {
-	readonly events: IEvents<CommaiteEvents>;
+export interface ICommaitePlugin<
+	TEditor extends {} = object,
+	TConfig extends ICommaiteConfiguration = ICommaiteConfiguration
+> extends ILoopIndexPlugin<TEditor, TConfig> {
 	readonly serverUrl: string;
 	readonly isMock: boolean;
-	readonly alertManager: IModalAlertManager;
-	readonly build: string;
-	readonly version: string;
+	// readonly alertManager: IModalAlertManager;
 	createPersonaUI(optionss: IPersonaUIOptions): Promise<IPersonaUI>;
 	getLocalizedString(key: string): string;
 }
