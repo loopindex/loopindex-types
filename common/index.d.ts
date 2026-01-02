@@ -150,8 +150,17 @@ export interface IPluginLogOptions {
 }
 
 export interface ICommandRecord {
+	/**
+	 * The command to run in the editor
+	 */
 	readonly command: string;
+	/**
+	 * The command tooltip
+	 */
 	readonly title: string;
+	/**
+	 * Show in toolbar?
+	 */
 	readonly toolbar?: boolean;
 	/**
 	 * If false, don't trigger undo events around this command
@@ -162,6 +171,8 @@ export interface ICommandRecord {
 	 * Optional relative path of icon. If not present and there's no svg, the command name is used
 	 */
 	readonly iconUrl?: string;
+
+	readonly label?: string;
 	/**
 	 * If true, the command should be available when the editor is in readOnly mode
 	 */
