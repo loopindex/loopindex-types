@@ -161,7 +161,7 @@ export interface ICommandRecord {
 	/**
 	 * Show in toolbar?
 	 */
-	readonly toolbar?: boolean;
+	readonly toolbar?: boolean | "toggle";
 	/**
 	 * If false, don't trigger undo events around this command
 	 */
@@ -177,6 +177,16 @@ export interface ICommandRecord {
 	 * If true, the command should be available when the editor is in readOnly mode
 	 */
 	readonly readOnly?: boolean;
+
+	/**
+	 * If a function, call it instead of invoking the editor command
+	 */
+	readonly action?: AnyFunction;
+
+	/**
+	 * Optional value to pass to the callback or to attach to execCommand
+	 */
+	readonly value?: unknown;
 }
 
 /**
@@ -365,7 +375,7 @@ export interface IAutogrowOptions {
 
 export type AutogrowAction = "delete" | "mirror";
 
-
+export type LocaleDictionary = Record<string, string | string[] | Record<string, string>>;
 
 export interface ILogEditorEventsOptions {
 	readonly log: boolean;
@@ -486,7 +496,7 @@ export interface ICoreLoopIndexPlugin extends IDisposable {
 	 * also be arrays of strings or objects of the type `{ [key: string] : string }`.
 	 */
 
-	addDictionary(locale: string, dictionary: Record<string, string | string[] | Record<string, string>>): void;
+	addDictionary(locale: string, dictionary: LocaleDictionary): void;
 
 	/**
 	 * @method setlanguage
