@@ -149,11 +149,11 @@ export interface IPluginLogOptions {
 	readonly throttle: boolean;
 }
 
-export interface ICommandRecord {
+export interface ICommandRecord<TCommand extends string = string> {
 	/**
 	 * The command to run in the editor
 	 */
-	readonly command: string;
+	readonly command: TCommand;
 	/**
 	 * The command tooltip
 	 */

@@ -87,6 +87,39 @@ export interface IPersonaUIOptions {
 	readonly styleUrls?: string | string[];
 }
 
+export interface ICommaiteCommands {
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REACT_DOC="commaite-doc"]
+	 */
+	REACT_DOC: "commaite-doc",
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [STATS="commaite-stats"]
+	 */
+	STATS: "commaite-stats",
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [ACCEPT_ALL="commaite-acceptall"]
+	 */
+	LOOKUP: "commaite-lookup",
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REJECT_ALL="commaite-rejectall"]
+	 */
+	REACT: "commaite-react",
+}
+
+export type CommaiteCommand = keyof ICommaiteCommands & string;
+
 export interface ICommaitePlugin<
 	TEditor extends {} = object,
 	TConfig extends ICommaiteConfiguration = ICommaiteConfiguration
