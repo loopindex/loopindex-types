@@ -68,7 +68,7 @@ export interface ICommentStatus {
 export type CommentFilter = (comment: IComment) => boolean;
 
 export type AnnotationRole = "none" | "opener" | "owner" | "user" | "any";
-export type ThreadType = "normal" | "temp" | "hidden" | "temp-hidden";
+export type ThreadType = "normal" | "temp" | "hidden";
 
 export interface IComment {
 	readonly id: string;

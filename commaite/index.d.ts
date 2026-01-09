@@ -1,8 +1,8 @@
-import type { IDisposable, IEvents, ILoopIndexPlugin, IPluginConfig, PluginEvents } from "../common";
+import type { IDisposable, IEvents } from "../common";
 import type { IModalAlertManager } from "../common/alerts";
 
 export type CommaiteTriggers = "paragraph" | "inline" | "sentence";
-export type CommaiteEvents = PluginEvents | "personas:change" | "personas:update" 
+export type CommaiteEvents = "personas:change" | "personas:update" 
 	| "user:signin" | "user:signout" | "user:session"
 	| "signin:on" | "signin:off";
 export type PersonasUIEvents = "select" | "signin";
@@ -23,15 +23,13 @@ export interface IPersonaConfig {
 	readonly description: string;
 }
 
-export interface ICommaiteConfiguration extends IPluginConfig {
+export interface ICommaiteConfiguration {
 	readonly serverUrl: string;
 	/**
 	 * Defaults to all server personas
 	 */
     readonly personas: IPersonaConfig[];
 	readonly triggers: CommaiteTriggers[];
-
-	readonly minParagraphSentences: number;
 	/**
 	 * Defaults to ???
 	 */
@@ -50,6 +48,7 @@ export interface ICommaiteConfiguration extends IPluginConfig {
 	 */
 	readonly groupTrackingMode: TrackGroupingPolicy;
 
+	readonly assetPath: string;
 	/**
 	 * If not null, the rest of the fields except `overrides` are ignored and the config
 	 * is read from this url
@@ -87,46 +86,11 @@ export interface IPersonaUIOptions {
 	readonly styleUrls?: string | string[];
 }
 
-export interface ICommaiteCommands {
-	/**
-	 * @member COMMAITE.Commands
-	 * @readonly
-	 * @static
-	 * @property {String} [REACT_DOC="commaite-doc"]
-	 */
-	REACT_DOC: "commaite-doc",
-	/**
-	 * @member COMMAITE.Commands
-	 * @readonly
-	 * @static
-	 * @property {String} [STATS="commaite-stats"]
-	 */
-	STATS: "commaite-stats",
-	/**
-	 * @member COMMAITE.Commands
-	 * @readonly
-	 * @static
-	 * @property {String} [ACCEPT_ALL="commaite-acceptall"]
-	 */
-	LOOKUP: "commaite-lookup",
-	/**
-	 * @member COMMAITE.Commands
-	 * @readonly
-	 * @static
-	 * @property {String} [REJECT_ALL="commaite-rejectall"]
-	 */
-	REACT: "commaite-react",
-}
-
-export type CommaiteCommand = keyof ICommaiteCommands & string;
-
-export interface ICommaitePlugin<
-	TEditor extends {} = object,
-	TConfig extends ICommaiteConfiguration = ICommaiteConfiguration
-> extends ILoopIndexPlugin<TEditor, TConfig> {
+export interface ICommaitePlugin extends IDisposable {
+	readonly events: IEvents<CommaiteEvents>;
 	readonly serverUrl: string;
 	readonly isMock: boolean;
-	// readonly alertManager: IModalAlertManager;
+	readonly alertManager: IModalAlertManager;
 	createPersonaUI(optionss: IPersonaUIOptions): Promise<IPersonaUI>;
 	getLocalizedString(key: string): string;
 }
