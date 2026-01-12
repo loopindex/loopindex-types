@@ -187,6 +187,10 @@ export interface ICommandRecord<TCommand extends string = string> {
 	 * Optional value to pass to the callback or to attach to execCommand
 	 */
 	readonly value?: unknown;
+	/**
+	 * If true, include in context menu
+	 */
+	contextAction?: boolean;
 }
 
 /**
@@ -430,7 +434,7 @@ export interface ICoreLoopIndexPlugin extends IDisposable {
 	 * @param enable 
 	 * @param active only relevant if true
 	 */
-	setCommandsState(commands: string | string[], enable: boolean, active?: boolean): void;
+	setCommandsState<TCommand extends string = string>(commands: TCommand | TCommand[], enable: boolean, active?: boolean): void;
 
 	/**
 	 * Get a localized version of the key, from the plugin's internal dictionary

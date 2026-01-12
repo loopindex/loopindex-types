@@ -1,6 +1,6 @@
 {
 	"name": "@loopindex/loopindex-types",
-	"version": "1.4.1",
+	"version": "1.4.2",
 	"license": "UNLICENSED",
 	"dependencies": {
 		"@types/jquery": "^3.5.33"

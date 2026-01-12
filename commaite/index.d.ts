@@ -1,4 +1,4 @@
-import type { IDisposable, IEvents, ILoopIndexPlugin, IPluginConfig, PluginEvents } from "../common";
+import type { IDisposable, IEvents, ILoopIndexPlugin, IPluginConfig, KeyOf, PluginEvents } from "../common";
 import type { IModalAlertManager } from "../common/alerts";
 
 export type CommaiteTriggers = "paragraph" | "inline" | "sentence";
@@ -106,19 +106,26 @@ export interface ICommaiteCommands {
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
-	 * @property {String} [ACCEPT_ALL="commaite-acceptall"]
+	 * @property {String} [STATS="commaite-lookup"]
 	 */
 	LOOKUP: "commaite-lookup",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
-	 * @property {String} [REJECT_ALL="commaite-rejectall"]
+	 * @property {String} [USE_SUGGEST="commaite-use"]
+	 */
+	USE_SUGGEST: "commaite-use",
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REACT="commaite-react"]
 	 */
 	REACT: "commaite-react",
 }
 
-export type CommaiteCommand = keyof ICommaiteCommands & string;
+export type CommaiteCommand = KeyOf<ICommaiteCommands>;
 
 export interface ICommaitePlugin<
 	TEditor extends {} = object,
