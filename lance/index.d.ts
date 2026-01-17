@@ -222,7 +222,7 @@ export interface ILanceConfiguration extends IPluginConfig<ILanceTooltipOptions>
 	/**
 	 * CKEditor only
 	 */
-	readonly plugins: ReadonlyArray<unknown>;
+	readonly plugins: Record<string, unknown>;
 	readonly annotations: Partial<IAnnotationOptions>;
 	readonly isDragEnabled?: boolean;
 	readonly undoPolicy: UndoPolicy;

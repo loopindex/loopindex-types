@@ -42,7 +42,7 @@ export interface IFLITEChangeTracker extends IDisposable {
 
 	getCleanDOM(container?: Nullable<Element | string>, options?: ICleanDomOptions): Element;
 
-	getCurrentUser(): IFLITEUser;
+	getCurrentUser(): Nullable<IFLITEUser>;
 
 	acceptChange(idOrNode: Node | string): boolean;
 	rejectChange(idOrNode: Node | string): boolean;
@@ -70,7 +70,7 @@ export interface IFLITEChangeTracker extends IDisposable {
 	/**
 	 * Move to another tracked change node. Mode can be one of "next", "prev", "first", "last"
 	 */
-	navigateToChangeNode(mode: string): Element;
+	navigateToChangeNode(mode: string): Nullable<HTMLElement>;
 
 	/**
 	 * Returns the change associated with a changed node

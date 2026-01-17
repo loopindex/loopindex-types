@@ -1,4 +1,4 @@
-import type { IDisposable, IEvents, ILoopIndexPlugin, IPluginConfig, KeyOf, PluginEvents } from "../common";
+import type { IDisposable, IEvents, ILoopIndexPlugin, IPluginConfig, IPluginUserConfig, KeyOf, PartialWith, PluginEvents } from "../common";
 import type { IModalAlertManager } from "../common/alerts";
 
 export type CommaiteTriggers = "paragraph" | "inline" | "sentence";
@@ -23,6 +23,67 @@ export interface IPersonaConfig {
 	readonly description: string;
 }
 
+export interface ICommaiteLimits {
+	readonly comment: number;
+	readonly reaction: number;
+	readonly paragraphSentences: number;
+}
+
+export interface ICommaiteUserConfiguration extends IPluginUserConfig {
+	readonly serverUrl: string;
+	/**
+	 * Defaults to all server personas
+	 */
+    readonly personas: PartialWith<IPersonaConfig, "name">[];
+	readonly triggers: CommaiteTriggers[];
+
+	readonly limits: Partial<ICommaiteLimits>;
+	/**
+	 * Defaults to ???
+	 */
+	readonly inlineMarker: string;
+	/**
+	 * Defaults to false
+	 */
+	readonly mock: boolean;
+	/**
+	 * Defaults to `"group"`
+	 */
+	readonly suggestMode: SuggestReplaceMode;
+
+	/**
+	 * Defaults to "single"
+	 */
+	readonly groupTrackingMode: TrackGroupingPolicy;
+
+	/**
+	 * If not null, the rest of the fields except `overrides` are ignored and the config
+	 * is read from this url
+	 */
+	readonly configUrl: string;
+
+
+	/**
+	 * Allows you to override settings in configUrl, meaningless otherwise
+	 */
+	readonly overrides: Partial<Omit<ICommaiteUserConfiguration, "configUrl" | "overrides">>;
+
+	/**
+	 * For debugging, leaves the suggestions UI onscreen after it has been applied
+	 */
+	readonly persistSuggestions: boolean;
+
+	/**
+	 * Ruleset to use in requests
+	 */
+	readonly ruleSet: string;
+}
+
+export type IEditorConfiguration<TEditorConfig = Record<string, unknown>> = {
+	commaite: Partial<ICommaiteUserConfiguration>;
+} & Partial<TEditorConfig>;
+
+
 export interface ICommaiteConfiguration extends IPluginConfig {
 	readonly serverUrl: string;
 	/**
@@ -31,7 +92,7 @@ export interface ICommaiteConfiguration extends IPluginConfig {
     readonly personas: IPersonaConfig[];
 	readonly triggers: CommaiteTriggers[];
 
-	readonly minParagraphSentences: number;
+	readonly limits: ICommaiteLimits;
 	/**
 	 * Defaults to ???
 	 */
@@ -60,7 +121,7 @@ export interface ICommaiteConfiguration extends IPluginConfig {
 	/**
 	 * Allows you to override settings in configUrl, meaningless otherwise
 	 */
-	readonly overrides?: Partial<Omit<ICommaiteConfiguration, "configUrl">>;
+	readonly overrides: Partial<Omit<ICommaiteConfiguration, "configUrl" | "overrides">>;
 
 	/**
 	 * For debugging, leaves the suggestions UI onscreen after it has been applied
@@ -122,7 +183,14 @@ export interface ICommaiteCommands {
 	 * @static
 	 * @property {String} [REACT="commaite-react"]
 	 */
-	REACT: "commaite-react",
+	COMMENT: "commaite-comment",
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [REACT="commaite-comment-p"]
+	 */
+	COMMENT_PARA: "commaite-comment-para",
 }
 
 export type CommaiteCommand = KeyOf<ICommaiteCommands>;

@@ -13,6 +13,9 @@ export interface IStaticAnnotations {
 }
 
 export interface ICommentStatus {
+	isTemp: boolean;
+
+	isHidden: boolean;
 	/**
 	 * @property {Boolean}
 	 */
@@ -86,7 +89,7 @@ export interface IComment {
 
 export interface IAnnotation {
 	readonly id: string;
-	readonly attributes: { [key: string]: any };
+	readonly attributes: { [key: string]: string };
 	readonly sequence: number;
 	readonly type: ThreadType;
 	/**
@@ -96,6 +99,8 @@ export interface IAnnotation {
 	isSelected(): boolean;
 	isEmpty(): boolean;
 	displayText(): string;
+	isTemp(): boolean;
+	isHidden(): boolean;
 
 	/**
 	 * returns the number of comments
