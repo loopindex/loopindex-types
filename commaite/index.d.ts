@@ -191,6 +191,13 @@ export interface ICommaiteCommands {
 	 * @property {String} [REACT="commaite-comment-p"]
 	 */
 	COMMENT_PARA: "commaite-comment-para",
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [SIGNOUT="signout"]
+	 */
+	SIGNOUT: "commaite-signout",
 }
 
 export type CommaiteCommand = KeyOf<ICommaiteCommands>;
