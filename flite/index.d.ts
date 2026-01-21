@@ -568,7 +568,7 @@ export interface IFLITEGlobals {
 	readonly Commands: IFLITECommands;
 	readonly Events: IFLITEEvents;
 	readonly logger: ILoopIndexLogger;
-	initFroalaFLITEPlugin(Froala: FroalaModule, options: IFroalaInitOptions): Promise<boolean>;
+	initFroalaFLITEPlugin<TConfig extends IPluginUserConfig>(Froala: FroalaModule, options: IFroalaInitOptions<TConfig>): Promise<boolean>;
 }
 
 export interface ITooltipTitleOptions {

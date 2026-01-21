@@ -269,6 +269,8 @@ export interface IPluginUserConfig<
 	readonly debug: Partial<IPluginLogOptions>;
 
 	readonly commands: Partial<TCommands>[];
+
+	readonly language?: string;
 }
 
 export interface IPluginConfig<
@@ -314,6 +316,8 @@ export interface IPluginConfig<
 	readonly debug: IPluginLogOptions;
 
 	readonly commands: ReadonlyArray<TCommands>;
+
+	readonly language?: string;
 }
 
 /**
@@ -331,7 +335,7 @@ export type PluginEvents = "config";
 /**
  * Useful for the froala init function in plugins
  */
-export interface IFroalaInitOptions {
+export interface IFroalaInitOptions<TConfig extends IPluginUserConfig> {
 	/**
 	 * The path to the plugin
 	 */
@@ -339,9 +343,10 @@ export interface IFroalaInitOptions {
 	/**
 	 * the path to the assets folder. "" in production, "../../common" in dev
 	 */
-	readonly assetPath?: string;
-	readonly commands?: IFroalaCommandRecord[];
-	readonly language?: string; // language code
+	readonly config: Partial<TConfig>;
+	// readonly assetPath?: string;
+	// readonly commands?: IFroalaCommandRecord[];
+	// readonly language?: string; // language code
 }
 
 export interface ILoopIndexDebugOptions {
@@ -527,7 +532,7 @@ export interface ICoreLoopIndexPlugin extends IDisposable {
 	reloadFromDocument(): void;
 }
 
-export interface ILoopIndexPlugin<TEditor extends {}, TConfig extends IPluginConfig> extends ICoreLoopIndexPlugin {
+export interface ILoopIndexPlugin<TEditor extends object, TConfig extends IPluginConfig> extends ICoreLoopIndexPlugin {
 	readonly editor: TEditor;
 
 	/**

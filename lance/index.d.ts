@@ -36,16 +36,14 @@ export interface ILanceCommands {
 	readonly RESOLVE_ALL: string,
 }
 
-export interface ILanceFroalaInitOptions extends IFroalaInitOptions {
-	readonly tagName: string;
-}
+export type ILanceFroalaInitOptions = IFroalaInitOptions<ILanceUserConfiguration>;
 
 export interface ILanceEvents {
 	readonly INIT: "lance::init";
 }
 
 export interface ILanceGlobals {
-	initFroalaLancePlugin(Froala: FroalaModule, options: IFroalaInitOptions): Promise<boolean>;
+	initFroalaLancePlugin<TConfig extends IPluginUserConfig>(Froala: FroalaModule, options: IFroalaInitOptions<TConfig>): Promise<boolean>;
 
 	createAnnotationsUI(options: ICreateAnnotationsUIOptions): ILanceUI;
 	
@@ -162,57 +160,52 @@ export interface IResolvedDisplayPolicy{
 	readonly tooltips: boolean;
 }
 
-export interface ILanceUserConfiguration extends Mutable<IPluginUserConfig<ILanceTooltipOptions, ICommandRecord>> {
-	plugins?: any[];
-	annotations: Partial<IAnnotationOptions>;
-	isDragEnabled?: boolean;
-	undoPolicy?: UndoPolicy;
+export interface ILanceUserConfiguration extends IPluginUserConfig<ILanceTooltipOptions, ICommandRecord> {
+	readonly plugins?: any[];
+	readonly annotations: Partial<IAnnotationOptions>;
+	readonly isDragEnabled?: boolean;
+	readonly undoPolicy: UndoPolicy;
 	/**
 	 * Guranteed AnnotationType[] after validation
 	 */
-	useTextSelection?: boolean | AnnotationType | AnnotationType[];
-	extendFocus?: boolean;
-	customAttributes?: string[];
-	maximize?: any;
+	readonly useTextSelection: boolean | AnnotationType | AnnotationType[];
+	readonly extendFocus: boolean;
+	readonly customAttributes: string[];
+	readonly maximize: unknown;
 	/**
 	 * If false or empty, don't show tooltip. When this property reaches the plugin, it is already set to be a string
 	 * @deprecated
 	 */
-	tooltipFormat?: string;
+	readonly tooltipFormat: string;
 
 	/**
 	 * Defaults to true
 	 */
-	autoScroll?: boolean | "smooth" | "live";
+	readonly autoScroll: boolean | "smooth" | "live";
 	/**
 	 * Defaults to `annotation`
 	 */
-	tagName?: string;
+	readonly tagName: string;
 	/**
 	 * Defaults to `"none"`
 	 */
-	readonlyPolicy?: ReadOnlyPolicy;
+	readonly readonlyPolicy: ReadOnlyPolicy;
 
-	/**
-	 * For Tmce5
-	 * @deprecated
-	 */
-	svgIcon?: string;
 	/**
 	 * For CKE
 	 */
-	ckeStrictSelection?: boolean;
+	readonly ckeStrictSelection?: boolean;
 
 	/**
-	 * For api key detection (allows test apps to set the api key data as if it was hardcoded)
+	 * For internal use
 	 */
-	spellingOverride?: any;
+	readonly spellingOverride?: any;
 
-	statusCallback?: AnnotationStatusCallback;
+	readonly statusCallback: AnnotationStatusCallback;
 
-	commentSelectionPolicy?: CommentSelectionPolicy;
+	readonly commentSelectionPolicy: CommentSelectionPolicy;
 
-	resolvedDisplayPolicy?: Partial<IResolvedDisplayPolicy>
+	readonly resolvedDisplayPolicy: Partial<IResolvedDisplayPolicy>
 }
 
 /**
