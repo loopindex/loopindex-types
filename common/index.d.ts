@@ -11,7 +11,7 @@ export type FroalaModule = unknown;
 
 
 
-export type LocalizeFunction = (key: string, defaultValue?: string) => string;
+export type LocalizeFunction = (key: string, defaultValue?: string, params?: Record<string, string>) => string;
 
 export interface ICommandStatus {
 	readonly enabled: boolean;
@@ -190,7 +190,9 @@ export interface ICommandRecord<TCommand extends string = string> {
 	/**
 	 * If true, include in context menu
 	 */
-	contextAction?: boolean;
+	readonly contextAction?: boolean;
+
+	readonly keyboardShortcut?: string;
 }
 
 /**

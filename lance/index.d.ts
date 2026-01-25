@@ -3,7 +3,7 @@ import type { ILoopIndexGlobals } from "..";
 import type { 
 	FroalaModule, IPluginUserConfig,
 	IPluginTooltipOptions, LocalizeFunction, ILoopIndexUser,
-	ILoopIndexPlugin, Mutable, ICommandRecord,
+	ILoopIndexPlugin, ICommandRecord,
 	IPluginConfig, ILoopIndexLogger,
 	IFroalaInitOptions,	OperationPromise,
 	Nullable

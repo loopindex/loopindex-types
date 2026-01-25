@@ -5,7 +5,7 @@ import type {
 	ICommandRecord, LocalizeFunction,
 	IPluginTooltipOptions, Maybe, ICommandStatus,
 	ILoopIndexPlugin,
-	IPluginConfig, Mutable, ILoopIndexLogger,
+	IPluginConfig, ILoopIndexLogger,
 	IFroalaInitOptions,
 	PartialWith
 } from "../common";

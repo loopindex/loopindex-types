@@ -17,6 +17,8 @@ export type PartialWithout<TObject extends {}, TKey extends keyof TObject> = Omi
 export type KeyOf<TObject extends object> = (string & keyof TObject);
 export type AnyFunction = (...args: any[]) => unknown;
 
+export type ErrorMessage = string;
+
 export type StringConverter = (s: string) => string;
 
 export type Tuple<TFirst, TSecond> = [key: TFirst, value: TSecond];
@@ -32,13 +34,11 @@ export interface IDisposable {
 }
 
 export interface IOperationResult<T extends {}> {
-	readonly error?: string;
+	readonly error?: ErrorMessage;
 	readonly result?: T;
 }
 
 export type OperationPromise<T extends {}> = Promise<IOperationResult<T>>;
-
-export type LocalizeFunction = (key: string, defaultValue?: string) => string;
 
 export type PopStateFunction<TValue> = (timeout?: number) => TValue;
 
