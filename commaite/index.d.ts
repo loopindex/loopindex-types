@@ -155,49 +155,49 @@ export interface ICommaiteCommands {
 	 * @static
 	 * @property {String} [REACT_DOC="commaite-doc"]
 	 */
-	REACT_DOC: "commaite-doc",
+	readonly REACT_DOC: "commaite-doc",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
 	 * @property {String} [STATS="commaite-stats"]
 	 */
-	STATS: "commaite-stats",
+	readonly STATS: "commaite-stats",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
 	 * @property {String} [STATS="commaite-lookup"]
 	 */
-	LOOKUP: "commaite-lookup",
+	readonly LOOKUP: "commaite-lookup",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
 	 * @property {String} [USE_SUGGEST="commaite-use"]
 	 */
-	USE_SUGGEST: "commaite-use",
+	readonly USE_SUGGEST: "commaite-use",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
 	 * @property {String} [REACT="commaite-react"]
 	 */
-	COMMENT: "commaite-comment",
+	readonly COMMENT: "commaite-comment",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
 	 * @property {String} [REACT="commaite-comment-p"]
 	 */
-	COMMENT_PARA: "commaite-comment-para",
+	readonly COMMENT_PARA: "commaite-comment-para",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
 	 * @property {String} [SIGNOUT="signout"]
 	 */
-	SIGNOUT: "commaite-signout",
+	readonly SIGNOUT: "commaite-signout",
 }
 
 export type CommaiteCommand = KeyOf<ICommaiteCommands>;

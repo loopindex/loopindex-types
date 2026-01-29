@@ -386,7 +386,7 @@ export interface IAutogrowOptions {
 
 export type AutogrowAction = "delete" | "mirror";
 
-export type LocaleDictionary = Record<string, string | string[] | Record<string, string>>;
+export type LocaleDictionary = Readonly<Record<string, string | string[] | Record<string, string>>>;
 
 export interface ILogEditorEventsOptions {
 	readonly log: boolean;
