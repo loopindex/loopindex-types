@@ -977,6 +977,10 @@ export namespace FLITEEvents {
 		tracking: boolean;
 	}
 
+	interface IToggleShowEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> {
+		show: boolean;
+	}
+
 	interface IAcceptRejectEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> {
 		options?: any;
 	}

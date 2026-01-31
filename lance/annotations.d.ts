@@ -593,6 +593,7 @@ export namespace LanceEvents {
 	}
 
 	interface IAnnotationEvent {
+		readonly owner: IAnnotationsManager;
 		readonly annotation: IAnnotation;
 	}
 
@@ -600,6 +601,11 @@ export namespace LanceEvents {
 		readonly comment: IComment;
 		readonly status: ICommentStatus;
 		readonly mentions: ReadonlyArray<IMentionedUser>;
+	}
+	interface ICommentDeletedEvent extends IAnnotationEvent {
+		readonly comment: IComment;
+		readonly commentId: string;
+		readonly annotationId: string;
 	}
 
 	interface IAnnotationAttributesEvent extends IAnnotationEvent {
@@ -618,7 +624,7 @@ export namespace LanceEvents {
 		readonly range?: Range;
 	}
 
-	interface IAnnotationDeletedEvent {
+	interface IAnnotationDeletedEvent extends IAnnotationEvent{
 		readonly id: string;
 	}
 

@@ -1,6 +1,7 @@
 
 export type Nullable<T extends {}> = T | null;
 export type Maybe<T extends {}> = T | undefined;
+export type MaybeNull<T extends {}> = T | undefined | null;
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 
 export type DeepMutable<T> = T extends (string | number | boolean | undefined) ? T
