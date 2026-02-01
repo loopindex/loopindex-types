@@ -524,7 +524,7 @@ export interface ICoreLoopIndexPlugin extends IDisposable {
 	 * @param event 
 	 * @param data 
 	 */
-	fireEditorEvent(event: string, data?: unknown): boolean;
+	fireEditorEvent<TEvent=unknown>(event: string, data?: TEvent): boolean;
 
 	// onEditorEvent<TEvent = unknown>(evt: string, handler: PluginEditorEventHandler<TEvent>): void;
 

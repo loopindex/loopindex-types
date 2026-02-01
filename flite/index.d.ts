@@ -982,7 +982,9 @@ export namespace FLITEEvents {
 	}
 
 	interface IAcceptRejectEvent<TEditor extends {} = object> extends IFLITEEvent<TEditor> {
-		options?: any;
+		readonly options?: Partial<IChangeFilterOptions>;
+		readonly processed: number;
+		readonly left: number;
 	}
 }
 
