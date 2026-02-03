@@ -188,16 +188,24 @@ export interface ICommaiteCommands {
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
-	 * @property {String} [REACT="commaite-comment-p"]
+	 * @property {String} [REACT="commaite-comment-para"]
 	 */
 	readonly COMMENT_PARA: "commaite-comment-para",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
 	 * @static
-	 * @property {String} [SIGNOUT="signout"]
+	 * @property {String} [SIGNOUT="commaite-signout"]
 	 */
 	readonly SIGNOUT: "commaite-signout",
+
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [ASK="commaite-ask"]
+	 */
+	readonly ASK: "commaite-ask",
 }
 
 export type CommaiteCommand = KeyOf<ICommaiteCommands>;
