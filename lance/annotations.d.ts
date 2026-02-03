@@ -177,7 +177,7 @@ export interface IAnnotationsOwner {
 	 * @param args 
 	 */
 	resolvePath(...args: string[]): string;
-	getLocalizedString: (key: string) => string;
+	getLocalizedString: (key: string, params?: Record<string, string>) => string;
 
 	readonly tagName: string;
 }

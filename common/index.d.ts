@@ -378,6 +378,7 @@ export type AutogrowTransformFunction = (s: string, prevTransform?: AutogrowTran
 
 export interface IAutogrowOptions {
 	readonly maxRows: number;
+	readonly minRows: number;
 	readonly css: Record<string, string | number>;
 	// readonly fitOnInit: boolean;
 	readonly transform: AutogrowTransformFunction;
@@ -444,11 +445,13 @@ export interface ICoreLoopIndexPlugin extends IDisposable {
 	setCommandsState<TCommand extends string = string>(commands: TCommand | TCommand[], enable: boolean, active?: boolean): void;
 
 	/**
-	 * Get a localized version of the key, from the plugin's internal dictionary
+	 * Get a localized version of the key, from the plugin's internal dictionary.
+	 * If the string contains runs of [[XXX]], XXX is translated as a key
 	 * @param key 
+	 * @param params If present, use the value of XXX from this dictionary to replace occurances of {{XXX}}
 	 */
 
-	getLocalizedString(key: string): string;
+	getLocalizedString(key: string, params?: Record<string, string>): string;
 
 	/**
 	 * Get the definitions of all the commands of this instance - command, title, iconUrl etc

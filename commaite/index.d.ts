@@ -218,7 +218,6 @@ export interface ICommaitePlugin<
 	readonly isMock: boolean;
 	// readonly alertManager: IModalAlertManager;
 	createPersonaUI(optionss: IPersonaUIOptions): Promise<IPersonaUI>;
-	getLocalizedString(key: string): string;
 }
 
 export interface ICommaiteInitEvent {
