@@ -34,8 +34,9 @@ export type AcceptSelectionPolicy = "first" | "all";
  */
 export type TableContentPolicy = "delete" | "preserve";
 
-export type DropTrackingPolicy = "none" | "insert" | "all"
+export type DropTrackingPolicy = "none" | "insert" | "all";
 
+export type ColorRotationPolicy = "none" | "static" | "rotate";
 
 export interface IFLITEUserStyle {
 	readonly "delete"?: {
@@ -485,6 +486,18 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	 * Number of msecs between changes, after which an edit operation is considered belonging to a new change
 	 */
 	readonly changeGroupTime: number;
+
+	/**
+	 * @property {String} [colorRotatePolicy="rotate"]
+	 * @since FLITE 1.7.10
+	 * Legal values:
+	 * 
+	 * - `"none"`: no color variation, all users receive the same colors
+	 * - `"static"`: Use the base colors
+	 * - `"rotate"`: Use various lighter and darker variations of the base colors
+	 */
+	readonly colorRotatePolicy: ColorRotationPolicy;
+
 
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 }
@@ -959,6 +972,18 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	 * Number of msecs between changes, after which an edit operation is considered belonging to a new change
 	 */
 	readonly changeGroupTime: number;
+
+
+	/**
+	 * @property {String} [colorRotatePolicy="rotate"]
+	 * @since FLITE 1.7.10
+	 * Legal values:
+	 * 
+	 * - `"none"`: no color variation, all users receive the same colors
+	 * - `"static"`: Use the base colors
+	 * - `"rotate"`: Use various lighter and darker variations of the base colors
+	 */
+	readonly colorRotatePolicy: ColorRotationPolicy;
 
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 
