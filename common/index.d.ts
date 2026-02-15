@@ -1,5 +1,5 @@
 import type { IModalAlertManager } from "./alerts";
-import type { AnyFunction, IDisposable, Nullable, PartialWith, PopStateFunction } from "./core";
+import type { AnyFunction, IDisposable, KeyOf, Nullable, PartialWith, PopStateFunction } from "./core";
 import type { RangeInfo } from "./dom";
 
 export type * from "./core";
@@ -205,7 +205,7 @@ export interface IClientCommandRecord extends ICommandRecord {
 
 export type UserTooltipsConfig<TConfig extends IPluginTooltipOptions> = boolean | "always" | Partial<TConfig>;
 
-export type PluginConfigurationKey<TPlugin extends IPluginConfig> = keyof TPlugin;
+export type PluginConfigurationKey<TConfig extends IPluginConfig> = KeyOf<TConfig>;
 export type TPluginConfigKey<TConfig extends IPluginConfig> = PluginConfigurationKey<TConfig>;
 export type TPluginConfigValue<TConfig extends IPluginConfig, TKey extends TPluginConfigKey<TConfig>> = TConfig[TKey];
 export type TPluginConfigResult<TConfig extends IPluginConfig, TKey,
