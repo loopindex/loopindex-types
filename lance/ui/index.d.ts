@@ -243,19 +243,24 @@ export interface ILanceUI extends IDisposable {
 	setConfirmCallback(callback: UIConfirmCallback): void;
 	setCommentTimeFormat(format: string): void;
 	/**
+	 * Tries to reveal the comment indicated by id
+	 * @param {Object} id `{ annotationId: string, commentId: string }`
+	 */
+	revealComment(id: ICommentID): void;
+	/**
 	 * 
 	 * @param owner 
 	 * @param options if options.load !== false, the annotations will be reloaded 
 	 */
 	setOwner(owner: IAnnotationsManager | null, options?: { load: boolean }): void;
 	getOwner(): IAnnotationsManager | null;
-			/**
-		 * @member LANCE.AnnotationsUI
-		 * @method localizeNode
-		 * @readonly
-		 * translates the marked placeholders in the text content and attributes of the node
-		 * using the current owner's localizer.
-		 */
+	/**
+	 * @member LANCE.AnnotationsUI
+	 * @method localizeNode
+	 * @readonly
+	 * translates the marked placeholders in the text content and attributes of the node
+	 * using the current owner's localizer.
+	 */
 	localizeNode(targetNode: ElementOrJQuery): void;
 }
 
