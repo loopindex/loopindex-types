@@ -270,7 +270,7 @@ export interface IPluginUserConfig<
 
 	readonly debug: Partial<IPluginLogOptions>;
 
-	readonly commands: Partial<TCommands>[];
+	readonly commands: Partial<TCommands>[] | string[];
 
 	readonly language?: string;
 }
