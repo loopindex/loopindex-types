@@ -183,7 +183,7 @@ export interface ICommaiteCommands {
 	 * @static
 	 * @property {String} [REACT="commaite-react"]
 	 */
-	readonly COMMENT: "commaite-comment",
+	readonly REACT_TEXT: "react-text",
 	/**
 	 * @member COMMAITE.Commands
 	 * @readonly
