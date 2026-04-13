@@ -1,0 +1,104 @@
+import type { ElementOrJQuery } from "../common/dom";
+import type { IChangeFilterOptions, IChangeSet, IFLITEUser, ITrackedChange } from ".";
+import type { AnyFunction, IDisposable, Nullable } from "../common";
+
+export interface ICleanDomOptions {
+	/**
+	 * if true, delete deleted elements
+	 * */
+	removeDeleted?: boolean;
+}
+
+export interface IBaseTrackingContext {
+	readonly isTracking: boolean;
+	readonly isInsert: boolean;
+	readonly isDelete: boolean;
+	readonly isCurrentUser: boolean;
+	/**
+	 * The tracking node found for the context
+	 */
+	readonly trackingNode: Nullable<Element>;
+	readonly tracksContent: boolean;
+}
+
+export interface IAPITrackingContext extends IBaseTrackingContext {
+	readonly change: Nullable<ITrackedChange>;
+}
+
+
+
+export interface IFLITEChangeTracker extends IDisposable {
+	readonly rootElement: Element;
+
+
+	/**
+	 * 
+	 * start/stop tracking DOM element
+	 * @param {Boolean} start or stop tracking
+	 * @param {Element} root The DOM element under which tracking will be performed. Not needed when
+	 * setting start to false.
+	 */
+	toggleChangeTracking(bTrack: boolean, root: Element): IFLITEChangeTracker;
+
+	getCleanDOM(container?: Nullable<Element | string>, options?: ICleanDomOptions): Element;
+
+	getCurrentUser(): Nullable<IFLITEUser>;
+
+	acceptChange(idOrNode: Node | string): boolean;
+	rejectChange(idOrNode: Node | string): boolean;
+	acceptAll(options?: Partial<IChangeFilterOptions>): void;
+	rejectAll(options?: Partial<IChangeFilterOptions>): void;
+	countChanges(options?: IChangeFilterOptions): number;
+	/**
+	 * Returns the change node that wraps the provided node
+	 * @param node 
+	 * @param nodeOnly if true, test only if the provided node is a change node
+	 */
+	getWrappingChangeNode(node: Nullable<Node>, nodeOnly?: boolean): Nullable<HTMLElement>;
+	findNodeTrackingContext(node: Node, includeContainer?: boolean): IAPITrackingContext;
+	getNodeChangeId(node: Nullable<Node>): Nullable<string>;
+	getTrackedNodes(root?: ElementOrJQuery, changeType?: "insertType" | "deleteType"): JQuery;
+	hasChanges(): boolean;
+	setShowChanges(bShow: boolean): void;
+	// getDeleteClass(): string;
+	getChanges(options: IChangeFilterOptions): IChangeSet;
+	/**
+	 * Returns the currently selected DOM node
+	 */
+	getSelectedNode(): Nullable<Node>;
+
+	/**
+	 * Move to another tracked change node. Mode can be one of "next", "prev", "first", "last"
+	 */
+	navigateToChangeNode(mode: string): Nullable<HTMLElement>;
+
+	/**
+	 * Returns the change associated with a changed node
+	 * @param node 
+	 */
+	getChangeForNode(node: Node): Nullable<ITrackedChange>;
+
+	/**
+	 * Returns the change associated with a changed node
+	 * @param node 
+	 */
+	getChangeForId(id: string | null | undefined): Nullable<ITrackedChange>;
+
+	/**
+	 * @member IFLITEChangeTracker
+	 * @method startBatch
+	 * @param {Boolean} [suppressEvents=false] If true, do not generate any events until the batch is finished
+	 * @since Version 1.7.05
+	 * Indicates that all the tracked changes from this point until the end of the batch
+	 * will have the same change id.
+	 * 
+	 * This method returns a function which is **the only way** to end the batch. Failing to
+	 * call this function will cause the tracker to be "stuck" in the same batch change, until
+	 * a document is loaded (e.g. after undo/redo).
+	 * 
+	 * If the tracker can't start a batch change (either a change is being processed or tracking is disabled), a no-op function is returned.
+	 * @returns {Function} a function to call when you want to add the batch
+	 */
+	startBatch(suppressEvents?: boolean): AnyFunction;
+
+}
