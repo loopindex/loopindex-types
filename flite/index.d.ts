@@ -91,29 +91,34 @@ export interface IChangeFilterOptions {
 	/**
 	 * Array of user ids to include
 	 */
-	include?: Array<string>;
+	readonly include?: Array<string>;
 	/**
 	 * Array of user ids to exclude
 	 */
 	exclude?: Array<string>;
-	filter?: (params: { userid?: string, time?: number, data?: any }) => any;
+	readonly filter?: (params: { userid?: string, time?: number, data?: any }) => any;
 	/**
 	 * If true, verify that nodes exist when counting changes
 	 */
-	verify?: boolean;
+	readonly verify?: boolean;
 	/**
 	 * Don't fire editor events on completion
 	 */
-	notify?: false;
+	readonly notify?: false;
 	/**
 	 * Internal use
 	 */
-	strict?: boolean;
+	readonly strict?: boolean;
 
 	/**
 	 * If defined, reference nodes under this element rather than the tracker's root element
 	 */
-	root?: HTMLElement;
+	readonly root?: HTMLElement;
+
+	/**
+	 * For internal use
+	 */
+	readonly param?: unknown;
 
 }
 
@@ -596,6 +601,7 @@ export interface ITooltipTitleOptions {
 	isInsert: boolean;
 	element: string;
 	localize: LocalizeFunction;
+	user: IFLITEUser;
 }
 
 export type TooltipCallback = (options: ITooltipTitleOptions) => string;

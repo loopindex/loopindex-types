@@ -11,7 +11,7 @@ export type FroalaModule = unknown;
 
 
 
-export type LocalizeFunction = (key: string, defaultValue?: string, params?: Record<string, string>) => string;
+export type LocalizeFunction = (key: string, params?: Record<string, string>) => string;
 
 export interface ICommandStatus {
 	readonly enabled: boolean;
