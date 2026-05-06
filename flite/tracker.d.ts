@@ -101,4 +101,12 @@ export interface IFLITEChangeTracker extends IDisposable {
 	 */
 	startBatch(suppressEvents?: boolean): AnyFunction;
 
+	/**
+	 * @member FLITE.LIChangeTracker
+	 * Returns an array of nodes associated with a change id
+	 * @param {String} changeId find nodes with this  change id
+	 * @returns { HTMLElement[] } An array of HTML Elements
+	 */
+	getNodesForChange(changeId: string): HTMLElement[];
+
 }

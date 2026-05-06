@@ -332,7 +332,7 @@ export interface ILoopIndexPluginEvent {
 /**
  * Events fired by all plugins
  */
-export type PluginEvents = "config";
+export type PluginEvents = "config" | "before:config";
 
 /**
  * Useful for the froala init function in plugins

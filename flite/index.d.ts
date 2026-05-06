@@ -780,7 +780,7 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	 * @member FLITE.Configuration
 	 * @property {Boolean | Function} allowQuitWithChanges=false
 	 */
-	allowQuitWithChanges: boolean | ((plugin: IFLITEPlugin) => QuitTrackingPolicy | Promise<QuitTrackingPolicy>);
+	allowQuitWithChanges: boolean | (<TPlugin extends IFLITEPlugin>(plugin: TPlugin) => QuitTrackingPolicy | Promise<QuitTrackingPolicy>);
 
 	/**
 	 * @member FLITE.Configuration
