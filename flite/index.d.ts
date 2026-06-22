@@ -24,6 +24,11 @@ export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
 export type SpellCheckPolicy = "editor" | "browser";
 /**
+ * - `"always"` - Deleted ordered list items do not increase the counter
+ * - `"never"` - Deleted ordered list items are numbered normally
+ */
+export type ListItemRenumberPolicy = "always" | "never";
+/**
  * - `"all"` - accept/reject all changes contained in the current selection
  * - `"first" - accept/reject the first change in the current selection
  */
@@ -79,7 +84,7 @@ export interface ITrackedChange {
 	readonly userid: string;
 	readonly username: string;
 	readonly sessionId?: string;
-	readonly data?: any;
+	readonly data?: unknown;
 	//style: string;
 }
 export interface IChangeSet {
@@ -91,29 +96,34 @@ export interface IChangeFilterOptions {
 	/**
 	 * Array of user ids to include
 	 */
-	include?: Array<string>;
+	readonly include?: Array<string>;
 	/**
 	 * Array of user ids to exclude
 	 */
 	exclude?: Array<string>;
-	filter?: (params: { userid?: string, time?: number, data?: any }) => any;
+	readonly filter?: (params: { userid?: string, time?: number, data?: any }) => any;
 	/**
 	 * If true, verify that nodes exist when counting changes
 	 */
-	verify?: boolean;
+	readonly verify?: boolean;
 	/**
 	 * Don't fire editor events on completion
 	 */
-	notify?: false;
+	readonly notify?: false;
 	/**
 	 * Internal use
 	 */
-	strict?: boolean;
+	readonly strict?: boolean;
 
 	/**
 	 * If defined, reference nodes under this element rather than the tracker's root element
 	 */
-	root?: HTMLElement;
+	readonly root?: HTMLElement;
+
+	/**
+	 * For internal use
+	 */
+	readonly param?: unknown;
 
 }
 
@@ -505,6 +515,9 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 
 
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
+
+	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
+
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -596,6 +609,7 @@ export interface ITooltipTitleOptions {
 	isInsert: boolean;
 	element: string;
 	localize: LocalizeFunction;
+	user: IFLITEUser;
 }
 
 export type TooltipCallback = (options: ITooltipTitleOptions) => string;
@@ -774,7 +788,7 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	 * @member FLITE.Configuration
 	 * @property {Boolean | Function} allowQuitWithChanges=false
 	 */
-	allowQuitWithChanges: boolean | ((plugin: IFLITEPlugin) => QuitTrackingPolicy | Promise<QuitTrackingPolicy>);
+	allowQuitWithChanges: boolean | (<TPlugin extends IFLITEPlugin>(plugin: TPlugin) => QuitTrackingPolicy | Promise<QuitTrackingPolicy>);
 
 	/**
 	 * @member FLITE.Configuration
@@ -992,6 +1006,7 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 
+	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
 
 }
 

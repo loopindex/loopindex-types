@@ -544,7 +544,7 @@ export interface IAnnotationPermissions {
 	readonly resolve: AnnotationRole | IAnnotationPermissionsDetailedBlock;
 }
 
-export type RequestUserCallback<TUser extends ILanceUser = ILanceUser> = (user: TUser, callback: (user: TUser) => any) => any;
+export type RequestUserCallback<TUser extends ILanceUser = ILanceUser> = (user: TUser) => Promise<Nullable<TUser>>;
 
 interface IAnnotationStatusOptions<TUser extends ILanceUser = ILanceUser> {
 	readonly comment: IComment;
@@ -564,19 +564,19 @@ export type ResolveAllCallback = (data: IResolveAllCallbackData) => boolean;
 
 export type ResolveAllPolicy = "strict" | "all" | ResolveAllCallback;
 
+/**
+ * The annotations manager expects a partial instance
+ */
 export interface IAnnotationOptions {
-	defaultPicture: string;
-	permissions: IAnnotationPermissions;
-	userId: string;
+	readonly defaultPicture: string;
+	readonly permissions: IAnnotationPermissions;
+	readonly userId: string;
 	// optional function that generates unique ids for annotation objects
-	idGenerator: (user?: ILanceUser) => string;
-	owner: IAnnotationsOwner;
-	requestUser: RequestUserCallback;
-	statusCallback: Function;
-	users: Array<ILanceUser>;
-	// for the api key test, this is the head element
-	hostOptions?: JQuery;
-	resolveAllPolicy: ResolveAllPolicy;
+	readonly idGenerator: (user?: ILanceUser) => string;
+	readonly requestUser: RequestUserCallback;
+	readonly statusCallback: Function;
+	readonly users: Array<ILanceUser>;
+	readonly resolveAllPolicy: ResolveAllPolicy;
 }
 
 /**

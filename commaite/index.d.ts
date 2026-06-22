@@ -2,7 +2,7 @@ import type { IDisposable, IEvents, ILoopIndexPlugin, IPluginConfig, IPluginUser
 import type { IModalAlertManager } from "../common/alerts";
 
 export type CommaiteTriggers = "paragraph" | "inline" | "sentence";
-export type CommaiteEvents = PluginEvents | "personas:change" | "personas:update" 
+export type CommaiteEvents = PluginEvents | "personas:change" | "personas:update"
 	| "user:signin" | "user:signout" | "user:session"
 	| "signin:on" | "signin:off";
 export type PersonasUIEvents = "select" | "signin";
@@ -29,12 +29,32 @@ export interface ICommaiteLimits {
 	readonly paragraphSentences: number;
 }
 
+export interface ITranslationOptions {
+	/**
+	 * The default language of the text being translated, defaults to the
+	 * current editor language, e.g. "de" for German
+	 */
+	readonly defaultSource: string;
+	/**
+	 * The default target language for translation. If not set, you need to select
+	 * it in the UI before translation is enabled, e.g. "ar" for Arabic
+	 */
+	readonly defaultTarget: string;
+	/**
+	 * If provided, offer translations only from this group of languages,
+	 * e.g. `locales: ["fr", "es", "ar" ]`
+	 */
+	readonly locales: string[]
+}
+
+export type FullTranslateOptions = ITranslationOptions & { readonly enabled: boolean };
+
 export interface ICommaiteUserConfiguration extends IPluginUserConfig {
 	readonly serverUrl: string;
 	/**
 	 * Defaults to all server personas
 	 */
-    readonly personas: PartialWith<IPersonaConfig, "name">[];
+	readonly personas: PartialWith<IPersonaConfig, "name">[];
 	readonly triggers: CommaiteTriggers[];
 
 	readonly limits: Partial<ICommaiteLimits>;
@@ -77,6 +97,8 @@ export interface ICommaiteUserConfiguration extends IPluginUserConfig {
 	 * Ruleset to use in requests
 	 */
 	readonly ruleSet: string;
+
+	readonly translation: Partial<ITranslationOptions> | boolean;
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, unknown>> = {
@@ -89,7 +111,7 @@ export interface ICommaiteConfiguration extends IPluginConfig {
 	/**
 	 * Defaults to all server personas
 	 */
-    readonly personas: IPersonaConfig[];
+	readonly personas: IPersonaConfig[];
 	readonly triggers: CommaiteTriggers[];
 
 	readonly limits: ICommaiteLimits;
@@ -132,6 +154,8 @@ export interface ICommaiteConfiguration extends IPluginConfig {
 	 * Ruleset to use in requests
 	 */
 	readonly ruleSet: string;
+
+	readonly translation: FullTranslateOptions;
 }
 
 export interface IPersonaUI {
@@ -206,9 +230,31 @@ export interface ICommaiteCommands {
 	 * @property {String} [ASK="commaite-ask"]
 	 */
 	readonly ASK: "commaite-ask",
+
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TRANSLATE="commaite-translate"]
+	 */
+	readonly TRANSLATE: "commaite-translate",
+
+	/**
+	 * @member COMMAITE.Commands
+	 * @readonly
+	 * @static
+	 * @property {String} [TRANSLATE_TEXT="commaite-translate-text"]
+	 */
+	readonly TRANSLATE_TEXT: "commaite-translate-text",
 }
 
 export type CommaiteCommand = KeyOf<ICommaiteCommands>;
+
+export interface ITranslationItem {
+	readonly code: string;
+	readonly name: string;
+}
+
 
 export interface ICommaitePlugin<
 	TEditor extends {} = object,
@@ -218,6 +264,7 @@ export interface ICommaitePlugin<
 	readonly isMock: boolean;
 	// readonly alertManager: IModalAlertManager;
 	createPersonaUI(optionss: IPersonaUIOptions): Promise<IPersonaUI>;
+	getTranslationLanguages(): Array<ITranslationItem>;
 }
 
 export interface ICommaiteInitEvent {
