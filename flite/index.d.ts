@@ -24,6 +24,11 @@ export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
 export type SpellCheckPolicy = "editor" | "browser";
 /**
+ * - `"always"` - Deleted ordered list items do not increase the counter
+ * - `"never"` - Deleted ordered list items are numbered normally
+ */
+export type ListItemRenumberPolicy = "always" | "never";
+/**
  * - `"all"` - accept/reject all changes contained in the current selection
  * - `"first" - accept/reject the first change in the current selection
  */
@@ -79,7 +84,7 @@ export interface ITrackedChange {
 	readonly userid: string;
 	readonly username: string;
 	readonly sessionId?: string;
-	readonly data?: any;
+	readonly data?: unknown;
 	//style: string;
 }
 export interface IChangeSet {
@@ -510,6 +515,9 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 
 
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
+
+	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
+
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -998,6 +1006,7 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 
+	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
 
 }
 
