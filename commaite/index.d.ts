@@ -99,6 +99,8 @@ export interface ICommaiteUserConfiguration extends IPluginUserConfig {
 	readonly ruleSet: string;
 
 	readonly translation: Partial<ITranslationOptions> | boolean;
+
+	readonly ignoredBlocks: string | string[];
 }
 
 export type IEditorConfiguration<TEditorConfig = Record<string, unknown>> = {
@@ -156,6 +158,8 @@ export interface ICommaiteConfiguration extends IPluginConfig {
 	readonly ruleSet: string;
 
 	readonly translation: FullTranslateOptions;
+
+	readonly ignoredBlocks: ReadonlyArray<string>;
 }
 
 export interface IPersonaUI {
