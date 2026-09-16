@@ -518,6 +518,11 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 
 	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
 
+	/**
+	 * Froala specific options
+	 */
+	readonly froala: IFLITEFroalaUserOptions;
+
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -624,6 +629,16 @@ export interface IFLITETooltipOptions extends IPluginTooltipOptions {
 	 * @property show
 	 */
 	formatter?: TooltipCallback;
+}
+
+interface IFLITEFroalaUserOptions {
+	/**
+	 * Some Froala plugins (e.g. emoticons) create elements whose text content is bogus. This
+	 * content should not be selectable, the caret should not be allowed inside it, but in Froala it is.
+	 * When this field is true, FLITE adds `contenteditable="false"` to these elements, resolving issues that
+	 * stem from its text being selectable.
+	 */
+	readonly opaqueElementSupport: boolean;
 }
 
 /**
@@ -1007,6 +1022,11 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 
 	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
+
+	/**
+	 * Froala specific options
+	 */
+	readonly froala: Partial<IFLITEFroalaUserOptions>;
 
 }
 
