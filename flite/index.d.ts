@@ -24,6 +24,11 @@ export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
 export type SpellCheckPolicy = "editor" | "browser";
 /**
+ * `"item"` - remove empty list item after accept/reject. Once the list has no items, it is removed
+ * `"list"` - ignore empty list item after accept/reject but remove the list if it ends up with only empty items
+ */
+export type EmptyListRemovePolicy = "none" | "item" | "list";
+/**
  * - `"always"` - Deleted ordered list items do not increase the counter
  * - `"never"` - Deleted ordered list items are numbered normally
  */
@@ -518,6 +523,14 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 
 	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
 
+	readonly emptyListRemovePolicy: EmptyListRemovePolicy;
+
+
+	/**
+	 * Froala specific options
+	 */
+	readonly froala: IFLITEFroalaUserOptions;
+
 }
 
 export interface IFLITEToggleTrackingOptions {
@@ -624,6 +637,16 @@ export interface IFLITETooltipOptions extends IPluginTooltipOptions {
 	 * @property show
 	 */
 	formatter?: TooltipCallback;
+}
+
+interface IFLITEFroalaUserOptions {
+	/**
+	 * Some Froala plugins (e.g. emoticons) create elements whose text content is bogus. This
+	 * content should not be selectable, the caret should not be allowed inside it, but in Froala it is.
+	 * When this field is true, FLITE adds `contenteditable="false"` to these elements, resolving issues that
+	 * stem from its text being selectable.
+	 */
+	readonly opaqueElementSupport: boolean;
 }
 
 /**
@@ -1007,6 +1030,15 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 
 	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
+
+	readonly emptyListRemovePolicy: EmptyListRemovePolicy;
+
+	/**
+	 * Froala specific options
+	 */
+	readonly froala: Partial<IFLITEFroalaUserOptions>;
+
+
 
 }
 
