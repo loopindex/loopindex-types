@@ -24,6 +24,11 @@ export type ContainerTrackingStyle = "border" | "marker";
 export type QuitTrackingPolicy = "accept" | "reject" | boolean;
 export type SpellCheckPolicy = "editor" | "browser";
 /**
+ * `"item"` - remove empty list item after accept/reject. Once the list has no items, it is removed
+ * `"list"` - ignore empty list item after accept/reject but remove the list if it ends up with only empty items
+ */
+export type EmptyListRemovePolicy = "none" | "item" | "list";
+/**
  * - `"always"` - Deleted ordered list items do not increase the counter
  * - `"never"` - Deleted ordered list items are numbered normally
  */
@@ -517,6 +522,9 @@ interface IFLITEConfiguration extends IPluginConfig<IFLITETooltipOptions, IFLITE
 	readonly acceptSelectionPolicy: AcceptSelectionPolicy;
 
 	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
+
+	readonly emptyListRemovePolicy: EmptyListRemovePolicy;
+
 
 	/**
 	 * Froala specific options
@@ -1023,10 +1031,14 @@ export interface IFLITEUserConfiguration extends IPluginUserConfig<IFLITETooltip
 
 	readonly listItemRenumberPolicy: ListItemRenumberPolicy;
 
+	readonly emptyListRemovePolicy: EmptyListRemovePolicy;
+
 	/**
 	 * Froala specific options
 	 */
 	readonly froala: Partial<IFLITEFroalaUserOptions>;
+
+
 
 }
 
